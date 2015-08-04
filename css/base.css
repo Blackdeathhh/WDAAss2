@@ -1,0 +1,47 @@
+body{
+	margin: 1%;
+}	
+#topbar{
+	top: 0%;
+	left: 0%;
+	height: 149px;
+	position: block;
+	width: 100%;
+}
+/*#topbar+div{ Not needed if: #topbar position == block
+	margin-top: imageheight px;
+}*/
+body{
+	background-color: beige;
+}
+div{
+	border: 1px solid grey;
+}
+ol{
+	margin: 0px;
+	padding: 0px;
+}
+ol li{
+	list-style-type: none;
+}
+.title{
+	color: blue;
+	background-color: #40E0D0;
+	margin-top: 0px;
+	margin-bottom: 1em;
+}
+.maindiv{
+	background-color: #CCCCCC;
+	width: 90%;
+	margin: auto;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+/*
+Colours...
+Headers: #40E0D0 - Turquoise
+Footers: #648ECE - Dark Blue
+Content Contrast (i.e. Avatar area): #7FA3D7 - Blue
+Content: #BCDEFF - Light Blue
+*/

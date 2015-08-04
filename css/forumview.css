@@ -1,0 +1,66 @@
+.forumbox{
+	background-color: #CCCCCC;
+	width: 95%;
+	margin: auto;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.forumbox>h2{
+	color: blue;
+	background-color: #40E0D0;
+}
+.subitem{
+	min-height: 5em;
+	background-color: #7FA3D7;
+	margin: 1em;
+	white-space: nowrap;
+	overflow: hidden;
+
+	/* Compatibility rules for browsers that aren't flexy beasts yet */
+	display: -moz-box;
+	display: -webkit-box;
+	display: -webkit-flex;
+	-webkit-flex-align: stretch;
+	-webkit-align-items: stretch;
+	
+	display: -ms-flexbox;
+	-ms-flex-align: stretch;
+	
+	display: flex;
+	align-items: stretch;
+}
+.subitem p{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0.5em 1em 0.5em;
+	word-wrap: break-word;
+	white-space: nowrap;
+}
+.subitem div{
+	display: inline-block;
+	border: none;
+	white-space: normal;
+
+	min-height: inherit;
+}
+.threadicon{
+	display: inline-block;
+	float: left;
+	margin: 1em;
+	height: 3em;
+	width: 3em;
+}
+.threadmeta{
+	min-width: 45%;
+	max-width: 60%;
+	width: auto;
+}
+.threadstats{
+	text-align: right;
+	background-color: #BCDEFF;
+	min-width: 10%;
+}
+.threadlastpost{
+	min-width: 15%;
+	max-width: 20%;
+}
