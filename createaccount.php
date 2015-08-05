@@ -34,7 +34,7 @@
 		// If this bugs out, change :error in prepare to @error. THen, run a query select @error->fetch(PDO::FETCH_ASSOC) to get your error message.
 		echo "Bound params, ";
 		// http://stackoverflow.com/questions/118506/stored-procedures-mysql-and-php/4502524#4502524
-		$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+		$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 50);
 		echo "Bound error, ";
 		try{
 			$stmt->execute();
