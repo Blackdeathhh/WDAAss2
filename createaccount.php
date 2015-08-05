@@ -27,29 +27,28 @@
 		//echo "Password: $hashedPass. ";
 		
 		// Note that binding an OUT parameter does not work. Therefore, user variables are used as a workaround.
-		//$errorMessage = "";
+		$errorMessage;
 		//$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, :error)");
 		//$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 50);
 		$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, @error)");
 		$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 		$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
 		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
-		$success = false;
 		try{
 			$stmt->execute();
-			$success = true;
 		}
 		catch(PDOException $e){
+			$errorMessage = "Unknown error; please try again later.";
 			echo $e->getMessage();
 		}
 		$stmt->closeCursor();
 		$outParams = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC);
-		echo "Result is: " . $outParams['@error'];
+		$errorMessage = $outParams['@error'];
 		//echo "Executed. Result: $errorMessage";
-		if($success) {
+		if($errorMessage == "") {
 			//echo "Success.";
 			// It worked, try to login.
-			$stmt = $db->prepare("CALL LoginUser(:user, :hash, :error)");
+			$stmt = $db->prepare("CALL GetUserID(:user, :hash, :error)");
 		}
 		else {
 			// Error, dang.
