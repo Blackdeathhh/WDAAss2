@@ -27,17 +27,22 @@
 		echo "Password: $hashedPass. ";
 		
 		$errorMessage = "";
-		$stmt = $db->prepare("CALL RegisterUser(:user, :display, :pass, :error)");
+		$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, :error)");
 		$stmt->bindParam(":user", $username, PDO::PARAM_STR);
-		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
 		$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
+		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
 		// If this bugs out, change :error in prepare to @error. THen, run a query select @error->fetch(PDO::FETCH_ASSOC) to get your error message.
 		echo "Bound params, ";
 		// http://stackoverflow.com/questions/118506/stored-procedures-mysql-and-php/4502524#4502524
 		$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
 		echo "Bound error, ";
-		$stmt->execute();
-		echo "Executed. ";
+		try{
+			$stmt->execute();
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+		}
+		echo "Executed. Result: $errorMessage";
 		if($errorMessage == "") {
 			echo "Success.";
 			// It worked, try to login.
