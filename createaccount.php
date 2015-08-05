@@ -42,8 +42,9 @@
 		catch(PDOException $e){
 			echo $e->getMessage();
 		}
-		$outParams = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC)
-		echo $outParams['@error'];
+		$stmt->closeCursor();
+		$outParams = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC);
+		echo "Result is: " . $outParams['@error'];
 		//echo "Executed. Result: $errorMessage";
 		if($success) {
 			//echo "Success.";
