@@ -43,7 +43,7 @@
 			echo $e->getMessage();
 		}
 		$outParams = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC)
-		vardump($outParams);
+		echo $outParams['@error'];
 		//echo "Executed. Result: $errorMessage";
 		if($success) {
 			//echo "Success.";
