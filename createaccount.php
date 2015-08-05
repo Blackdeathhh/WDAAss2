@@ -11,37 +11,45 @@
 	
 	$db = connectToDatabase();
 	
-	$username = $_POST["username"];
-	$displayname = $_POST["displayname"];
-	$rawPassword = $_POST["password"];
-	
-	/*Validate parameters, make sure they're not too long.
-	validateUsername();
-	validateDisplayname();
-	validatePassword();
-	*/
-	
-	$hashedPass = hashPassword($rawPassword);
-	
 	if($db) {
+		$username = $_POST["username"];
+		$displayname = $_POST["displayname"];
+		$rawPassword = $_POST["password"];
+		
+		/*Validate parameters, make sure they're not too long.
+		validateUsername();
+		validateDisplayname();
+		validatePassword();
+		*/
+		
+		$hashedPass = hashPassword($rawPassword);
+		
+		echo "Password: $hashedPass. ";
+		
 		$errorMessage = "";
 		$stmt = $db->prepare("CALL RegisterUser(:user, :display, :pass, :error)");
 		$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
 		$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
 		// If this bugs out, change :error in prepare to @error. THen, run a query select @error->fetch(PDO::FETCH_ASSOC) to get your error message.
+		echo "Bound params, ";
 		// http://stackoverflow.com/questions/118506/stored-procedures-mysql-and-php/4502524#4502524
 		$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
-		
-		if($errorMEssage == "") {
+		echo "Bound error, ";
+		$stmt->execute();
+		echo "Executed. ";
+		if($errorMessage == "") {
+			echo "Success.";
 			// It worked, try to login.
-			$stmt = $db->prepare("CALL LoginUser(:user, :hash, :error)");
+			//$stmt = $db->prepare("CALL LoginUser(:user, :hash, :error)");
 		}
 		else {
 			// Error, dang.
+			echo "Failure.";
 		}
 	}
 	else {
 		// Failed to connect, awww shit.
-		header("Location: register.php");
+		//header("Location: register.php");
+		echo "Failed to connect";
 	}
