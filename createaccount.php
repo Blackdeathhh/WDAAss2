@@ -9,7 +9,8 @@
 	//require_once("php/validation.php");
 	require_once("php/security.php");
 	
-	$db = connectToDatabase();
+	$options = array(PDO::ATTR_PERSISTENT => true);
+	$db = connectToDatabase($options);
 	
 	if($db) {
 		$username = $_POST["username"];
