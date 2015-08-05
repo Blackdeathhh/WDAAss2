@@ -24,45 +24,39 @@
 		
 		$hashedPass = hashPassword($rawPassword);
 		
-		echo "Password: $hashedPass. ";
+		//echo "Password: $hashedPass. ";
 		
 		// Note that binding an OUT parameter does not work. Therefore, user variables are used as a workaround.
-		$errorMessage = "";
+		//$errorMessage = "";
 		//$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, :error)");
+		//$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 50);
 		$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, @error)");
 		$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 		$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
 		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
-		echo "Bound params, ";
-		//$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 50);
-		//echo "Bound error, ";
+		$success = false;
 		try{
 			$stmt->execute();
+			$success = true;
 		}
 		catch(PDOException $e){
 			echo $e->getMessage();
 		}
-		
-		try{
-			$errorMessage = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC)['@error'];
-		}
-		catch(PDOException $e){
-			echo $e->getMessage();
-		}
-		
-		echo "Executed. Result: $errorMessage";
-		if($errorMessage == "") {
-			echo "Success.";
+		$outParams = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC)
+		vardump($outParams);
+		//echo "Executed. Result: $errorMessage";
+		if($success) {
+			//echo "Success.";
 			// It worked, try to login.
-			//$stmt = $db->prepare("CALL LoginUser(:user, :hash, :error)");
+			$stmt = $db->prepare("CALL LoginUser(:user, :hash, :error)");
 		}
 		else {
 			// Error, dang.
-			echo "Failure.";
+			//echo "Failure.";
 		}
 	}
 	else {
 		// Failed to connect, awww shit.
 		//header("Location: register.php");
-		echo "Failed to connect";
+		//echo "Failed to connect";
 	}
