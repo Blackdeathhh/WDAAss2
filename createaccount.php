@@ -43,7 +43,12 @@
 			echo $e->getMessage();
 		}
 		
-		$errorMessage = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC)['@error'];
+		try{
+			$errorMessage = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC)['@error'];
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+		}
 		
 		echo "Executed. Result: $errorMessage";
 		if($errorMessage == "") {
