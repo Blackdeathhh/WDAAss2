@@ -23,6 +23,7 @@
 		*/
 		
 		$hashedPass = hashPassword($rawPassword);
+		$salt = substr($hashedPass, 7, 22);
 		
 		//echo "Password: $hashedPass. ";
 		
@@ -30,9 +31,10 @@
 		$errorMessage;
 		//$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, :error)");
 		//$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 50);
-		$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, @error)");
+		$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :salt, :display, @error)");
 		$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 		$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
+		$stmt->bindParam("salt", $salt, PDO::PARAM_STR);
 		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
 		try{
 			$stmt->execute();
@@ -46,13 +48,17 @@
 		$errorMessage = $outParams['@error'];
 		//echo "Executed. Result: $errorMessage";
 		if($errorMessage == "") {
-			//echo "Success.";
+			echo "Success. Result: '$errorMessage'";
 			// It worked, try to login.
-			$stmt = $db->prepare("CALL GetUserID(:user, :hash, :error)");
+			/*$stmt = $db->prepare("CALL Login(:user, :pass, :token, :error)");
+			$stmt->bindParam(":user", $username, PDO::PARAM_STR);
+			$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
+			$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+			$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR);*/
 		}
 		else {
 			// Error, dang.
-			//echo "Failure.";
+			echo "Failure. Result: '$errorMessage'";
 		}
 	}
 	else {
