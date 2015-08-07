@@ -78,8 +78,10 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
 	$errorMessage;
 	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @error)");
+	echo "Prepared ";
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
-	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT | PDO::PARAM_IN_OUT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT | PDO::PARAM_IN_OUT, 11);
+	echo "Bound ";
 	try{
 		$stmt->execute();
 	}
@@ -87,7 +89,9 @@ function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
 		echo $e->getMessage();
 		$errorMessage = "Unknown error; please try again later.";
 	}
+	echo "Executed ";
 	$out = $database->query("SELECT @error")->fetchAll();
+	echo "Fetched ";
 	$results = array("token" => $loginToken, "error" => $out[0]['@error']);
 	$stmt->closeCursor();
 	return $results;
