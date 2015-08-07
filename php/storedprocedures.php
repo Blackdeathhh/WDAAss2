@@ -79,7 +79,7 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 	$errorMessage;
 	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
-	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $oldToken, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
