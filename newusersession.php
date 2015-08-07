@@ -2,23 +2,15 @@
 
 require_once("php/security.php");
 require_once("php/database.php");
+require_once("php/storedprocedures.php");
 
 $success = false;
 $username = $_POST["username"];
 
 $db = connectToDatabase();
 
-$stmt = $db->prepare("CALL GetSalt(:user)");
-$stmt->bindParam(":user", $username, PDO::PARAM_STR);
-try{
-	$stmt->execute();
-	$success = true;
-}
-catch(PDOException $e){
-	echo $e->getMessage() . "<br />";
-}
-$salt = $stmt->fetchAll()["Salt"];
-$stmt->closeCursor();
+$salt = GetSalt($db, $username);
+
 echo "Salt is: $salt";
 if($success){
 	$success = false;
