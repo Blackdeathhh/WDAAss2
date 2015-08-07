@@ -80,7 +80,7 @@ function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
 	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @error)");
 	echo "Prepared ";
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
-	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT | PDO::PARAM_IN_OUT, 11);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 11);
 	echo "Bound ";
 	try{
 		$stmt->execute();
