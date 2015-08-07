@@ -22,14 +22,14 @@ function login($database, $username, $hash){
 	$stmt = $database->prepare("CALL Login(:user, :hash, :token, :error)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	$stmt->bindParam(":hash", $hash, PDO::PARAM_STR);
-	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
-	$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT, 11);
+	$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 100);
 	try{
 		$stmt->execute();
 	}
 	catch(PDOException $e){
 		echo $e->getMessage() . "<br />";
-		echo "Something went wrong with LoginUser";
+		echo "Something went wrong with Login";
 	}
 	$results = array("token" => $loginToken, "error" => $errorMessage);
 	$stmt->closeCursor();
