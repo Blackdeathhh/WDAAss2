@@ -31,8 +31,6 @@ function login($database, $username, $hash) {
 		$errorMessage = "Something went wrong with Login";
 	}
 	$out = $database->query("SELECT @token, @error")->fetchAll();
-	$database->query("@token = NULL");
-	$database->query("@error = NULL");
 	$results = array("token" => $out[0]['@token'], "error" => $out[0]['@error']);
 	//$results = array("token" => $loginToken, "error" => $errorMessage);
 	$stmt->closeCursor();
