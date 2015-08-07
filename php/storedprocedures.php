@@ -31,6 +31,8 @@ function login($database, $username, $hash) {
 		$errorMessage = "Something went wrong with Login";
 	}
 	$out = $database->query("SELECT @token, @error")->fetchAll();
+	$database->query("@token = NULL");
+	$database->query("@error = NULL");
 	$results = array("token" => $out[0]['@token'], "error" => $out[0]['@error']);
 	//$results = array("token" => $loginToken, "error" => $errorMessage);
 	$stmt->closeCursor();
@@ -56,6 +58,24 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	$out = $database->query("SELECT @error")->fetchAll();
 	$results = array("error" => $out[0]['@error']);
 	//$results = array("error" => $errorMessage);
+	$stmt->closeCursor();
+	return $results;
+}
+
+function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
+	$errorMessage;
+	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT | PDO::PARAM_IN_OUT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorMessage = "Unknown error; please try again later.";
+	}
+	$out = $database->query("SELECT @error")->fetchAll();
+	$results = array("error" => $out[0]['@error']);
 	$stmt->closeCursor();
 	return $results;
 }

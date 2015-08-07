@@ -3,6 +3,7 @@
 require_once("php/security.php");
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
+session_start();
 
 $username = $_POST["username"];
 
@@ -19,10 +20,15 @@ if($salt){
 	$loginToken = $results['token'];
 	$errorMessage = $results['error'];
 
-	echo "Provided $username and $hash. ";
-	echo "Received $loginToken as token and $errorMessage as response.";
+	if($token){
+		$_SESSION['token'] = $loginToken;
+	}
+	else{
+		// Username not found OR account is already logged in.
+		header("Location: profile.php");
+	}
 }
-else
-{
-	echo "No salt found; incorrect username";
+else{
+	// Salt not found; incorrect username
+	header("Location: login.php");
 }
