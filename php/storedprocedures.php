@@ -15,15 +15,12 @@ function getSalt($database, $username) {
 	return $results;
 }
 
-function login($database, $username, $hash){
-	$loginToken;
-	$errorMessage;
-
-	$stmt = $database->prepare("CALL Login(:user, :hash, :token, :error)");
+function login($database, $username, $hash) {
+	$stmt = $database->prepare("CALL Login(:user, :hash, @token, @error)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	$stmt->bindParam(":hash", $hash, PDO::PARAM_STR);
-	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT, 11);
-	$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 100);
+	//$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	//$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR);
 	try{
 		$stmt->execute();
 	}
@@ -31,7 +28,12 @@ function login($database, $username, $hash){
 		echo $e->getMessage() . "<br />";
 		echo "Something went wrong with Login";
 	}
-	$results = array("token" => $loginToken, "error" => $errorMessage);
+	$sel = $database->query("SELECT @token, @error")->fetchAll();
+	$results = array("token" => $sel[0]['@token'], "error" => $sel[0]['@error']);
 	$stmt->closeCursor();
 	return $results;
 }
+
+/*function registerUser($database, $username, $hash, $salt, $displayName) {
+
+}*/
