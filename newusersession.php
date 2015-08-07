@@ -15,7 +15,7 @@ try{
 	$success = true;
 }
 catch(PDOException $e){
-	
+	echo $e->getMessage() . "<br />";
 }
 $stmt->closeCursor();
 if($sucess){
@@ -37,6 +37,7 @@ if($sucess){
 			$success = true;
 		}
 		catch(PDOException $e){
+			echo $e->getMessage() . "<br />";
 			echo "Something went wrong with LoginUser";
 		}
 		$stmt->closeCursor();
