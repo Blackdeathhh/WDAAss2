@@ -8,6 +8,7 @@
 	require_once("php/database.php");
 	//require_once("php/validation.php");
 	require_once("php/security.php");
+	require_once("php/storedprocedures.php");
 	
 	$db = connectToDatabase();
 	
@@ -27,34 +28,13 @@
 		
 		//echo "Password: $hashedPass. ";
 		
-		// Note that binding an OUT parameter does not work. Therefore, user variables are used as a workaround.
-		$errorMessage;
-		//$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :display, :error)");
-		//$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR, 50);
-		$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :salt, :display, @error)");
-		$stmt->bindParam(":user", $username, PDO::PARAM_STR);
-		$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
-		$stmt->bindParam("salt", $salt, PDO::PARAM_STR);
-		$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
-		try{
-			$stmt->execute();
-		}
-		catch(PDOException $e){
-			$errorMessage = "Unknown error; please try again later.";
-			echo $e->getMessage();
-		}
-		$stmt->closeCursor();
-		$outParams = $db->query("SELECT @error")->fetch(PDO::FETCH_ASSOC);
-		$errorMessage = $outParams['@error'];
-		//echo "Executed. Result: $errorMessage";
+		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
+		$errorMessage = $result['error'];
+		
 		if($errorMessage == "") {
 			echo "Success. Result: '$errorMessage'";
 			// It worked, try to login.
-			/*$stmt = $db->prepare("CALL Login(:user, :pass, :token, :error)");
-			$stmt->bindParam(":user", $username, PDO::PARAM_STR);
-			$stmt->bindParam(":pass", $hashedPass, PDO::PARAM_STR);
-			$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
-			$stmt->bindParam(":error", $errorMessage, PDO::PARAM_STR);*/
+			$result = login($db, $username, $hashedPass);
 		}
 		else {
 			// Error, dang.

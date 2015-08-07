@@ -7,7 +7,6 @@ require_once("php/storedprocedures.php");
 $username = $_POST["username"];
 
 $db = connectToDatabase();
-
 $salt = getSalt($db, $username)["salt"];
 
 echo "Salt is: $salt";
@@ -17,6 +16,8 @@ if($salt){
 	$hash = hashPasswordCustomSalt($password, $salt);
 
 	$results = login($db, $username, $hash);
+	$loginToken = $results['token'];
+	$errorMessage = $results['error'];
 
 	echo "Provided $username and $hash. ";
 	echo "Received $loginToken as token and $errorMessage as response.";
