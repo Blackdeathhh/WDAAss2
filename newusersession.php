@@ -27,7 +27,7 @@ if($salt){
 	//echo $loginToken . " " . $errorMessage;
 
 	if($loginToken){
-		$userID = getUserID($username);
+		$userID = getUserID($db, $username);
 		$_SESSION["token"] = $loginToken;
 		$_SESSION["userID"] = $userID;
 		header("Location: profile.php");
