@@ -1,6 +1,6 @@
 <?php
 
-function GetSalt($database, $username) {
+function getSalt($database, $username) {
 	$stmt = $db->prepare("CALL GetSalt(:user)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	try{
