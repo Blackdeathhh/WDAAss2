@@ -23,11 +23,13 @@ if($salt){
 	$results = login($db, $username, $hash);
 	$loginToken = $results['token'];
 	$errorMessage = $results['error'];
-	
-	echo $loginToken . " " . $errorMessage;
+
+	//echo $loginToken . " " . $errorMessage;
 
 	if($loginToken){
+		$userID = getUserID($username);
 		$_SESSION["token"] = $loginToken;
+		$_SESSION["userID"] = $userID;
 		header("Location: profile.php");
 		exit;
 	}

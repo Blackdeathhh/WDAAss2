@@ -37,6 +37,21 @@ function login($database, $username, $hash) {
 	return $results;
 }
 
+function getUserID($database, $username) {
+	$stmt = $database->prepare("CALL GetUserID(:user)");
+	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage() . "<br />";
+	}
+	// Table's just one row, one column
+	$results = array("id" => $stmt->fetchAll()[0]["UserID"]);
+	$stmt->closeCursor();
+	return $results;
+}
+
 function registerUser($database, $username, $hash, $salt, $displayName) {
 	$errorMessage;
 	//$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :salt, :display, :error)");
@@ -73,7 +88,7 @@ function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
 		$errorMessage = "Unknown error; please try again later.";
 	}
 	$out = $database->query("SELECT @error")->fetchAll();
-	$results = array("error" => $out[0]['@error']);
+	$results = array("token" => $loginToken, "error" => $out[0]['@error']);
 	$stmt->closeCursor();
 	return $results;
 }

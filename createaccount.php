@@ -35,6 +35,14 @@
 			echo "Success. Result: '$errorMessage'";
 			// It worked, try to login.
 			$result = login($db, $username, $hashedPass);
+			$errorMessage = $results['error'];
+			if($errorMessage == "") {
+				$_SESSION["token"] = $results['token'];
+				$_SESSION["userID"] = getUserID($username)['id'];
+			}
+			else {
+				// Couldn't log in, but account has been made.
+			}
 		}
 		else {
 			// Error, dang.
