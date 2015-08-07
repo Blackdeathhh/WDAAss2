@@ -18,7 +18,7 @@ catch(PDOException $e){
 	echo $e->getMessage() . "<br />";
 }
 $stmt->closeCursor();
-if($sucess){
+if($success){
 	$success = false;
 	$salt = $stmt->fetchAll(PDO::FETCH_ASSOC)["Salt"];
 	if($salt){
