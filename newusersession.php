@@ -5,7 +5,7 @@ require_once("php/database.php");
 require_once("php/storedprocedures.php");
 session_start();
 
-if($_SESSION['token']) {
+if($_SESSION["token"]) {
 	// Already logged in
 	header("Location: profile.php");
 	exit;
@@ -26,13 +26,13 @@ if($salt){
 	
 	echo $loginToken . " " . $errorMessage;
 
-	if($token){
-		$_SESSION['token'] = $loginToken;
+	if($loginToken){
+		$_SESSION["token"] = $loginToken;
 		header("Location: profile.php");
 		exit;
 	}
 	else{
-		// Username not found
+		// Username not found or someone is already logged in
 		header("Location: login.php");
 		exit;
 	}
