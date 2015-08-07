@@ -17,10 +17,11 @@ try{
 catch(PDOException $e){
 	echo $e->getMessage() . "<br />";
 }
+$salt = $stmt->fetchAll()["Salt"];
 $stmt->closeCursor();
+echo "Salt is: $salt";
 if($success){
 	$success = false;
-	$salt = $stmt->fetchAll(PDO::FETCH_ASSOC)["Salt"];
 	if($salt){
 		$password = $_POST["password"];
 		$hash = hashPasswordCustomSalt($password, $salt);
