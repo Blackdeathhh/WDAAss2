@@ -16,6 +16,17 @@
 	require_once("php/storedprocedures.php");
 	
 	$db = connectToDatabase();
+	
+	$msg = "Hi!";
+	try{
+		$stmt = $db->prepare("CALL Test(?)");
+		$stmt->bindParam(1, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT);
+		$stmt->execute();
+	} catch(PDOException $e){
+		echo $e->getMessage();
+	}
+	echo "Val: " . $msg;
+	
 	$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
 	$_SESSION['token'] = $results['token'];
 	
