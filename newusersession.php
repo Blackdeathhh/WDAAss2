@@ -5,12 +5,16 @@ require_once("php/database.php");
 require_once("php/storedprocedures.php");
 session_start();
 
+if(!$_SESSION['token']) {
+	// Already logged in
+	header("Location: profile.php");
+	exit;
+}
+
 $username = $_POST["username"];
 
 $db = connectToDatabase();
 $salt = getSalt($db, $username)["salt"];
-
-echo "Salt is: $salt";
 
 if($salt){
 	$password = $_POST["password"];
@@ -19,13 +23,16 @@ if($salt){
 	$results = login($db, $username, $hash);
 	$loginToken = $results['token'];
 	$errorMessage = $results['error'];
+	
+	echo $loginToken . " " . $errorMessage;
 
 	if($token){
 		$_SESSION['token'] = $loginToken;
+		header("Location: profile.php");
 	}
 	else{
-		// Username not found OR account is already logged in.
-		header("Location: profile.php");
+		// Username not found
+		header("Location: login.php");
 	}
 }
 else{

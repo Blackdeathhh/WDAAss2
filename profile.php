@@ -11,10 +11,9 @@
 <div class="maindiv">
 	<ol>
 <?php
-	require_once("php/storedprocedures.php");
 	session_start();
 
-	echo "<li><label>Current Token: </label>$_SESSION['token']</li>";
+	echo "<li><label>Current Token: </label>" . $_SESSION['token'] . "</li>";
 	echo "<li><label>Display Name: </label></li>";
 	echo "<li><label>Location: </label></li>";
 	echo "<li><label>Email: </label></li>";
