@@ -1,7 +1,7 @@
 <?php
 
 function getSalt($database, $username) {
-	$stmt = $db->prepare("CALL GetSalt(:user)");
+	$stmt = $database->prepare("CALL GetSalt(:user)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	try{
 		$stmt->execute();
