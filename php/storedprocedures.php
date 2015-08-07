@@ -75,13 +75,11 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	return $results;
 }
 
-function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
+function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 	$errorMessage;
-	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @error)");
-	echo "Prepared ";
+	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
-	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 11);
-	echo "Bound ";
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -89,10 +87,8 @@ function verifyAndUpdateLoginToken($database, $userID, $loginToken) {
 		echo $e->getMessage();
 		$errorMessage = "Unknown error; please try again later.";
 	}
-	echo "Executed ";
-	$out = $database->query("SELECT @error")->fetchAll();
-	echo "Fetched ";
-	$results = array("token" => $loginToken, "error" => $out[0]['@error']);
+	$out = $database->query("SELECT @error, @newToken")->fetchAll();
+	$results = array("token" => $out[0]['@newToken'], "error" => $out[0]['@error']);
 	$stmt->closeCursor();
 	return $results;
 }
