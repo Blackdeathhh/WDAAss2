@@ -92,3 +92,39 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 	$stmt->closeCursor();
 	return $results;
 }
+
+function getPublicUserDetails($database, $userID){
+	$errorMessage
+	$stmt = $database->prepare("CALL GetPublicUserDetails(:id)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorMessage = "Unknown error; please try again later.";
+	}
+	$sel = $stmt->fetchAll();
+	$results = array("displayName" => $sel[0]['DisplayName'], "location" => $sel[0]['Location'], "gender" => $sel[0]['Gender'], "error" => $errorMessage);
+	$stmt->closeCursor();
+	return $results;
+}
+
+function getPrivateUserDetails($database, $userID, $loginToken){
+	$errorMessage
+	$stmt = $database->prepare("CALL GetPrivateUserDetails(:id, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorMessage = "Unknown error; please try again later.";
+	}
+	$sel = $stmt->fetchAll();
+	$stmt->closeCursor();
+	$out = $database->query("SELECT @error, @newToken")->fetchAll();
+	$results = array("displayName" => $sel[0]['DisplayName'], "location" => $sel[0]['Location'], "gender" => $sel[0]['Gender'], "email" => $sel[0]['Email'], "postsPerPage" => $sel[0]['PostsPerPage'], "token" => $out[0]['@newToken'], "error" => $out[0]['@error']);
+	return $results;
+}
