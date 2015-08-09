@@ -31,7 +31,7 @@ EOT;
 	}
 	elseif($_SESSION['id']) {
 		$db = connectToDatabase();
-		$results = getPrivateUserDetails($db, $_SESSION['id']);
+		$results = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
 		$_SESSION['token'] = $results['token'];
 		if(!($results['error'])){
 		echo <<<EOT
