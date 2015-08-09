@@ -15,9 +15,8 @@
 	require_once("php/database.php");
 	require_once("php/storedprocedures.php");
 
-	$db = connectToDatabase();
-
 	if($_GET['profileID']){
+		$db = connectToDatabase();
 		$results = getPublicUserDetails($db, $_GET['profileID']);
 		if(!($results['error'])){
 		echo <<<EOT
@@ -31,6 +30,7 @@ EOT;
 		}
 	}
 	elseif($_SESSION['id']) {
+		$db = connectToDatabase();
 		$results = getPrivateUserDetails($db, $_SESSION['id']);
 		$_SESSION['token'] = $results['token'];
 		if(!($results['error'])){

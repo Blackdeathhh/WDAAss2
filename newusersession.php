@@ -11,13 +11,13 @@ if($_SESSION["token"]) {
 	exit;
 }
 
-$username = $_POST["username"];
+$username = $_POST['username'];
 
 $db = connectToDatabase();
-$salt = getSalt($db, $username)["salt"];
+$salt = getSalt($db, $username)['salt'];
 
 if($salt){
-	$password = $_POST["password"];
+	$password = $_POST['password'];
 	$hash = hashPasswordCustomSalt($password, $salt);
 
 	$results = login($db, $username, $hash);
@@ -28,8 +28,8 @@ if($salt){
 
 	if($loginToken){
 		$results = getUserID($db, $username);
-		$_SESSION["token"] = $loginToken;
-		$_SESSION["id"] = $results["id"];
+		$_SESSION['token'] = $loginToken;
+		$_SESSION['id' = $results['id'];
 		header("Location: profile.php");
 		exit;
 	}

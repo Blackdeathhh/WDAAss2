@@ -94,7 +94,7 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 }
 
 function getPublicUserDetails($database, $userID){
-	$errorMessage
+	$errorMessage;
 	$stmt = $database->prepare("CALL GetPublicUserDetails(:id)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	try{
@@ -111,7 +111,7 @@ function getPublicUserDetails($database, $userID){
 }
 
 function getPrivateUserDetails($database, $userID, $loginToken){
-	$errorMessage
+	$errorMessage;
 	$stmt = $database->prepare("CALL GetPrivateUserDetails(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
