@@ -29,7 +29,7 @@ if($salt){
 	if($loginToken){
 		$results = getUserID($db, $username);
 		$_SESSION['token'] = $loginToken;
-		$_SESSION['id' = $results['id'];
+		$_SESSION['id'] = $results['id'];
 		header("Location: profile.php");
 		exit;
 	}
