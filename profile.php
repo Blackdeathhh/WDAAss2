@@ -20,13 +20,13 @@
 		$results = getPublicUserDetails($db, $_GET['profileID']);
 		if(!($results['error'])){
 		echo <<<EOT
-<li><label>Display Name: </label>$results['displayName']</li>
-<li><label>Location: </label>$results['location']</li>
-<li><label>Gender: </label>$results['gender']</li>
+<li><label>Display Name: </label>{$results['displayName']}</li>
+<li><label>Location: </label>{$results['location']}</li>
+<li><label>Gender: </label>{$results['gender']}</li>
 EOT;
 		}
 		else {
-			echo "Error: $results['error'].";
+			echo "Error: {$results['error']}.";
 		}
 	}
 	elseif($_SESSION['id']) {
@@ -35,16 +35,16 @@ EOT;
 		$_SESSION['token'] = $results['token'];
 		if(!($results['error'])){
 		echo <<<EOT
-<li><label>Current Token: </label>$_SESSION['token']</li>
-<li><label>Display Name: </label>$results['displayName']</li>
-<li><label>Location: </label>$results['location']</li>
-<li><label>Email: </label>$results['email']</li>
-<li><label>Gender: </label>$results['gender']</li>
-<li><label>Posts per Page: </label>$results['postsPerPage']</li>
+<li><label>Current Token: </label>{$_SESSION['token']}</li>
+<li><label>Display Name: </label>{$results['displayName']}</li>
+<li><label>Location: </label>{$results['location']}</li>
+<li><label>Email: </label>{$results['email']}</li>
+<li><label>Gender: </label>{$results['gender']}</li>
+<li><label>Posts per Page: </label>{$results['postsPerPage']}</li>
 EOT;
 		}
 		else {
-			echo "Error: $results['error'].";
+			echo "Error: {$results['error']}.";
 		}
 	}
 	else{
