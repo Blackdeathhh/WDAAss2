@@ -122,7 +122,16 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 		echo $e->getMessage();
 		$errorMessage = "Unknown error; please try again later.";
 	}
-	$sel = $stmt->fetchAll();
+	$sel;
+	try{
+		$sel = $stmt->fetchAll();
+	}
+	catch(PDOException $e){
+		// 2053 == No rows. If no rows, we can ignore it; just a null array.
+		// If it's something else, rethrow it.
+		if($e->getCode() == 2053) $sel = array();
+		else throw $e;
+	}
 	$stmt->closeCursor();
 	$out = $database->query("SELECT @error, @newToken")->fetchAll();
 	$results = array("displayName" => $sel[0]['DisplayName'], "location" => $sel[0]['Location'], "gender" => $sel[0]['Gender'], "email" => $sel[0]['Email'], "postsPerPage" => $sel[0]['PostsPerPage'], "token" => $out[0]['@newToken'], "error" => $out[0]['@error']);
