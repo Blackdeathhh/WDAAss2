@@ -159,6 +159,6 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
-	$results = array("token" => $sel[0]['@newToken'], "error" => $errorCod);
+	$results = array("token" => $sel[0]['@newToken'], "error" => $errorCode);
 	return $results;
 }

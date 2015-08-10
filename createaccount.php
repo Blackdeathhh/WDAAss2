@@ -15,7 +15,7 @@
 
 	if($db) {
 		$username = $_POST["username"];
-		$displayname = $_POST["displayname"];
+		$displayName = $_POST["displayname"];
 		$rawPassword = $_POST["password"];
 		
 		/*Validate parameters, make sure they're not too long.
