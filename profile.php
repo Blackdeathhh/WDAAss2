@@ -18,8 +18,18 @@
 
 	if(isset($_POST['submit'])){
 		echo "[DEBUG]POST Set; modifying details...";
+		
+		$newLocation = $_POST['location'];
+		$newEmail = $_POST['email'];
+		$newGender = $_POST['gender'];
+		$newPostsPerPage = $_POST['postsPerPage'];
+		
+		/*Verify all the data; like Gender has to be 1 char, etc.
+		
+		*/
+		
 		$db = connectToDatabase();
-		$results = modifyUserDetails($db);
+		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
 		$_SESSION['token'] = $results['token'];
 		if($results['error'] == ERR::OK){
 			echo "User details updated successfully!";
