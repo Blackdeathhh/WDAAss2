@@ -17,10 +17,16 @@
 	require_once("php/error.php");
 
 	if(isset($_POST['submit'])){
-		echo "POST Set; modifying details...";
-		//$db = connectToDatabase();
-		//$results = modifyUserDetails($db);
-		
+		echo "[DEBUG]POST Set; modifying details...";
+		$db = connectToDatabase();
+		$results = modifyUserDetails($db);
+		$_SESSION['token'] = $results['token'];
+		if($results['error'] == ERR::OK){
+			echo "User details updated successfully!";
+		}
+		else{
+			echo "Failed to update user details.";
+		}
 	}
 
 	if($_GET['profileID']){
