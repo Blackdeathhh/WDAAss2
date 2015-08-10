@@ -26,7 +26,7 @@
 	if($_GET['profileID']){
 		$db = connectToDatabase();
 		$results = getPublicUserDetails($db, $_GET['profileID']);
-		if($results['error'] == ERR:OK){
+		if($results['error'] == ERR::OK){
 		echo <<<EOT
 <li><label>Display Name: </label>{$results['displayName']}</li>
 <li><label>Location: </label>{$results['location']}</li>
@@ -41,7 +41,7 @@ EOT;
 		$db = connectToDatabase();
 		$results = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
 		$_SESSION['token'] = $results['token'];
-		if($results['error'] == ERR:OK){
+		if($results['error'] == ERR::OK){
 		echo <<<EOT
 <li><label>[DEBUG]Current Token: </label>{$_SESSION['token']}</li>
 <li><label>Display Name: </label>{$results['displayName']}</li>
@@ -55,7 +55,7 @@ EOT;
 EOT;
 		}
 		else {
-			echo "Error: {$results['error']}.";
+			echo "Error: {$results['error']}";
 		}
 	}
 	else{
