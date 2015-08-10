@@ -2,10 +2,11 @@
 
 require_once("php/security.php");
 require_once("php/database.php");
+require_once("php/error.php");
 require_once("php/storedprocedures.php");
 session_start();
 
-if($_SESSION["token"]) {
+if($_SESSION['token']) {
 	// Already logged in
 	header("Location: profile.php");
 	exit;
@@ -22,11 +23,9 @@ if($salt){
 
 	$results = login($db, $username, $hash);
 	$loginToken = $results['token'];
-	$errorMessage = $results['error'];
+	$errorCode = $results['error'];
 
-	//echo $loginToken . " " . $errorMessage;
-
-	if($loginToken){
+	if($errorCode == ERR::OK){
 		$results = getUserID($db, $username);
 		$_SESSION['token'] = $loginToken;
 		$_SESSION['id'] = $results['id'];

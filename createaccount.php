@@ -9,9 +9,10 @@
 	//require_once("php/validation.php");
 	require_once("php/security.php");
 	require_once("php/storedprocedures.php");
-	
+	require_once("php/error.php");
+
 	$db = connectToDatabase();
-	
+
 	if($db) {
 		$username = $_POST["username"];
 		$displayname = $_POST["displayname"];
@@ -29,16 +30,16 @@
 		//echo "Password: $hashedPass. ";
 		
 		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
-		$errorMessage = $result['error'];
-		
-		if($errorMessage == "") {
-			echo "Success. Result: '$errorMessage'";
+		$errorCode = $result['error'];
+
+		if($errorCode == ERR::OK) {
+			echo "Success. Result: '$errorCode'";
 			// It worked, try to login.
 			$result = login($db, $username, $hashedPass);
-			$errorMessage = $results['error'];
-			if($errorMessage == "") {
-				$_SESSION["token"] = $results['token'];
-				$_SESSION["userID"] = getUserID($username)['id'];
+			$errorCode = $results['error'];
+			if($errorCode == ERR::OK) {
+				$_SESSION['token'] = $results['token'];
+				$_SESSION['userID'] = getUserID($username)['id'];
 			}
 			else {
 				// Couldn't log in, but account has been made.
@@ -46,7 +47,7 @@
 		}
 		else {
 			// Error, dang.
-			echo "Failure. Result: '$errorMessage'";
+			echo "Failure. Result: '$errorCode'";
 		}
 	}
 	else {
