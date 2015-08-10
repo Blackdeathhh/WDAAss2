@@ -58,7 +58,7 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	$stmt->bindParam(":pass", $hash, PDO::PARAM_STR);
 	$stmt->bindParam(":salt", $salt, PDO::PARAM_STR);
-	$stmt->bindParam(":display", $displayname, PDO::PARAM_STR);
+	$stmt->bindParam(":display", $displayName, PDO::PARAM_STR);
 	//$stmt->bindParam(":error", $errorCode, PDO::PARAM_STR, 50);
 	try{
 		$stmt->execute();

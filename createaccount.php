@@ -17,18 +17,18 @@
 		$username = $_POST["username"];
 		$displayName = $_POST["displayname"];
 		$rawPassword = $_POST["password"];
-		
+
 		/*Validate parameters, make sure they're not too long.
 		validateUsername();
 		validateDisplayname();
 		validatePassword();
 		*/
-		
+
 		$hashedPass = hashPassword($rawPassword);
 		$salt = substr($hashedPass, 7, 22);
-		
+
 		//echo "Password: $hashedPass. ";
-		
+
 		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
 		$errorCode = $result['error'];
 
