@@ -40,6 +40,7 @@ if(isset($_POST['modDetails'])){
 
 $userID;
 $isOwnProfile;
+
 if(isset($_GET['profileID']))
 {
 	$userID = $_GET['profileID'];
@@ -72,18 +73,6 @@ if($userID != 0){
 		$gender = $results['Gender'];
 		$email = $results['Email'];
 		$postsPerPage = $results['PostsPerPage'];
-		/*if($results['error'] == ERR::OK){
-			echo <<<EOT
-<li><label>[DEBUG]Current Token: </label>{$_SESSION['token']}</li>
-<li><label>Display Name: </label>{$results['displayName']}</li>
-<form method="POST" action="profile.php">
-<li><label>Location: </label><input type="text" name="location" id="location" value='{$results['location']}'></input></li>
-<li><label>Email: </label><input type="text" name="email" id="email" value='{$results['email']}'></input></li>
-<li><label>Gender: </label><input type="text" name="gender" id="gender" value='{$results['gender']}'></input></li>
-<li><label>Posts per Page: </label><input type="text" name="postsPerPage" id="postsPerPage" value='{$results['postsPerPage']}'></input></li>
-<li><input type="submit" id="modDetails" name="modDetails" value="Modify"></input></li>
-</form>
-EOT;*/
 	}
 	else{
 		$results = getPublicUserDetails($db, $userID);
@@ -91,12 +80,6 @@ EOT;*/
 		$displayName = $results['DisplayName'];
 		$location = $results['Location'];
 		$gender = $results['Gender'];
-		/*if($results['error'] == ERR::OK){
-			echo <<<EOT
-<li><label>Display Name: </label>{$results['displayName']}</li>
-<li><label>Location: </label>{$results['location']}</li>
-<li><label>Gender: </label>{$results['gender']}</li>
-EOT;*/
 	}
 }
 else{
@@ -171,7 +154,6 @@ EOT;
 				echo "Not Provided";
 			break;
 		}
-	{$gender}
 		echo "</li>";
 	}
 	echo "</ol></div>";
@@ -180,7 +162,6 @@ EOT;
 else{
 	echo "<h2>Error</h2>";
 }
-
 ?>
 </div>
 </body>
