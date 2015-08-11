@@ -68,18 +68,18 @@ if($userID != 0){
 		$results = getPrivateUserDetails($db, $userID, $_SESSION['token']);
 		$_SESSION['token'] = $results['token'];
 		$errorCode = $results['error'];
-		$displayName = $results['DisplayName'];
-		$location = $results['Location'];
-		$gender = $results['Gender'];
-		$email = $results['Email'];
-		$postsPerPage = $results['PostsPerPage'];
+		$displayName = $results['displayName'];
+		$location = $results['location'];
+		$gender = $results['gender'];
+		$email = $results['email'];
+		$postsPerPage = $results['postsPerPage'];
 	}
 	else{
 		$results = getPublicUserDetails($db, $userID);
 		$errorCode = $results['error'];
-		$displayName = $results['DisplayName'];
-		$location = $results['Location'];
-		$gender = $results['Gender'];
+		$displayName = $results['displayName'];
+		$location = $results['location'];
+		$gender = $results['gender'];
 	}
 }
 else{
@@ -126,7 +126,7 @@ EOT;
 		<label>Posts Per Page: </label>
 		<select>
 EOT;
-		for($i = 10; $i <= 50; ++$i){
+		for($i = 10; $i <= 50; $i += 5){
 			echo "<option value='$i'";
 			if($i == $postsPerPage) echo " selected ";
 			echo ">$i</option>";
