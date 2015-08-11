@@ -31,6 +31,9 @@ if(is_array($_FILES['newavatar'])){
 						if($success){
 							echo "<p>File successfully uploaded!</p>";
 						}
+						else{
+							echo "<p>File not uploaded successfully. Please try again later, or contact the web master.</p>";
+						}
 					}
 					else{
 						echo "<p>Hey, what do you think you're doing? Go away, you're not this user you big fat liar.</p>";
