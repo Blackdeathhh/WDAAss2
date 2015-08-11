@@ -1,57 +1,57 @@
 <?php
-	/*
-	We have to ensure that the fields are not too long.
-	Then we have to call a stored procedure. If it works, log the user in and send them to their profile, with a parameter "Firsttime" or something, to greet them. 
-	If it doesn't, we have to go back to register.php with some information as to what they did wrong.
-	Possible errors are returned as strings from the SProc, so an empty string can be considered a success. If we don't get an empty string, we just have to go back to register.php, giving them that string to tell them why they have failed to make an account.
+/*
+We have to ensure that the fields are not too long.
+Then we have to call a stored procedure. If it works, log the user in and send them to their profile, with a parameter "Firsttime" or something, to greet them. 
+If it doesn't, we have to go back to register.php with some information as to what they did wrong.
+Possible errors are returned as strings from the SProc, so an empty string can be considered a success. If we don't get an empty string, we just have to go back to register.php, giving them that string to tell them why they have failed to make an account.
+*/
+require_once("php/database.php");
+//require_once("php/validation.php");
+require_once("php/security.php");
+require_once("php/storedprocedures.php");
+require_once("php/error.php");
+
+$db = connectToDatabase();
+
+if($db) {
+	$username = $_POST["username"];
+	$displayName = $_POST["displayname"];
+	$rawPassword = $_POST["password"];
+
+	/*Validate parameters, make sure they're not too long.
+	validateUsername();
+	validateDisplayname();
+	validatePassword();
 	*/
-	require_once("php/database.php");
-	//require_once("php/validation.php");
-	require_once("php/security.php");
-	require_once("php/storedprocedures.php");
-	require_once("php/error.php");
 
-	$db = connectToDatabase();
+	$hashedPass = hashPassword($rawPassword);
+	$salt = substr($hashedPass, 7, 22);
 
-	if($db) {
-		$username = $_POST["username"];
-		$displayName = $_POST["displayname"];
-		$rawPassword = $_POST["password"];
+	//echo "Password: $hashedPass. ";
 
-		/*Validate parameters, make sure they're not too long.
-		validateUsername();
-		validateDisplayname();
-		validatePassword();
-		*/
+	$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
+	$errorCode = $result['error'];
 
-		$hashedPass = hashPassword($rawPassword);
-		$salt = substr($hashedPass, 7, 22);
-
-		//echo "Password: $hashedPass. ";
-
-		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
-		$errorCode = $result['error'];
-
+	if($errorCode == ERR::OK) {
+		echo "Success. Result: '$errorCode'";
+		// It worked, try to login.
+		$result = login($db, $username, $hashedPass);
+		$errorCode = $results['error'];
 		if($errorCode == ERR::OK) {
-			echo "Success. Result: '$errorCode'";
-			// It worked, try to login.
-			$result = login($db, $username, $hashedPass);
-			$errorCode = $results['error'];
-			if($errorCode == ERR::OK) {
-				$_SESSION['token'] = $results['token'];
-				$_SESSION['userID'] = getUserID($username)['id'];
-			}
-			else {
-				// Couldn't log in, but account has been made.
-			}
+			$_SESSION['token'] = $results['token'];
+			$_SESSION['userID'] = getUserID($username)['id'];
 		}
 		else {
-			// Error, dang.
-			echo "Failure. Result: '$errorCode'";
+			// Couldn't log in, but account has been made.
 		}
 	}
 	else {
-		// Failed to connect, awww shit.
-		//header("Location: register.php");
-		//echo "Failed to connect";
+		// Error, dang.
+		echo "Failure. Result: '$errorCode'";
 	}
+}
+else {
+	// Failed to connect, awww shit.
+	//header("Location: register.php");
+	//echo "Failed to connect";
+}
