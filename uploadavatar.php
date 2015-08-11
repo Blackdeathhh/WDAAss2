@@ -10,6 +10,7 @@
 
 <div class="maindiv">
 <?php
+session_start();
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
