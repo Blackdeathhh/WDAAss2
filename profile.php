@@ -14,6 +14,7 @@ session_start();
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
+require_once("php/constants.php");
 
 if(isset($_POST['modDetails'])){
 	echo "[DEBUG]POST Set; modifying details...";
@@ -22,11 +23,11 @@ if(isset($_POST['modDetails'])){
 	$newEmail = $_POST['email'];
 	$newGender = $_POST['gender'];
 	$newPostsPerPage = $_POST['postsPerPage'];
-	
-	/*Verify all the data; like Gender has to be 1 char, etc.
+
+	/*Verify all the data; Gender has to be 1 char, posts has to be an int.
 	
 	*/
-	
+
 	$db = connectToDatabase();
 	$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
 	$_SESSION['token'] = $results['token'];
@@ -99,9 +100,13 @@ EOT;
 
 	if($isOwnProfile){
 		echo <<<EOT
-<form>
-	<input type="file" name="img" required />
-	<input type-"submit" name="submit" value="Upload Image" />
+<form method="POST" action="uploadavatar.php" enctype="multipart/form-data">
+	<input type="hidden" name="MAX_FILE_SIZE"
+EOT;
+		echo "value='" . AVATAR_MAX_SIZE ."' />";
+		echo <<<EOT
+	<input type="file" name="newavatar" required />
+	<input type="submit" name="submit" value="Upload Image" />
 </form>
 EOT;
 	}
