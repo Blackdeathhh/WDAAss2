@@ -15,7 +15,7 @@ if($_SESSION['token']) {
 $username = $_POST['username'];
 
 $db = connectToDatabase();
-$salt = getSalt($db, $username)['salt'];
+$salt = getSalt($db, $username)['Salt'];
 
 if($salt){
 	$password = $_POST['password'];
