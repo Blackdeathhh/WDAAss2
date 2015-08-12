@@ -22,18 +22,21 @@ require_once("php/error.php");
 
 $db = connectToDatabase();
 $threads;
+$forums;
 
 if(isset($_GET['forumid'])){
 	$result = getForumInfo($db, $_GET['forumid']);
 	$forumName = $result['ForumName']; //ParentForumID, ForumSubtitle, Topic
 	echo "<h2 class='title'><a href='forumview.php?forumid=" . $result['ParentForumID'] ."'>$forumName</a></h2>";
 	$threads = getForumThreads($db, $_GET['forumid']);
+	$forums = getChildForums($db, $_GET['forumid']);
 }
 else{
 	echo "<h2 class='title'>Home</h2>";
+	$forums = getChildForums($db, null); //Gets top-level forums
 }
 
-$forums = getChildForums($db, $_GET['forumid']); //ID, name, subtitle, topic
+//ID, name, subtitle, topic
 $topics = array_unique($forums['Topic']);
 
 foreach($topics as $topic){
