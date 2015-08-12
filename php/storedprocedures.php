@@ -169,6 +169,24 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 	return $results;
 }
 
+function getForumInfo($database, $targetForumID){
+	$errorCode;
+	$stmt = $database->prepare("CALL GetForumInfo(:id)");
+	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = 1;
+	}
+	// Only returns a single row
+	$out = $stmt->fetchAll();
+	$results = $out[0];
+	$reuslts['Error'] = $errorCode;
+	return $results;
+}
+
 function getChildForums($database, $targetForumID){
 	$errorCode;
 	$stmt = $database->prepare("CALL GetChildForums(:id)");
@@ -180,7 +198,7 @@ function getChildForums($database, $targetForumID){
 		echo $e->getMessage();
 		$errorCode = 1;
 	}
-	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL. This does break the standard of all-lower-case keys, so we should switch the other stored procedures to use proper capitalization
+	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
 	$out = $stmt->fetchAll();
 	$out['Error'] = $errorCode;
 	$stmt->closeCursor();
@@ -193,4 +211,22 @@ function getChildForums($database, $targetForumID){
 		}
 		$out[] = $r;
 	}*/
+}
+
+function getForumThreads($database, $targetForumID){
+	$errorCode;
+	$stmt = $database->prepare("CALL GetForumThreads(:id)");
+	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = 1;
+	}
+	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
+	$out = $stmt->fetchAll();
+	$out['Error'] = $errorCode;
+	$stmt->closeCursor();
+	return $out;
 }
