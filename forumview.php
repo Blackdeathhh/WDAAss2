@@ -35,13 +35,18 @@ else{
 	echo "<h2 class='title'>Home</h2>";
 	$forums = getChildForums($db, null); //Gets top-level forums
 }
+// Get rid of this so it won't interfere later
+$error = $forums["Error"];
+unset($forums["Error"]);
 
-//ID, name, subtitle, topic
-$topics = array_unique($forums['Topic']);
+foreach($forums as $forum){
+	$topics[] = $forum["Topic"];
+}
+$topics = array_unique($topics);
 
 foreach($topics as $topic){
 	echo "<div class='forumbox'><h2 class='title'>$topic</h2><ol>";
-	foreach($forums as $forum){
+	foreach($forums as $forum){ //ID, name, subtitle, topic
 		echo <<<EOT
 <li>
 	<div class='subitem'>
@@ -61,7 +66,7 @@ foreach($topics as $topic){
 </li>
 EOT;
 	}
-	echo "</ol>";
+	echo "</ol></div>";
 }
 
 //ThreadID, StarterUserID, ThreadTitle, CreatedAt, isSticky

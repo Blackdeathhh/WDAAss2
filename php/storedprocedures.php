@@ -181,7 +181,7 @@ function getForumInfo($database, $targetForumID){
 		$errorCode = 1;
 	}
 	// Only returns a single row
-	$out = $stmt->fetchAll();
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = $out[0];
 	$reuslts['Error'] = $errorCode;
 	return $results;
@@ -199,7 +199,7 @@ function getChildForums($database, $targetForumID){
 		$errorCode = 1;
 	}
 	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
-	$out = $stmt->fetchAll();
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$out['Error'] = $errorCode;
 	$stmt->closeCursor();
 	return $out;
@@ -225,7 +225,7 @@ function getForumThreads($database, $targetForumID){
 		$errorCode = 1;
 	}
 	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
-	$out = $stmt->fetchAll();
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$out['Error'] = $errorCode;
 	$stmt->closeCursor();
 	return $out;
