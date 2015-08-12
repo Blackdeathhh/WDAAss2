@@ -30,7 +30,7 @@ if(isset($_POST['modDetails'])){
 
 	$db = connectToDatabase();
 	$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
-	$_SESSION['token'] = $results['token'];
+	$_SESSION['token'] = $results['Token'];
 	if($results['error'] == ERR::OK){
 		echo "User details updated successfully!";
 	}
@@ -67,20 +67,20 @@ if($userID != 0){
 	$db = connectToDatabase();
 	if($isOwnProfile){
 		$results = getPrivateUserDetails($db, $userID, $_SESSION['token']);
-		$_SESSION['token'] = $results['token'];
-		$errorCode = $results['error'];
-		$displayName = $results['displayName'];
-		$location = $results['location'];
-		$gender = $results['gender'];
-		$email = $results['email'];
-		$postsPerPage = $results['postsPerPage'];
+		$_SESSION['token'] = $results['Token'];
+		$errorCode = $results['Error'];
+		$displayName = $results['DisplayName'];
+		$location = $results['Location'];
+		$gender = $results['Gender'];
+		$email = $results['Email'];
+		$postsPerPage = $results['PostsPerPage'];
 	}
 	else{
 		$results = getPublicUserDetails($db, $userID);
-		$errorCode = $results['error'];
-		$displayName = $results['displayName'];
-		$location = $results['location'];
-		$gender = $results['gender'];
+		$errorCode = $results['Error'];
+		$displayName = $results['DisplayName'];
+		$location = $results['Location'];
+		$gender = $results['Gender'];
 	}
 	if($errorCode == ERR::OK){
 		/*We have to display the avatar, buttons to change it. Also some sort of notification if you have any new private messages, along with a link to go and view them.

@@ -30,16 +30,16 @@ if($db) {
 	//echo "Password: $hashedPass. ";
 
 	$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
-	$errorCode = $result['error'];
+	$errorCode = $result['Error'];
 
 	if($errorCode == ERR::OK) {
 		echo "Success. Result: '$errorCode'";
 		// It worked, try to login.
 		$result = login($db, $username, $hashedPass);
-		$errorCode = $results['error'];
+		$errorCode = $results['Error'];
 		if($errorCode == ERR::OK) {
-			$_SESSION['token'] = $results['token'];
-			$_SESSION['userID'] = getUserID($username)['id'];
+			$_SESSION['token'] = $results['Token'];
+			$_SESSION['userID'] = getUserID($username)['ID'];
 		}
 		else {
 			// Couldn't log in, but account has been made.

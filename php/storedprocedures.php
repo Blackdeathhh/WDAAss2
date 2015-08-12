@@ -9,7 +9,7 @@ function getSalt($database, $username) {
 		echo $e->getMessage() . "<br />";
 	}
 	// Table's just one row, one column.
-	$results = array("salt" => $stmt->fetchAll()[0]["Salt"]);
+	$results = array("Salt" => $stmt->fetchAll()[0]["Salt"]);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -30,7 +30,7 @@ function login($database, $username, $hash) {
 		$errorCode = 1;
 	}
 	$sel = $database->query("SELECT @token, @error")->fetchAll();
-	$results = array("token" => $sel[0]['@token'], "error" => $sel[0]['@error']);
+	$results = array("Token" => $sel[0]['@token'], "Error" => $sel[0]['@error']);
 	//$results = array("token" => $loginToken, "error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
@@ -46,7 +46,7 @@ function getUserID($database, $username) {
 		echo $e->getMessage() . "<br />";
 	}
 	// Table's just one row, one column
-	$results = array("id" => $stmt->fetchAll()[0]["UserID"]);
+	$results = array("ID" => $stmt->fetchAll()[0]["UserID"]);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -69,7 +69,7 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	}
 	$sel = $database->query("SELECT @error")->fetchAll();
 	$errorCode = $sel[0]['@error'];
-	$results = array("error" => $errorCode);
+	$results = array("Error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -88,7 +88,7 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
-	$results = array("token" => $sel[0]['@newToken'], "error" => $errorCode);
+	$results = array("Token" => $sel[0]['@newToken'], "Error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -105,7 +105,9 @@ function getPublicUserDetails($database, $userID){
 		$errorCode = 1;
 	}
 	$out = $stmt->fetchAll();
-	$results = array("displayName" => $out[0]['DisplayName'], "location" => $out[0]['Location'], "gender" => $out[0]['Gender'], "error" => $errorCode);
+	$results = $out[0];
+	$results['Error'] = $errorCode;
+	//$results = array("DisplayName" => $out[0]['DisplayName'], "Location" => $out[0]['Location'], "Gender" => $out[0]['Gender'], "Error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -129,14 +131,18 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 		$stmt = NULL;
 	}
 	catch(PDOException $e){
-		// 2053 == No rows. If no rows, we can ignore it; just a null array.
+		// 2053 == No rows. If no rows, we can ignore it; just return a null array.
 		// If it's something else, rethrow it.
 		if($e->getCode() == 2053) $out = array();
 		else throw $e;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
-	$results = array("displayName" => $out[0]['DisplayName'], "location" => $out[0]['Location'], "gender" => $out[0]['Gender'], "email" => $out[0]['Email'], "postsPerPage" => $out[0]['PostsPerPage'], "token" => $sel[0]['@newToken'], "error" => $errorCode);
+	$results = $out[0];
+	$results['Token'] = $sel[0]['@newToken'];
+	$results['Error'] = $errorCode;
+	// This stored procedure should only return 1 row, so just take that.
+	//$results = array("displayName" => $out[0]['DisplayName'], "location" => $out[0]['Location'], "gender" => $out[0]['Gender'], "email" => $out[0]['Email'], "postsPerPage" => $out[0]['PostsPerPage'], "token" => $sel[0]['@newToken'], "error" => $errorCode);
 	return $results;
 }
 
@@ -159,6 +165,32 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
-	$results = array("token" => $sel[0]['@newToken'], "error" => $errorCode);
+	$results = array("Token" => $sel[0]['@newToken'], "Error" => $errorCode);
 	return $results;
+}
+
+function getChildForums($database, $targetForumID){
+	$errorCode;
+	$stmt = $database->prepare("CALL GetChildForums(:id)");
+	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = 1;
+	}
+	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL. This does break the standard of all-lower-case keys, so we should switch the other stored procedures to use proper capitalization
+	$out = $stmt->fetchAll();
+	$out['Error'] = $errorCode;
+	$stmt->closeCursor();
+	return $out;
+	/*$results = array();
+	foreach($out as $row){
+		$r;
+		foreach($row as $col => $val){
+			$r = array();
+		}
+		$out[] = $r;
+	}*/
 }

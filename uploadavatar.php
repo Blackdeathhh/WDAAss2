@@ -26,7 +26,7 @@ if(is_array($_FILES['newavatar'])){
 					$db = connectToDatabase();
 					$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
 					if($results['error'] == ERR::OK){
-						$_SESSION['token'] = $results['token'];
+						$_SESSION['token'] = $results['Token'];
 						$success = move_uploaded_file($file['tmp_name'], "avatar/" . $_SESSION['id'] . ".jpg");
 						if($success){
 							echo "<p>File successfully uploaded!</p>";

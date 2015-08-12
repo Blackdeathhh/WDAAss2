@@ -22,24 +22,24 @@ if($salt){
 	$hash = hashPasswordCustomSalt($password, $salt);
 
 	$results = login($db, $username, $hash);
-	$loginToken = $results['token'];
-	$errorCode = $results['error'];
+	$loginToken = $results['Token'];
+	$errorCode = $results['Error'];
 
 	if($errorCode == ERR::OK){
 		$results = getUserID($db, $username);
 		$_SESSION['token'] = $loginToken;
-		$_SESSION['id'] = $results['id'];
+		$_SESSION['id'] = $results['ID'];
 		header("Location: profile.php");
 		exit;
 	}
 	else{
 		// Username not found or someone is already logged in
-		header("Location: login.php");
+		header("Location: login.php?error=$errorCode");
 		exit;
 	}
 }
 else{
 	// Salt not found; incorrect username
-	header("Location: login.php");
+	header("Location: login.php?error=101");
 	exit;
 }

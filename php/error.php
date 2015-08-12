@@ -1,5 +1,8 @@
 <?php
 /* Can have a class with const variables. Then, use those in place of the numbers here in the array.
+100: For username, display name, user-table related stuff
+200: Security stuff, including permissions and sanctions blocking actions
+300: Forum and thread related stuff, such as them not existing or you can't create them
 */
 
 class ERR{
@@ -20,5 +23,10 @@ ERR::OK => "OK",
 201 => "Account is already in use",
 202 => "Token authentication failure",
 203 => "Token expired",
-204 => "User does not have a token"
+204 => "User does not have a token",
+205 => "Insufficient permission level",
+206 => "User does not exist",
+300 => "Forum does not exist",
+301 => "Thread does not exist",
+302 => "Post does not exist"
 );
