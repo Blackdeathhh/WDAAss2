@@ -10,7 +10,7 @@
 </div>
 
 <div id="breadcrumb">
-<a href="index.php">Home</a> -> RUBYQUEST
+<a href="index.php">Home</a> -> <a href="forumview.php">Forums</a>
 </div>
 
 <div class="maindiv">
@@ -27,7 +27,8 @@ $forums;
 if(isset($_GET['forumid'])){
 	$result = getForumInfo($db, $_GET['forumid']);
 	$forumName = $result['ForumName']; //ParentForumID, ForumSubtitle, Topic
-	echo "<h2 class='title'><a href='forumview.php?forumid=" . $result['ParentForumID'] ."'>$forumName</a></h2>";
+	$parentID = $result['ParentForumID'];
+	echo "<h2 class='title'>$forumName</h2>";
 	$threads = getForumThreads($db, $_GET['forumid']);
 	$forums = getChildForums($db, $_GET['forumid']);
 }
@@ -35,9 +36,11 @@ else{
 	echo "<h2 class='title'>Home</h2>";
 	$forums = getChildForums($db, null); //Gets top-level forums
 }
-// Get rid of this so it won't interfere later
-$error = $forums["Error"];
+// Get rid of error key so it won't interfere later
+$forumError = $forums["Error"];
 unset($forums["Error"]);
+$threadError = $threads["Error"];
+unset($threads["Error"]);
 
 foreach($forums as $forum){
 	$topics[] = $forum["Topic"];
@@ -79,7 +82,8 @@ if(isset($threads)){
 <li>
 	<div class='subitem'>
 		<div class='threadmeta'>
-			<p><a href='threadview.php?forumid={$thread['ThreadID']}'>{$thread['ThreadTitle']}</a></p>
+			<img class="threadicon" src="img/open.jpg" alt="Thread Open" />
+			<p><a href='threadview.php?threadid={$thread['ThreadID']}'>{$thread['ThreadTitle']}</a></p>
 			<p>Started by {$user['DisplayName']}, at {$thread['CreatedAt']}.</p>
 		</div>
 		<div class='threadstats'>
