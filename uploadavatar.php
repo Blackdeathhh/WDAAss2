@@ -4,9 +4,7 @@
 	<link rel="stylesheet" href="css/base.css" />
 </head>
 <body>
-<div id="topbar">
-	<img src="img/header.png" />
-</div>
+<?phpinclude_once("php/topbar.php");?>
 
 <div class="maindiv">
 <?php

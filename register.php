@@ -6,9 +6,7 @@
 	<script type="text/javascript" src="js/registerValidate.js"></script>
 </head>
 <body>
-<div id="topbar">
-	<img src="img/header.png" />
-</div>
+<?phpinclude_once("php/topbar.php");?>
 
 <div class="maindiv">
 	<div class="loginform">

@@ -6,9 +6,7 @@
 	<link rel="stylesheet" href="css/threadview.css" />
 </head>
 <body>
-<div id="topbar">
-	<img src="img/header.png" />
-</div>
+<?phpinclude_once("php/topbar.php");?>
 <div class="maindiv">
 	<ol>
 		<li><a href="login.php">Log In</a></li>

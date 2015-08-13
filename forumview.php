@@ -5,11 +5,8 @@
 	<link rel="stylesheet" href="css/forumview.css" />
 </head>
 <body>
-<div id="topbar">
-	<img src="img/header.png" />
-</div>
-
 <?php
+include_once("php/topbar.php");
 session_start();
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
