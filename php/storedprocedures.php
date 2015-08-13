@@ -288,9 +288,9 @@ function multigetPostDetails($database, $targetPostIDs){
 	*/
 	if(count($targetPostIDs) <= 50){
 		$errorCode = ERR::OK;
-		$stmt = $database->prepare("CALL GetPostDetails(:id)");
 		$result = array();
 		foreach($targetPostIDs as $postID){
+			$stmt = $database->prepare("CALL GetPostDetails(:id)");
 			$stmt->bindParam(":id", $postID, PDO::PARAM_INT);
 			try{
 				$stmt->execute();
@@ -310,7 +310,8 @@ function multigetPostDetails($database, $targetPostIDs){
 					SP::ERROR => $errorCode);
 			}
 			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
-			$stmt->closeCursor();
+			//$stmt->closeCursor();
+			$stmt = null;
 		}
 		return $result;
 	}
