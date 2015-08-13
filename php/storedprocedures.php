@@ -300,11 +300,11 @@ function multigetPostDetails($database, $targetPostIDs){
 			$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if(isset($out)){
 				$result[$postID] = array(
-					POST::USER_ID => $out[0][USER_ID],
-					POST::CONTENT => $out[0][CONTENT],
-					POST::MADE_AT => $out[0][MADE_AT],
-					POST::EDITED_AT => $out[0][EDITED_AT],
-					POST::EDITING_USER_ID => $out[0][EDITING_USER_ID],
+					POST::USER_ID => $out[0][POST::USER_ID],
+					POST::CONTENT => $out[0][POST::CONTENT],
+					POST::MADE_AT => $out[0][POST::MADE_AT],
+					POST::EDITED_AT => $out[0][POST::EDITED_AT],
+					POST::EDITING_USER_ID => $out[0][POST::EDITING_USER_ID],
 					SP::ERROR => $errorCode);
 			}
 			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);

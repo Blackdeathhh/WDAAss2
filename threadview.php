@@ -3,14 +3,11 @@
 <head>
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/forumview.css" />
+	<link rel="stylesheet" href="css/threadview.css" />
 </head>
 <body>
 <div id="topbar">
 	<img src="img/header.png" />
-</div>
-
-<div id="breadcrumb">
-<a href="index.php">Home</a> -> <a href="forumview.php">Forums</a>
 </div>
 
 <?php
