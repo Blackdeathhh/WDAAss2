@@ -19,7 +19,7 @@ require_once("php/error.php");
 $db = connectToDatabase();
 $page = (isset($_GET['page'])) ? $_GET['page'] : 0;
 $threadID;
-$postsPerPage = 20;
+$postsPerPage = 10;
 $postIDs;
 
 if(isset($_GET['threadid'])){
@@ -100,7 +100,7 @@ if($posts){
 				$userID = $details[POST::USER_ID];
 				if(!isset($userDetails[$userID])){
 					// If it doesn't work this time it probably won't work the next time. We can change this to not output it if the error is unknown later, maybe
-					$details = getPublicUserDetails($db, $userID);
+					$userDetails = getPublicUserDetails($db, $userID);
 					$userDetails[$userID] = $details;
 				}
 				echo <<<EOT

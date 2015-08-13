@@ -44,3 +44,17 @@
 	background-color: #BCDEFF;
 	min-height: inherit;
 }
+.pages{
+	display: inline-block;
+}
+.pages li{
+	margin: 1px;
+	border: 1px solid black;
+	min-width: 1em;
+	float:left;
+	text-align:center;
+	background-color:#7FA3D7;
+}
+li.curpage{
+	background-color:#40E0D0;
+}
