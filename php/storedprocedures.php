@@ -265,7 +265,7 @@ function getForumThreads($database, $targetForumID){
 
 function getThreadPosts($database, $targetThreadID){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL GetThreadPosts{:id)");
+	$stmt = $database->prepare("CALL GetThreadPosts(:id)");
 	$stmt->bindParam(":id", $targetThreadID, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
@@ -299,16 +299,15 @@ function multigetPostDetails($database, $targetPostIDs){
 			}
 			$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if(isset($out)){
-				result[$postID] = array(
+				$result[$postID] = array(
 					POST::USER_ID => $out[0]["PostingUserID"],
 					POST::CONTENT => $out[0]["Content"],
 					POST::MADE_AT => $out[0]["CreatedAt"],
 					POST::EDITED_AT => $out[0]["LastEdited"],
 					POST::EDITING_USER_ID => $out[0]["EditedByUser"],
-					SP::ERROR => $errorCode
-					);
+					SP::ERROR => $errorCode);
 			}
-			else result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
+			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
 		}
 	}
 	else throw new RuntimeException("Too many posts requested at once!");
