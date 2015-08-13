@@ -4,11 +4,12 @@
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/forumview.css" />
 	<link rel="stylesheet" href="css/threadview.css" />
+	<meta charset="UTF-8">
 </head>
 <body>
 <?php
-include_once("php/topbar.php");
 session_start();
+require("php/topbar.php");
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");

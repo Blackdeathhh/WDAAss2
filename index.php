@@ -4,9 +4,10 @@
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/forumview.css" />
 	<link rel="stylesheet" href="css/threadview.css" />
+	<meta charset="UTF-8">
 </head>
 <body>
-<?phpinclude_once("php/topbar.php");?>
+<?php require("php/topbar.php"); ?>
 <div class="maindiv">
 	<ol>
 		<li><a href="login.php">Log In</a></li>

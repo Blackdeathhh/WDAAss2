@@ -3,9 +3,10 @@
 <head>
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/login.css" />
+	<meta charset="UTF-8">
 </head>
 <body>
-<?phpinclude_once("php/topbar.php");?>
+<?php require("php/topbar.php"); ?>
 
 <div class="maindiv">
 	<div class="loginform">

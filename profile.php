@@ -2,9 +2,10 @@
 <html>
 <head>
 	<link rel="stylesheet" href="css/base.css" />
+	<meta charset="UTF-8">
 </head>
 <body>
-<?phpinclude_once("php/topbar.php");?>
+<?php require("php/topbar.php"); ?>
 
 <div class="maindiv">
 <?php
