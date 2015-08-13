@@ -39,7 +39,7 @@ foreach($forums as $forum){
 }
 $topics = array_unique($topics);
 
-echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a> ->";
+echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a>";
 if(isset($_GET['forumid'])){
 	$ancestryIDs = getForumAncestry($db, $_GET['forumid']);
 	$ancestryError = $ancestryIDs[SP::ERROR];
@@ -50,8 +50,8 @@ if(isset($_GET['forumid'])){
 		$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
 	}
 	echo implode(" -> ", $breadcrumbs);
+	echo " -> ". $curForumInfo[FORUM::NAME];
 }
-echo " -> ". $curForumInfo[FORUM::NAME];
 echo "</div><div class='maindiv'>";
 
 if($curForumInfo){
