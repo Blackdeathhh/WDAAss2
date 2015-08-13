@@ -318,7 +318,7 @@ function getThreadInfo($database, $targetThreadID){
 	$results = $out[0];
 	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
-	return $out;
+	return $results;
 }
 
 function multigetPostDetails($database, $targetPostIDs){
