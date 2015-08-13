@@ -16,11 +16,13 @@ require_once("php/error.php");
 $db = connectToDatabase();
 $page = (isset($_GET['page'])) ? $_GET['page'] : 0;
 $threadID;
+$threadInfo;
 $postsPerPage = 10;
 $postIDs;
 
 if(isset($_GET['threadid'])){
 	$threadID = $_GET['threadid'];
+	$threadInfo = getThreadInfo($db, $threadID);
 }
 else{
 	echo "No thread.";
@@ -47,6 +49,7 @@ echo <<<EOT
 </div>
 
 <div class="maindiv">
+<h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
 
 if($errorCode == ERR::OK && $numPosts  != 0){
