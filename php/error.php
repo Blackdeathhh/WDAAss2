@@ -9,6 +9,7 @@ class ERR{
 	const OK = 0;
 	const UNKNOWN = 1;
 	const USER_NOT_EXIST = 113;
+	const FORUM_NOT_EXIST = 300;
 	const POST_NOT_EXIST = 302;
 }
 

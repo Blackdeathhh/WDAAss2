@@ -9,11 +9,6 @@
 	<img src="img/header.png" />
 </div>
 
-<div id="breadcrumb">
-<a href="index.php">Home</a> -> <a href="forumview.php">Forums</a>
-</div>
-
-<div class="maindiv">
 <?php
 session_start();
 require_once("php/database.php");
@@ -23,29 +18,46 @@ require_once("php/error.php");
 $db = connectToDatabase();
 $threads;
 $forums;
+$curForumInfo;
 
 if(isset($_GET['forumid'])){
-	$result = getForumInfo($db, $_GET['forumid']);
-	$forumName = $result['ForumName']; //ParentForumID, ForumSubtitle, Topic
-	$parentID = $result['ParentForumID'];
-	echo "<h2 class='title'>$forumName</h2>";
+	$curForumInfo = getForumInfo($db, $_GET['forumid']);
 	$threads = getForumThreads($db, $_GET['forumid']);
 	$forums = getChildForums($db, $_GET['forumid']);
 }
 else{
-	echo "<h2 class='title'>Home</h2>";
 	$forums = getChildForums($db, null); //Gets top-level forums
 }
 // Get rid of error key so it won't interfere later
-$forumError = $forums["Error"];
-unset($forums["Error"]);
-$threadError = $threads["Error"];
-unset($threads["Error"]);
+$forumError = $forums[SP::ERROR];
+unset($forums[SP::ERROR]);
+$threadError = $threads[SP::ERROR];
+unset($threads[SP::ERROR]);
 
 foreach($forums as $forum){
-	$topics[] = $forum["Topic"];
+	$topics[] = $forum[FORUM::TOPIC];
 }
 $topics = array_unique($topics);
+
+echo "<div id='breadcrumb'>";
+$ancestryIDs = getForumAncestry($db, $curForumInfo[FORUM::ID]);
+$ancestryError = $ancestryIDs[SP::ERROR];
+unset($ancestryIDs[SP::ERROR]);
+$breadcrumbs = array();
+for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
+	$info = getForumInfo($db, $ancestryIDs[$i]);
+	$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+}
+echo implode(" -> ", $breadcrumbs);
+
+echo "</div><div class='maindiv'>";
+
+if($curForumInfo){
+	echo "<h2 class='title'>". $curForumInfo[FORUM::NAME] ."</h2>";
+}
+else{
+	echo "<h2 class='title'>Forums</h2>";
+}
 
 foreach($topics as $topic){
 	echo "<div class='forumbox'><h2 class='title'>$topic</h2><ol>";
@@ -54,12 +66,11 @@ foreach($topics as $topic){
 <li>
 	<div class='subitem'>
 		<div class='threadmeta'>
-			<p><a href='forumview.php?forumid={$forum['ForumID']}'>{$forum['ForumName']}</a></p>
-			<p>{$forum['ForumSubtitle']}</p>
+			<p><a href='forumview.php?forumid={$forum[FORUM::ID]}'>{$forum[FORUM::NAME]}</a></p>
+			<p>{$forum[FORUM::SUBTITLE]}</p>
 		</div>
 		<div class='threadstats'>
 			<p>Threads: ???</p>
-			<p>Replies: ???</p>
 		</div>
 		<div class='threadlastpost'>
 			<p>Latest Thread: ???</p>

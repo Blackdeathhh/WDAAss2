@@ -10,6 +10,25 @@ class USER{
 	const POSTS_PAGE = "PostsPerPage";
 }
 
+class FORUM{
+	const ID = "ForumID";
+	const PARENT_ID = "ParentForumID";
+	const NAME = "ForumName";
+	const SUBTITLE = "ForumSubtitle";
+	const TOPIC = "Topic";
+}
+
+class THREAD{
+	const ID = "ThreadID";
+	const FORUM_ID = "InForumID";
+	const STARTER_USER_ID = "StarterUserID";
+	const TITLE = "ThreadTitle";
+	const MADE_AT = "CreatedAt";
+	const IS_STICKY = "isSticky";
+	const VIEWS = "Views";
+	const OPEN = "Open";
+}
+
 class POST{
 	const ID = "PostID";
 	const THREAD_ID = "InThreadID";
@@ -317,4 +336,28 @@ function multigetPostDetails($database, $targetPostIDs){
 		return $result;
 	}
 	else throw new RuntimeException("Too many posts requested at once!");
+}
+
+function getForumAncestry($database, $targetForumID){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL GetForumAncestry(:id)");
+	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$results = array();
+	if(isset($out)){
+		foreach($out as $index => $col){
+			$results[] = $col[FORUM::ID];
+		}
+	}
+	else{
+		$errorCode = ERR::FORUM_NOT_EXIST;
+	}
+	$results[SP::ERROR] = $errorCode;
 }

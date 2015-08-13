@@ -168,6 +168,5 @@ echo "<a href='makepost.php?threadid=$threadID'>New Post</a></div>";
 
 	We should query the db every time the page is reloaded. That way, we get information of new posts. Asking for the entire list of IDs is fine.
 */-->
-</div>
 </body>
 </html>
