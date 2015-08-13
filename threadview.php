@@ -120,7 +120,7 @@ EOT;
 				<p>Location: {$userDetails[USER::LOC]}</p>
 			</div>
 			<div class='content'>
-				{$details[POST::CONTENT]}
+				<p>{$details[POST::CONTENT]}</p>
 			</div>
 		</div>
 		<div class='replyfooter'>

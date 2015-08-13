@@ -17,6 +17,12 @@
 .replyheader{
 	background-color: #40E0D0;
 }
+.replyheader p{
+	padding: 5px;
+}
+.replyfooter p{
+	padding: 0px;
+}
 .posterinfo{
 	width: 150px;
 	min-height: inherit;

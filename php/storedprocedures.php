@@ -198,6 +198,7 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
 	$results = array("Token" => $sel[0]['@newToken'], "Error" => $errorCode);
+	$stmt->closeCursor();
 	return $results;
 }
 
@@ -216,6 +217,7 @@ function getForumInfo($database, $targetForumID){
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = $out[0];
 	$reuslts[SP::ERROR] = $errorCode;
+	$stmt->closeCursor();
 	return $results;
 }
 
@@ -308,6 +310,7 @@ function multigetPostDetails($database, $targetPostIDs){
 					SP::ERROR => $errorCode);
 			}
 			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
+			$stmt->closeCursor();
 		}
 		return $result;
 	}
