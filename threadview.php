@@ -56,7 +56,7 @@ echo <<<EOT
 EOT;
 
 if($errorCode == ERR::OK && $numPosts  != 0){
-	$numPages = $numPosts / $postsPerPage + 1;
+	$numPages = intval($numPosts / $postsPerPage + 1);
 	echo "<ol class='pages'>";
 	for($i = 0; $i != $numPages; ++$i){
 		if($i == $page){
@@ -78,12 +78,13 @@ else{
 	}
 }
 
-$min = $page * $postsPerPage;
-$max = $min + $postsPerPage - 1;
-
-$postsToGet = array_slice($postIDs, $min, $max, true);
-var_dump($postIDs);
-var_dump($postsToGet);
+//Intentional; we do stop 1 before $max, otherwise we'd return $postsPerPage + 1 posts.
+$max = ($page * $postsPerPage) + $postsPerPage;
+if($max > $numPosts) $max = $numPosts;
+$postsToGet = array();
+for($i = $page * $postsPerPage; $i != $max; ++$i){
+	$postsToGet[] = $postIDs[$i][POST::ID];
+}
 
 try{
 	$posts = multigetPostDetails($db, $postsToGet);

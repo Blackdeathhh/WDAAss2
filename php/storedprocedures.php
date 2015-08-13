@@ -258,7 +258,7 @@ function getForumThreads($database, $targetForumID){
 	}
 	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	$out['Error'] = $errorCode;
+	$out[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $out;
 }
@@ -300,11 +300,11 @@ function multigetPostDetails($database, $targetPostIDs){
 			$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if(isset($out)){
 				$result[$postID] = array(
-					POST::USER_ID => $out[0]["PostingUserID"],
-					POST::CONTENT => $out[0]["Content"],
-					POST::MADE_AT => $out[0]["CreatedAt"],
-					POST::EDITED_AT => $out[0]["LastEdited"],
-					POST::EDITING_USER_ID => $out[0]["EditedByUser"],
+					POST::USER_ID => $out[0][USER_ID],
+					POST::CONTENT => $out[0][CONTENT],
+					POST::MADE_AT => $out[0][MADE_AT],
+					POST::EDITED_AT => $out[0][EDITED_AT],
+					POST::EDITING_USER_ID => $out[0][EDITING_USER_ID],
 					SP::ERROR => $errorCode);
 			}
 			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
