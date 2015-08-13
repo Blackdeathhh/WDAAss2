@@ -39,17 +39,19 @@ foreach($forums as $forum){
 }
 $topics = array_unique($topics);
 
-echo "<div id='breadcrumb'>";
-$ancestryIDs = getForumAncestry($db, $curForumInfo[FORUM::ID]);
-$ancestryError = $ancestryIDs[SP::ERROR];
-unset($ancestryIDs[SP::ERROR]);
-$breadcrumbs = array();
-for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
-	$info = getForumInfo($db, $ancestryIDs[$i]);
-	$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a> ->";
+if(isset($_GET['forumid'])){
+	$ancestryIDs = getForumAncestry($db, $_GET['forumid']);
+	$ancestryError = $ancestryIDs[SP::ERROR];
+	unset($ancestryIDs[SP::ERROR]);
+	$breadcrumbs = array();
+	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
+		$info = getForumInfo($db, $ancestryIDs[$i]);
+		$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+	}
+	echo implode(" -> ", $breadcrumbs);
 }
-echo implode(" -> ", $breadcrumbs);
-
+echo " -> ". $curForumInfo[FORUM::NAME];
 echo "</div><div class='maindiv'>";
 
 if($curForumInfo){
