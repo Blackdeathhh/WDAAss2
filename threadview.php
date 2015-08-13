@@ -114,7 +114,7 @@ if($posts){
 EOT;
 				echo <<<EOT
 				<p>
-					<a href='viewprofile.php?profileID={$details[POST::USER_ID]}'>{$userDetails[USER::DISP_NAME]}</a>
+					<a href='profile.php?profileID={$details[POST::USER_ID]}'>{$userDetails[USER::DISP_NAME]}</a>
 				</p>
 				<img class='avatar' src='avatar/{$details[POST::USER_ID]}.jpg' alt="{$userDetails[USER::DISP_NAME]}'s avatar" />
 				<p>Location: {$userDetails[USER::LOC]}</p>

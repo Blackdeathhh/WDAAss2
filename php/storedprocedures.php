@@ -284,7 +284,8 @@ function getThreadPosts($database, $targetThreadID){
 }
 
 function multigetPostDetails($database, $targetPostIDs){
-	/* For efficiency, this function calls the stored procedure to fetch Thread details for an entire given list of postIDs. However, the limit is 50 posts per page.
+	/* For efficiency, this function calls the stored procedure to fetch Thread details for an entire given list of postIDs. However, the limit is 50 posts per page. Might be lowered.
+	Also, statement is intentionally re-prepared every iteration of the loop. Preparing it once and calling both closeCursor() and fetchAll() results in "General error: 2014 Cannot execute queries while other unbuffered queries are active". Enabling PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute does not fix this.
 	*/
 	if(count($targetPostIDs) <= 50){
 		$errorCode = ERR::OK;
