@@ -7,7 +7,9 @@
 
 class ERR{
 	const OK = 0;
-
+	const UNKNOWN = 1;
+	const USER_NOT_EXIST = 113;
+	const POST_NOT_EXIST = 302;
 }
 
 $ERRORS = array(
@@ -19,6 +21,7 @@ ERR::OK => "OK",
 110 => "Display Name has already been taken",
 111 => "Display Name does not exist",
 112 => "Display Name is malformed",
+113 => "User does not exist",
 200 => "Username & Password do not match",
 201 => "Account is already in use",
 202 => "Token authentication failure",

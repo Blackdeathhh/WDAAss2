@@ -83,7 +83,7 @@ if(isset($threads)){
 	<div class='subitem'>
 		<div class='threadmeta'>
 			<img class="threadicon" src="img/open.jpg" alt="Thread Open" />
-			<p><a href='threadview.php?threadid={$thread['ThreadID']}'>{$thread['ThreadTitle']}</a></p>
+			<p><a href='threadview.php?threadid={$thread['ThreadID']}&page=0'>{$thread['ThreadTitle']}</a></p>
 			<p>Started by {$user['DisplayName']}, at {$thread['CreatedAt']}.</p>
 		</div>
 		<div class='threadstats'>

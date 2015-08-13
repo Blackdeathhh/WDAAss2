@@ -1,5 +1,32 @@
 <?php
+require_once("php/error.php");
+
+class USER{
+	const ID = "UserID";
+	const DISP_NAME = "DisplayName";
+	const LOC = "Location";
+	const EMAIL = "Email";
+	const SEX = "Gender";
+	const POSTS_PAGE = "PostsPerPage";
+}
+
+class POST{
+	const ID = "PostID";
+	const THREAD_ID = "InThreadID";
+	const USER_ID = "PostingUserID";
+	const CONTENT = "Content";
+	const MADE_AT = "CreatedAt";
+	const EDITED_AT = "LastEdited";
+	const EDITING_USER_ID = "EditedByUserID";
+}
+
+class SP{
+	const ERR = "Error";
+	const TOKEN = "Token";
+}
+
 function getSalt($database, $username) {
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetSalt(:user)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	try{
@@ -7,15 +34,16 @@ function getSalt($database, $username) {
 	}
 	catch(PDOException $e){
 		echo $e->getMessage() . "<br />";
+		$errorCode = ERR::UNKNOWN;
 	}
 	// Table's just one row, one column.
-	$results = array("Salt" => $stmt->fetchAll()[0]["Salt"]);
+	$results = array("Salt" => $stmt->fetchAll()[0]["Salt"], "Error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
 
 function login($database, $username, $hash) {
-	$errorCode;
+	$errorCode = ERR::OK;
 	//$stmt = $database->prepare("CALL Login(:user, :hash, :token, :error)");
 	$stmt = $database->prepare("CALL Login(:user, :hash, @token, @error)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
@@ -27,7 +55,7 @@ function login($database, $username, $hash) {
 	}
 	catch(PDOException $e){
 		echo $e->getMessage() . "<br />";
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @token, @error")->fetchAll();
 	$results = array("Token" => $sel[0]['@token'], "Error" => $sel[0]['@error']);
@@ -37,6 +65,7 @@ function login($database, $username, $hash) {
 }
 
 function getUserID($database, $username) {
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetUserID(:user)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	try{
@@ -44,15 +73,16 @@ function getUserID($database, $username) {
 	}
 	catch(PDOException $e){
 		echo $e->getMessage() . "<br />";
+		$errorCode = ERR::UNKNOWN;
 	}
 	// Table's just one row, one column
-	$results = array("ID" => $stmt->fetchAll()[0]["UserID"]);
+	$results = array("ID" => $stmt->fetchAll()[0]["UserID"], "Error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
 
 function registerUser($database, $username, $hash, $salt, $displayName) {
-	$errorCode;
+	$errorCode = ERR::OK;
 	//$stmt = $db->prepare("CALL RegisterUser(:user, :pass, :salt, :display, :error)");
 	$stmt = $database->prepare("CALL RegisterUser(:user, :pass, :salt, :display, @error)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
@@ -65,7 +95,7 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error")->fetchAll();
 	$errorCode = $sel[0]['@error'];
@@ -75,7 +105,7 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 }
 
 function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":token", $oldToken, PDO::PARAM_INT);
@@ -84,7 +114,7 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
@@ -94,7 +124,7 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 }
 
 function getPublicUserDetails($database, $userID){
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetPublicUserDetails(:id)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	try{
@@ -102,18 +132,20 @@ function getPublicUserDetails($database, $userID){
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	$out = $stmt->fetchAll();
-	$results = $out[0];
-	$results['Error'] = $errorCode;
+	if(count($out) != 0){
+		$results = $out[0];
+	} else $results[SP::ERROR] = ERR::USER_NOT_EXIST;
+	$results[SP::ERROR] = $errorCode;
 	//$results = array("DisplayName" => $out[0]['DisplayName'], "Location" => $out[0]['Location'], "Gender" => $out[0]['Gender'], "Error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
 
 function getPrivateUserDetails($database, $userID, $loginToken){
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetPrivateUserDetails(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
@@ -122,7 +154,7 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	$out;
 	try{
@@ -134,7 +166,7 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 		// 2053 == No rows. If no rows, we can ignore it; just return a null array.
 		// If it's something else, rethrow it.
 		if($e->getCode() == 2053) $out = array();
-		else throw $e;
+		else $errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
@@ -148,7 +180,7 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 
 function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEmail, $newGender, $newPostsPerPage)
 {
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL ModifyUserDetails(:id, :location, :email, :gender, :postsperpage, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":location", $newLocation, PDO::PARAM_STR);
@@ -161,7 +193,7 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
 	$errorCode = $sel[0]['@error'];
@@ -170,7 +202,7 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 }
 
 function getForumInfo($database, $targetForumID){
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetForumInfo(:id)");
 	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
 	try{
@@ -178,7 +210,7 @@ function getForumInfo($database, $targetForumID){
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	// Only returns a single row
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -188,7 +220,7 @@ function getForumInfo($database, $targetForumID){
 }
 
 function getChildForums($database, $targetForumID){
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetChildForums(:id)");
 	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
 	try{
@@ -196,7 +228,7 @@ function getChildForums($database, $targetForumID){
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -214,7 +246,7 @@ function getChildForums($database, $targetForumID){
 }
 
 function getForumThreads($database, $targetForumID){
-	$errorCode;
+	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetForumThreads(:id)");
 	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
 	try{
@@ -222,11 +254,62 @@ function getForumThreads($database, $targetForumID){
 	}
 	catch(PDOException $e){
 		echo $e->getMessage();
-		$errorCode = 1;
+		$errorCode = ERR::UNKNOWN;
 	}
 	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$out['Error'] = $errorCode;
 	$stmt->closeCursor();
 	return $out;
+}
+
+function getThreadPosts($database, $targetThreadID){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL GetThreadPosts{:id)");
+	$stmt->bindParam(":id", $targetThreadID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	// This stored procedure returns multiple rows, so we can just add in the error code to the array returned by SQL.
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$out[SP::ERROR] = $errorCode;
+	$stmt->closeCursor();
+	return $out;
+}
+
+function multigetPostDetails($database, $targetPostIDs){
+	/* For efficiency, this function calls the stored procedure to fetch Thread details for an entire given list of postIDs. However, the limit is 50 posts per page.
+	*/
+	if(count($targetPostIDs) <= 50){
+		$errorCode = ERR::OK;
+		$stmt = $database->prepare("CALL GetPostDetails(:id)");
+		$result = array();
+		foreach($targetPostIDs as $postID){
+			$stmt->bindParam(":id", $postID, PDO::PARAM_INT);
+			try{
+				$stmt->execute();
+			}
+			catch(PDOException $e){
+				echo $e->getMessage();
+				$errorCode = ERR::UNKNOWN;
+			}
+			$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			if(isset($out)){
+				result[$postID] = array(
+					POST::USER_ID => $out[0]["PostingUserID"],
+					POST::CONTENT => $out[0]["Content"],
+					POST::MADE_AT => $out[0]["CreatedAt"],
+					POST::EDITED_AT => $out[0]["LastEdited"],
+					POST::EDITING_USER_ID => $out[0]["EditedByUser"],
+					SP::ERROR => $errorCode
+					);
+			}
+			else result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
+		}
+	}
+	else throw new RuntimeException("Too many posts requested at once!");
 }
