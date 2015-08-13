@@ -309,6 +309,7 @@ function multigetPostDetails($database, $targetPostIDs){
 			}
 			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
 		}
+		return $result;
 	}
 	else throw new RuntimeException("Too many posts requested at once!");
 }
