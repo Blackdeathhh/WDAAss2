@@ -21,7 +21,7 @@ class POST{
 }
 
 class SP{
-	const ERR = "Error";
+	const ERROR = "Error";
 	const TOKEN = "Token";
 }
 
@@ -215,7 +215,7 @@ function getForumInfo($database, $targetForumID){
 	// Only returns a single row
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = $out[0];
-	$reuslts['Error'] = $errorCode;
+	$reuslts[SP::ERROR] = $errorCode;
 	return $results;
 }
 

@@ -100,79 +100,7 @@ EOT;
 	echo "</ol>";
 	}
 }
-
 ?>
-	<!--<h2 class="title">Home</h2>
-	<div class="forumbox">
-		<h2 class="title">Subforums</h2>
-		<ol>
-		<li>
-			<div class="subitem">
-				<div class="threadmeta">
-					<p>Subforum A</p>
-				</div>
-				<div class="threadstats">
-					<p>Threads: 2</p>
-					<p>Replies: 22h</p>
-				</div>
-				<div class="threadlastpost">
-					<p>heyyyyy</p>
-					<p>heyyyyy</p> 
-				</div>
-			</div>
-		</li>
-		<li>
-			<div class="subitem">
-				Subforum B
-			</div>
-		</li>
-		<li>
-			<div class="subitem">
-				Subforum Dick
-			</div>
-		</li>
-		</ol>
-	</div>
-
-	<div class="forumbox">
-		<h2 class="title">Threads</h2>
-		<ol>
-		<li>
-			<div class="subitem">
-				<div class="threadmeta">
-					<img class="threadicon" src="img/open.png" alt="Thread Open" />
-					<p><a href="threadviewmockup.html">Hello World!</a></p>
-					<p>Started by <a href="profileview.php?thisguy">Tom</a>, at 11:37 26/07/2015.</p>
-				</div>
-				<div class="threadstats">
-					<p>Views: 3</p>
-					<p>Replies: 2</p>
-				</div>
-				<div class="threadlastpost">
-					<p>View <a href="threadviewmockup.html#lastreply">last post</a> by <a href="profileview.php?thisguy">Ruby</a></p>
-					<p>At 12:00 26/07/2015.</p>
-				</div>
-			</div>
-		</li>
-		<li>
-			<div class="subitem">
-				<div class="threadmeta">
-					<img class="threadicon" src="img/locked.png" alt="Thread Locked" />
-					<p><a href="threadviewmockup.html">I might have to bite out your throat.</a></p>
-					<p>Started by <a href="profileview.php?thisguy">Red</a>, at 10:37 26/07/2015.</p>
-				</div>
-				<div class="threadstats">
-					<p>Views: 40</p>
-					<p>Replies: 2</p>
-				</div>
-				<div class="threadlastpost">
-					<p>View <a href="threadviewmockup.html#lastreply">last post</a> by <a href="profileview.php?thisguy">Some Mod</a></p>
-					<p>At 12:00 26/07/2015.</p>
-				</div>
-			</div>
-		</li>
-		</ol>
-	</div>-->
 </div>
 </body>
 </html>
