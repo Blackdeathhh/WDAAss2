@@ -8,6 +8,11 @@
 <div id="topbar">
 	<img src="img/header.png" />
 </div>
+
+<div id="breadcrumb">
+<a href="index.php">Home</a> -> <a href="forumview.php">Forums</a>
+</div>
+
 <?php
 session_start();
 require_once("php/database.php");
@@ -30,7 +35,8 @@ else{
 
 if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 	$results = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
-	
+	$_SESSION['token'] = $results[SP::TOKEN];
+
 	if($results[SP::ERROR] == ERR::OK){
 		$postsPerPage = $results[USER::POSTS_PAGE];
 	}
@@ -41,18 +47,23 @@ $errorCode = $postIDs[SP::ERROR];
 unset($postIDs[SP::ERROR]);
 $numPosts = count($postIDs);
 
-if($errorCode == ERR::OK && $numPosts  != 0){
-	$numPages = $numPosts / $postsPerPage + 1;
-	echo <<<EOT
+echo <<<EOT
 <div id="breadcrumb">
 <a href="index.php">Home</a> -> <a href="forumview.php">Forums</a>
 </div>
 
 <div class="maindiv">
-<ol class="pages">
 EOT;
+
+if($errorCode == ERR::OK && $numPosts  != 0){
+	$numPages = $numPosts / $postsPerPage + 1;
+	echo "<ol class='pages'>";
 	for($i = 0; $i != $numPages; ++$i){
-		echo "<a href='threadview.php?threadid=". $threadID ."&page=". $i ."'><li>". ($i + 1) ."</li></a>";
+		if($i == $page){
+			echo "<li class='curpage'>". ($i + 1) ."</li>";
+		}else{
+			echo "<a href='threadview.php?threadid=". $threadID ."&page=". $i ."'><li>". ($i + 1) ."</li></a>";
+		}
 	}
 	echo "</ol>";
 }
@@ -142,7 +153,7 @@ EOT;
 	echo "</ol>";
 }
 
-echo "</div>";
+echo "<a href='makepost.php?threadid=$threadID'>New Post</a></div>";
 ?>
 <!--//maindiv
 /*
