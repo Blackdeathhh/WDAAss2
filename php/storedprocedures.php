@@ -403,8 +403,8 @@ function createPost($database, $userID, $targetThreadID, $content, $loginToken){
 		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
-	$errorCode = $sel['@error'];
+	$errorCode = $sel[0]['@error'];
 	$stmt->closeCursor();
-	$results = array(SP::ERROR => $errorCode, SP::TOKEN => $sel['@newToken']);
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => $sel[0]['@newToken']);
 	return $results;
 }

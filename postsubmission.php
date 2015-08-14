@@ -21,6 +21,7 @@
 			if(isset($_POST['threadid'])){
 				// We're making a new post
 				$result = createPost($database, $_SESSION['id'], $_POST['threadid'], $_POST['content'], $_SESSION['token']);
+				$_SESSION['token'] = $result[SP::TOKEN];
 				switch($result[SP::ERROR]){
 					// If the page number's too high, you'll just go to the final page.
 					case ERR::OK:
