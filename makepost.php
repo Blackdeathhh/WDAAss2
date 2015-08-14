@@ -22,7 +22,7 @@
 			switch($info[SP::ERROR]){
 				case ERR::OK:
 					echo <<<EOT
-<h2 class='title'>Posting to: <a href=threadview.php?threadid='{$_POST['threadid']}'>{$info[THREAD::TITLE]}</a></h2>
+<h2 class='title'>Posting to: <a href=threadview.php?threadid={$_POST['threadid']}>{$info[THREAD::TITLE]}</a></h2>
 <form id="postform" method="POST" action="postsubmission.php">
 	<input type='hidden' id='threadid' name='threadid' value='{$_POST['threadid']}'>
 	<input type="hidden" id="content" name="content" />
