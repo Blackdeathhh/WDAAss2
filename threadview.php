@@ -155,7 +155,7 @@ EOT;
 
 echo <<<EOT
 <form method="post" action="makepost.php">
-	<input type="hidden" name="threadid" />
+	<input type="hidden" name="threadid" value="{$_GET['threadid']}" />
 	<input type="submit" value="New Post" />
 </form>
 EOT;
