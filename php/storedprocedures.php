@@ -315,7 +315,14 @@ function getThreadInfo($database, $targetThreadID){
 	}
 	// This stored procedure returns just one row
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	$results = $out[0];
+	$results;
+	if(isset($out)){
+		$results = $out[0];
+	}
+	else{
+		$results = array();
+		$errorCode = ERR::THREAD_NOT_EXIST;
+	}
 	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $results;

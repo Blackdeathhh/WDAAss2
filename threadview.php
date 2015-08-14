@@ -153,7 +153,12 @@ EOT;
 	echo "</ol>";
 }
 
-echo "<a href='makepost.php?threadid=$threadID'>New Post</a></div>";
+echo <<<EOT
+<form method="post" action="makepost.php">
+	<input type="hidden" name="threadid" />
+	<input type="submit" value="New Post" />
+</form>
+EOT;
 ?>
 <!--//maindiv
 /*
