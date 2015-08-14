@@ -380,3 +380,24 @@ function getForumAncestry($database, $targetForumID){
 	}
 	$results[SP::ERROR] = $errorCode;
 }
+
+function createPost($database, $userID, $targetThreadID, $content, $loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL CreatePost(:id, :thread, :content, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":thread", $targetThreadID, PDO::PARAM_INT);
+	$stmt->bindParam(":content", $content, PDO::PARAM_STR);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
+	$errorCode = $sel['@error'];
+	$stmt->closeCursor();
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => $sel['@newToken']);
+	return $results;
+}

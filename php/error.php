@@ -8,9 +8,23 @@
 class ERR{
 	const OK = 0;
 	const UNKNOWN = 1;
-	const USER_NOT_EXIST = 113;
+	const USERNAME_TAKEN = 100;
+	const USERNAME_NOT_EXIST = 101;
+	const USERNAME_BAD = 102;
+	const DISPNAME_TAKEN = 110;
+	const DISPNAME_NOT_EXIST = 111;
+	const DISPNAME_BAD = 112;
+	const AUTH_FAIL = 200;
+	const ACC_IN_USE = 201;
+	const TOKEN_FAIL = 202;
+	const TOKEN_EXPIRED = 203;
+	const USER_NO_TOKEN = 204;
+	const PERMIS_FAIL = 205;
+	const USER_NOT_EXIST = 206;
 	const FORUM_NOT_EXIST = 300;
+	const THREAD_NOT_EXIST = 301;
 	const POST_NOT_EXIST = 302;
+	const THREAD_LOCKED = 303;
 }
 
 $ERRORS = array(
@@ -22,7 +36,6 @@ ERR::OK => "OK",
 110 => "Display Name has already been taken",
 111 => "Display Name does not exist",
 112 => "Display Name is malformed",
-113 => "User does not exist",
 200 => "Username & Password do not match",
 201 => "Account is already in use",
 202 => "Token authentication failure",
@@ -32,5 +45,6 @@ ERR::OK => "OK",
 206 => "User does not exist",
 300 => "Forum does not exist",
 301 => "Thread does not exist",
-302 => "Post does not exist"
+302 => "Post does not exist",
+303 => "Thread is locked"
 );

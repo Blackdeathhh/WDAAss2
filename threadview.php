@@ -55,6 +55,7 @@ EOT;
 
 if($errorCode == ERR::OK && $numPosts  != 0){
 	$numPages = intval($numPosts / $postsPerPage + 1);
+	if($page > $numPages) $page = $numPages - 1;
 	echo "<ol class='pages'>";
 	for($i = 0; $i != $numPages; ++$i){
 		if($i == $page){
@@ -106,7 +107,7 @@ if($posts){
 				}
 				echo <<<EOT
 <li class='item'>
-	<div class='reply'>
+	<div id='post{$ID}' class='reply'>
 		<div class='replyheader'>
 			<p>Posted at {$details[POST::MADE_AT]}</p>
 		</div>
