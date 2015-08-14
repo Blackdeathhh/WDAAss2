@@ -18,7 +18,7 @@
 	if(isset($_POST['threadid'])){
 		$db = connectToDatabase();
 		if($db){
-			$info = getThreadInfo();
+			$info = getThreadInfo($db, $_POST['threadid']);
 			switch($info[SP::ERROR]){
 				case ERR::OK:
 					echo <<<EOT
@@ -37,6 +37,7 @@ EOT;
 	<input type='button' name='post' id='post' value='Post' onclick='submitPost()' />
 </form>
 EOT;
+					break;
 				case ERR::THREAD_NOT_EXIST;
 					echo "The thread does not or no longer exists. Back to <a href='forumview.php'>forums</a>.";
 					break;
