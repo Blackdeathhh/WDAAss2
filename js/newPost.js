@@ -14,6 +14,7 @@ function test(){
 // TextNode.splitText(offset); - two text nodes!
 function submitPost(){
 	cleanContent();
+	document.getElementById("content").value = document.getElementByID("postcontent").innerHTML;
 	document.getElementById("postform").submit();
 }
 
