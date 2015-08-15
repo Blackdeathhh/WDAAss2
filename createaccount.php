@@ -19,12 +19,12 @@ if($db) {
 	if($usernameValid && $displaynameValid && $passwordValid){
 		$hashedPass = hashPassword($rawPassword);
 		$salt = substr($hashedPass, 7, 22);
-		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
+		$results = registerUser($db, $username, $hashedPass, $salt, $displayName);
 
-		switch($result[SP::ERROR]){
+		switch($results[SP::ERROR]){
 			case ERR::OK:
 				// It worked, try to login.
-				$result = login($db, $username, $hashedPass);
+				$results = login($db, $username, $hashedPass);
 				switch($results[SP::ERROR]){
 					case ERR::OK:
 						$_SESSION['token'] = $results[SP::TOKEN];
@@ -44,7 +44,7 @@ if($db) {
 				header("Location: register.php?displayname=". ERR::DISPNAME_TAKEN);
 				break;
 			default:
-				header("Location: register.php?error=". $result[SP::ERROR]);
+				header("Location: register.php?error=". $results[SP::ERROR]);
 				break;
 		}
 	}
