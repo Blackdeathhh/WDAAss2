@@ -277,7 +277,7 @@ function getForumInfo($database, $targetForumID){
 	else{
 		$errorCode = ERR::FORUM_NOT_EXIST;
 	}
-	$reuslts[SP::ERROR] = $errorCode;
+	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $results;
 }
@@ -297,12 +297,12 @@ function getChildForums($database, $targetForumID){
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = array();
 	if(isset($out) && count($out) != 0){
-		$results = $out[0];
+		$results = $out;
 	}
 	else{
 		$errorCode = ERR::FORUM_NOT_EXIST;
 	}
-	$reuslts[SP::ERROR] = $errorCode;
+	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $results;
 }
@@ -322,12 +322,12 @@ function getForumThreads($database, $targetForumID){
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = array();
 	if(isset($out) && count($out) != 0){
-		$results = $out[0];
+		$results = $out;
 	}
 	else{
 		$errorCode = ERR::FORUM_NOT_EXIST;
 	}
-	$reuslts[SP::ERROR] = $errorCode;
+	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $results;
 }
@@ -347,12 +347,12 @@ function getThreadPosts($database, $targetThreadID){
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = array();
 	if(isset($out) && count($out) != 0){
-		$results = $out[0];
+		$results = $out;
 	}
 	else{
 		$errorCode = ERR::THREAD_NOT_EXIST;
 	}
-	$reuslts[SP::ERROR] = $errorCode;
+	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $results;
 }
@@ -388,7 +388,7 @@ function multigetPostDetails($database, $targetPostIDs){
 	*/
 	if(count($targetPostIDs) <= 50){
 		$errorCode = ERR::OK;
-		$result = array();
+		$results = array();
 		foreach($targetPostIDs as $postID){
 			$stmt = $database->prepare("CALL GetPostDetails(:id)");
 			$stmt->bindParam(":id", $postID, PDO::PARAM_INT);
@@ -401,7 +401,7 @@ function multigetPostDetails($database, $targetPostIDs){
 			}
 			$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if(isset($out) && count($out) != 0){
-				$result[$postID] = array(
+				$results[$postID] = array(
 					POST::USER_ID => $out[0][POST::USER_ID],
 					POST::CONTENT => $out[0][POST::CONTENT],
 					POST::MADE_AT => $out[0][POST::MADE_AT],
@@ -409,11 +409,11 @@ function multigetPostDetails($database, $targetPostIDs){
 					POST::EDITING_USER_ID => $out[0][POST::EDITING_USER_ID],
 					SP::ERROR => $errorCode);
 			}
-			else $result[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
+			else $results[$postID] = array(SP::ERROR => ERR::POST_NOT_EXIST);
 			$stmt->closeCursor();
 			$stmt = null;
 		}
-		return $result;
+		return $results;
 	}
 	else throw new RuntimeException("Too many posts requested at once!");
 }

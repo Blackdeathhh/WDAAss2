@@ -21,7 +21,7 @@
 	if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 		$db = connectToDatabase();
 		if($db){
-			$results = $verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
+			$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
 			switch($results[SP::ERROR]){
 				case ERR::OK:
 					$_SESSION['token'] = $results[SP::TOKEN];
