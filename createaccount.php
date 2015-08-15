@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("php/database.php");
 require_once("php/validation.php");
 require_once("php/security.php");
