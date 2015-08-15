@@ -1,9 +1,7 @@
 <?php
-
 /* These are the characters that are in the ASCII range decimal 32 to 126 : 
 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 */
-
 function validateUsername($username){
 	// Max 20 chars, no spaces
 	$regex = "/^[!-~]{1,20}$/";
@@ -19,7 +17,7 @@ function validatePassword($password){
 function validateDisplayname($displayname){
 	// Max 20 chars, no spaces
 	$regex = "/^[!-~]{1,20}$/";
-	return preg_match($regex, $username);
+	return preg_match($regex, $displayname);
 }
 
 function validateGender($gender){
