@@ -101,8 +101,8 @@ function login($database, $username, $hash) {
 		echo $e->getMessage() . "<br />";
 		$errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @token, @error")->fetchAll();
-	$results = array(SP::TOKEN => $sel[0]['@token'], SP::ERROR => $sel[0]['@error']);
+	$sel = $database->query("SELECT @token, @error")->fetchAll(PDO::FETCH_ASSOC);
+	$results = array(SP::TOKEN => intval($sel[0]['@token'], 10), SP::ERROR => intval($sel[0]['@error'], 10));
 	//$results = array("token" => $loginToken, "error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;
@@ -120,10 +120,10 @@ function getUserID($database, $username) {
 		$errorCode = ERR::UNKNOWN;
 	}
 	// Table's just one row, one column
-	$out = $stmt->fetchAll();
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results;
 	if(isset($out) && count($out) != 0){
-		$results = array(USER::ID => $out[0][USER::ID], SP::ERROR => $errorCode);
+		$results = array(USER::ID => intval($out[0][USER::ID], 10), SP::ERROR => $errorCode);
 	}
 	else{
 		$results = array(USER::ID => null, SP::ERROR => SP::USERNAME_NOT_EXIST);
@@ -149,7 +149,7 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error")->fetchAll();
-	$errorCode = $sel[0]['@error'];
+	$errorCode = intval($sel[0]['@error'], 10);
 	$results = array(SP::ERROR => $errorCode);
 	$stmt->closeCursor();
 	return $results;
@@ -167,9 +167,9 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 		echo $e->getMessage();
 		$errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
-	$errorCode = $sel[0]['@error'];
-	$results = array(SP::TOKEN => $sel[0]['@newToken'], SP::ERROR => $errorCode);
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$results = array(SP::TOKEN => intval($sel[0]['@newToken'], 10), SP::ERROR => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -185,7 +185,7 @@ function getPublicUserDetails($database, $userID){
 		echo $e->getMessage();
 		$errorCode = ERR::UNKNOWN;
 	}
-	$out = $stmt->fetchAll();
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = array();
 	if(isset($out) && count($out) != 0){
 		$results = $out[0];
@@ -219,8 +219,8 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 		if($e->getCode() == 2053) unset($out);
 		else $errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
-	$errorCode = $sel[0]['@error'];
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
 	$results = array();
 	if(isset($out) && count($out) != 0){
 		$results = $out[0];
@@ -228,7 +228,7 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 	else{
 		$errorCode = ERR::USER_NOT_EXIST;
 	}
-	$results[SP::TOKEN] = $sel[0]['@newToken'];
+	$results[SP::TOKEN] = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
 	$stmt->closeCursor();
 	return $results;
@@ -251,9 +251,9 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 		echo $e->getMessage();
 		$errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
-	$errorCode = $sel[0]['@error'];
-	$results = array(SP::TOKEN => $sel[0]['@newToken'], SP::ERROR => $errorCode);
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$results = array(SP::TOKEN => intval($sel[0]['@newToken'], 10), SP::ERROR => $errorCode);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -458,8 +458,8 @@ function createPost($database, $userID, $targetThreadID, $content, $loginToken){
 		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
-	$errorCode = $sel[0]['@error'];
+	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
-	$results = array(SP::ERROR => $errorCode, SP::TOKEN => $sel[0]['@newToken']);
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
 	return $results;
 }
