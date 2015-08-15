@@ -89,7 +89,7 @@ function getSalt($database, $username) {
 function login($database, $username, $hash) {
 	$errorCode = ERR::OK;
 	//$stmt = $database->prepare("CALL Login(:user, :hash, :token, :error)");
-	$stmt = $database->prepare("CALL Login(:user, :hash, @token, @error)");
+	$stmt = $database->prepare("CALL Login(:user, :hash, @id, @token, @error)");
 	$stmt->bindParam(":user", $username, PDO::PARAM_STR);
 	$stmt->bindParam(":hash", $hash, PDO::PARAM_STR);
 	//$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT, 11);
@@ -101,8 +101,8 @@ function login($database, $username, $hash) {
 		echo $e->getMessage() . "<br />";
 		$errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @token, @error")->fetchAll(PDO::FETCH_ASSOC);
-	$results = array(SP::TOKEN => intval($sel[0]['@token'], 10), SP::ERROR => intval($sel[0]['@error'], 10));
+	$sel = $database->query("SELECT @id, @token, @error")->fetchAll(PDO::FETCH_ASSOC);
+	$results = array(USER::ID => intval($sel[0]['@id'], 10), SP::TOKEN => intval($sel[0]['@token'], 10), SP::ERROR => intval($sel[0]['@error'], 10));
 	//$results = array("token" => $loginToken, "error" => $errorCode);
 	$stmt->closeCursor();
 	return $results;

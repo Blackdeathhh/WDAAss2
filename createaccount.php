@@ -28,7 +28,7 @@ if($db) {
 				switch($results[SP::ERROR]){
 					case ERR::OK:
 						$_SESSION['token'] = $results[SP::TOKEN];
-						$_SESSION['userID'] = getUserID($username)[USER::ID];
+						$_SESSION['id'] = $results[USER::ID];
 						header("Location: profile.php");
 						break;
 					default:
