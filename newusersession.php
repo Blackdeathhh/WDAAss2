@@ -20,7 +20,7 @@ $results = getSalt($db, $username);
 switch($results[SP::ERROR]){
 	case ERR::OK:
 		$password = $_POST['password'];
-		$hash = hashPasswordCustomSalt($password, $salt);
+		$hash = hashPasswordCustomSalt($password, $results[LOGIN::SALT]);
 
 		$results = login($db, $username, $hash);
 		$loginToken = $results[SP::TOKEN];
