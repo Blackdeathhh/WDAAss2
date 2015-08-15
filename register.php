@@ -68,25 +68,6 @@ EOT;
 				<input type='text' id='displayname' name='displayname' oninput='validate()' />
 				<label id='displaynameerror' class=
 EOT;
-		if(isset($_GET['password'])){
-			echo "'errorshow'>";
-			switch($_GET['password']){
-				case ERR::PASSWORD_BAD:
-					echo "Password can be at most 72 characters with no spaces";
-					break;
-			}
-		}
-		else{
-			echo "'errorhide'>";
-		}
-		echo <<<EOT
-				</label>
-			</li>
-			<li>
-				<label class="loginlabels">Password: </label>
-				<input type="password" id="password" name="password" oninput="validate()" />
-				<label id="passworderror" class=
-EOT;
 		if(isset($_GET['displayname'])){
 			echo "'errorshow'>";
 			switch($_GET['displayname']){
@@ -95,6 +76,26 @@ EOT;
 					break;
 				case ERR::DISPNAME_BAD:
 					echo "Display Name can be at most 20 characters with no spaces";
+					break;
+			}
+		}
+		else{
+			echo "'errorhide'>";
+		}
+
+		echo <<<EOT
+				</label>
+			</li>
+			<li>
+				<label class="loginlabels">Password: </label>
+				<input type="password" id="password" name="password" oninput="validate()" />
+				<label id="passworderror" class=
+EOT;
+		if(isset($_GET['password'])){
+			echo "'errorshow'>";
+			switch($_GET['password']){
+				case ERR::PASSWORD_BAD:
+					echo "Password can be at most 72 characters with no spaces";
 					break;
 			}
 		}

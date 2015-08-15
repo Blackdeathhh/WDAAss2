@@ -15,7 +15,7 @@ if($db) {
 	$displaynameValid = validateDisplayname($displayName);
 	$passwordValid = validatePassword($rawPassword);
 
-	if($usernameValid && displaynameValid && passwordValid){
+	if($usernameValid && $displaynameValid && $passwordValid){
 		$hashedPass = hashPassword($rawPassword);
 		$salt = substr($hashedPass, 7, 22);
 		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
