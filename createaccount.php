@@ -28,6 +28,7 @@ if($db) {
 					case ERR::OK:
 						$_SESSION['token'] = $results[SP::TOKEN];
 						$_SESSION['userID'] = getUserID($username)[USER::ID];
+						header("Location: profile.php");
 						break;
 					default:
 						// Should not happen; login should only fail if authentication fails, or someone's already using that account.
