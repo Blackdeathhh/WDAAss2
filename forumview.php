@@ -16,7 +16,7 @@ require_once("php/error.php");
 $db = connectToDatabase();
 $threads;
 $forums;
-$curForumInfo;
+$curForumInfo = null;
 
 if(isset($_GET['forumid'])){
 	$curForumInfo = getForumInfo($db, $_GET['forumid']);
@@ -53,7 +53,15 @@ if(isset($_GET['forumid'])){
 echo "</div><div class='maindiv'>";
 
 if($curForumInfo){
-	echo "<h2 class='title'>". $curForumInfo[FORUM::NAME] ."</h2>";
+	echo <<<EOT
+<h2 class='title'>{$curForumInfo[FORUM::NAME]}</h2>
+<div>
+	<form method=GET action="newthread.php">
+		<input type="hidden" name="forumid" value="{$curForumInfo[FORUM::ID]}" />
+		<input type="submit" value="New Thread" />
+	</form>
+</div>
+EOT;
 }
 else{
 	echo "<h2 class='title'>Forums</h2>";

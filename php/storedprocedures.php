@@ -74,7 +74,7 @@ function getSalt($database, $username) {
 		$errorCode = ERR::UNKNOWN;
 	}
 	// Table's just one row, one column.
-	$out = $stmt->fetchAll();
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results;
 	if(isset($out) && count($out) != 0){
 		$results = array(LOGIN::SALT => $out[0][LOGIN::SALT], SP::ERROR => $errorCode);
@@ -457,6 +457,27 @@ function createPost($database, $userID, $targetThreadID, $content, $loginToken){
 		$errorCode = ERR::UNKNOWN;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
+	$errorCode = intval($sel[0]['@error'], 10);
+	$stmt->closeCursor();
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
+	return $results;
+}
+
+function createThread($database, $userID, $targetForumID, $title, $loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL Createthread(:id, :forum, :title, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":forum", $targetForumID, PDO::PARAM_INT);
+	$stmt->bindParam(":title", $title, PDO::PARAM_STR);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
 	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
