@@ -230,7 +230,6 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 	}
 	$results[SP::TOKEN] = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
-	$stmt->closeCursor();
 	return $results;
 }
 
