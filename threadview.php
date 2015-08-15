@@ -8,6 +8,9 @@
 </head>
 <body>
 <?php
+/* We have to somehow deduce the first viewing of this thread, and ++views. We could do this by checking page GET.
+Or, we could make a new GET variable, just for telling if we're browsing through this or not. We'd check to see if it's set; if not, ++View. And in the page buttons, just make it submit the GET parameter.
+*/
 session_start();
 require("php/topbar.php");
 require_once("php/database.php");
@@ -116,7 +119,7 @@ if($posts){
 EOT;
 				echo <<<EOT
 				<p>
-					<a href='profile.php?profileID={$details[POST::USER_ID]}'>{$userDetails[USER::DISP_NAME]}</a>
+					<a href='profile.php?profileid={$details[POST::USER_ID]}'>{$userDetails[USER::DISP_NAME]}</a>
 				</p>
 				<img class='avatar' src='avatar/{$details[POST::USER_ID]}.jpg' alt="{$userDetails[USER::DISP_NAME]}'s avatar" />
 				<p>Location: {$userDetails[USER::LOC]}</p>
@@ -135,7 +138,7 @@ EOT;
 							$details = getPublicUserDetails($db, $userID);
 							$userDetails[$userID] = $details;
 						}
-						echo "by <a href='viewprofile?profileID=$editor'>". $userDetails[$editor][USER::DISP_NAME] . "</a> ";
+						echo "by <a href='viewprofile?profileid=$editor'>". $userDetails[$editor][USER::DISP_NAME] . "</a> ";
 					}
 					echo "at " . $details[POST::EDITED_AT] . "</p>";
 				}

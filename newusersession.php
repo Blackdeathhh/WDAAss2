@@ -1,10 +1,10 @@
 <?php
-
+session_start();
 require_once("php/security.php");
 require_once("php/database.php");
 require_once("php/error.php");
 require_once("php/storedprocedures.php");
-session_start();
+require_once("php/validation.php");
 
 if($_SESSION['token']) {
 	// Already logged in
@@ -15,31 +15,38 @@ if($_SESSION['token']) {
 $username = $_POST['username'];
 
 $db = connectToDatabase();
-$salt = getSalt($db, $username)['Salt'];
+$results = getSalt($db, $username);
 
-if($salt){
-	$password = $_POST['password'];
-	$hash = hashPasswordCustomSalt($password, $salt);
+switch($results[SP::ERROR]){
+	case ERR::OK:
+		$password = $_POST['password'];
+		$hash = hashPasswordCustomSalt($password, $salt);
 
-	$results = login($db, $username, $hash);
-	$loginToken = $results['Token'];
-	$errorCode = $results['Error'];
+		$results = login($db, $username, $hash);
+		$loginToken = $results[SP::TOKEN];
+		$errorCode = $results[SP::ERROR];
 
-	if($errorCode == ERR::OK){
-		$results = getUserID($db, $username);
-		$_SESSION['token'] = $loginToken;
-		$_SESSION['id'] = $results['ID'];
-		header("Location: profile.php");
-		exit;
-	}
-	else{
-		// Username not found or someone is already logged in
-		header("Location: login.php?error=$errorCode");
-		exit;
-	}
-}
-else{
-	// Salt not found; incorrect username
-	header("Location: login.php?error=101");
-	exit;
+		switch($results[SP::ERROR]){
+			case ERR::OK:
+				$results = getUserID($db, $username);
+				switch($results[SP::ERROR]){
+					case ERR::OK:
+						$_SESSION['token'] = $loginToken;
+						$_SESSION['id'] = $results[USER::ID];
+						header("Location: profile.php");
+						exit;
+						break;
+					default:
+						header("Location: login.php?error=". $results[SP::ERROR]);
+						break;
+				}
+				break;
+			default:
+				header("Location: login.php?error=". $results[SP::ERROR]);
+				break;
+		}
+		break;
+	default:
+		header("Location: login.php?error=". $results[SP::ERROR]);
+		break;
 }

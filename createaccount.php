@@ -1,12 +1,6 @@
 <?php
-/*
-We have to ensure that the fields are not too long.
-Then we have to call a stored procedure. If it works, log the user in and send them to their profile, with a parameter "Firsttime" or something, to greet them. 
-If it doesn't, we have to go back to register.php with some information as to what they did wrong.
-Possible errors are returned as strings from the SProc, so an empty string can be considered a success. If we don't get an empty string, we just have to go back to register.php, giving them that string to tell them why they have failed to make an account.
-*/
 require_once("php/database.php");
-//require_once("php/validation.php");
+require_once("php/validation.php");
 require_once("php/security.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
@@ -17,41 +11,48 @@ if($db) {
 	$username = $_POST["username"];
 	$displayName = $_POST["displayname"];
 	$rawPassword = $_POST["password"];
+	$usernameValid = validateUsername($username);
+	$displaynameValid = validateDisplayname($displayName);
+	$passwordValid = validatePassword($rawPassword);
 
-	/*Validate parameters, make sure they're not too long.
-	validateUsername();
-	validateDisplayname();
-	validatePassword();
-	*/
+	if($usernameValid && displaynameValid && passwordValid){
+		$hashedPass = hashPassword($rawPassword);
+		$salt = substr($hashedPass, 7, 22);
+		$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
 
-	$hashedPass = hashPassword($rawPassword);
-	$salt = substr($hashedPass, 7, 22);
-
-	//echo "Password: $hashedPass. ";
-
-	$result = registerUser($db, $username, $hashedPass, $salt, $displayName);
-	$errorCode = $result['Error'];
-
-	if($errorCode == ERR::OK) {
-		echo "Success. Result: '$errorCode'";
-		// It worked, try to login.
-		$result = login($db, $username, $hashedPass);
-		$errorCode = $results['Error'];
-		if($errorCode == ERR::OK) {
-			$_SESSION['token'] = $results['Token'];
-			$_SESSION['userID'] = getUserID($username)['ID'];
-		}
-		else {
-			// Couldn't log in, but account has been made.
+		switch($result[SP::ERROR]){
+			case ERR::OK:
+				// It worked, try to login.
+				$result = login($db, $username, $hashedPass);
+				switch($results[SP::ERROR]){
+					case ERR::OK:
+						$_SESSION['token'] = $results[SP::TOKEN];
+						$_SESSION['userID'] = getUserID($username)[USER::ID];
+						break;
+					default:
+						// Should not happen; login should only fail if authentication fails, or someone's already using that account.
+						echo "Woah...something unexpected went wrong. Try to <a href='login.php'>log in manually</a>; your account was created successfully, but you were not able to be logged in. Please contact me about this, and quote this error code: ". $results[SP::ERROR];
+						break;
+				}
+				break;
+			case ERR::USERNAME_TAKEN:
+				header("Location: register.php?username=". ERR::USERNAME_TAKEN);
+				break;
+			case ERR::DISPNAME_TAKEN:
+				header("Location: register.php?displayname=". ERR::DISPNAME_TAKEN);
+				break;
+			default:
+				break;
 		}
 	}
-	else {
-		// Error, dang.
-		echo "Failure. Result: '$errorCode'";
+	else{
+		$errors = array();
+		if(!$usernameValid) $errors[] = "username=" . ERR::USERNAME_BAD;
+		if(!$displaynameValid) $errors[] = "displayname=" . ERR::DISPNAME_BAD;
+		if(!$passwordValid) $errors[] = "password=" . ERR::PASSWORD_BAD;
+		header("Location: register.php?". implode("&", $errors));
 	}
 }
 else {
-	// Failed to connect, awww shit.
-	//header("Location: register.php");
-	//echo "Failed to connect";
+	header("Location: register.php?error=". ERR::CONNECT;
 }

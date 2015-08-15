@@ -6,7 +6,7 @@ function validate(which) {
 	var usernameValid = false;
 	var displaynameValid = false;
 	var passwordValid = false;
-	
+
 	/*if(which == undefined) {
 		validateUsername = validateDisplayname = validatePassword = true;
 	}
@@ -22,39 +22,39 @@ function validate(which) {
 		}
 	}
 	if(validateUsername) {*/
-		var label = document.getElementById("usernameerror");
+		var usernameLabel = document.getElementById("usernameerror");
 		var errMsg = usernameErrors();
 		if(errMsg == "") {
-			label.className = "errorhide";
+			usernameLabel.className = "errorhide";
 			usernameValid = true;
 		}
 		else {
-			label.className = "errorshow";
-			label.innerHTML = errMsg;
+			usernameLabel.className = "errorshow";
+			usernameLabel.innerHTML = errMsg;
 		}
 	/*}
 	if(validateDisplayname) {*/
-		var label = document.getElementById("displaynameerror");
+		var displaynameLabel = document.getElementById("displaynameerror");
 		var errMsg = displaynameErrors();
 		if(errMsg == "") {
-			label.className = "errorhide";
+			displaynameLabel.className = "errorhide";
 			displaynameValid = true;
 		}
 		else {
-			label.className = "errorshow";
-			label.innerHTML = errMsg;
+			displaynameLabel.className = "errorshow";
+			displaynameLabel.innerHTML = errMsg;
 		}
 	/*}
 	if(validatePassword) {*/
-		var label = document.getElementById("passworderror");
+		var passwordLabel = document.getElementById("passworderror");
 		var errMsg = passwordErrors();
 		if(errMsg == "") {
-			label.className = "errorhide";
+			passwordLabel.className = "errorhide";
 			passwordValid = true;
 		}
 		else {
-			label.className = "errorshow";
-			label.innerHTML = errMsg;
+			passwordLabel.className = "errorshow";
+			passwordLabel.innerHTML = errMsg;
 		}
 	//}
 	document.getElementById("submit").disabled = !(usernameValid && displaynameValid && passwordValid);
@@ -68,6 +68,9 @@ function usernameErrors() {
 	if(username.length == 0) {
 		return "Please enter a username";
 	}
+	if(/^[!-~]{1,20}$/.test(username)){
+		return "Username must contain no spaces";
+	}
 	return "";
 }
 
@@ -79,16 +82,22 @@ function displaynameErrors() {
 	if(displayname.length == 0) {
 		return "Please enter a display name";
 	}
+	if(/^[!-~]{1,20}$/.test(displayname)){
+		return "Username must contain no spaces";
+	}
 	return "";
 }
 
 function passwordErrors() {
 	var password = document.getElementById("password").value;
-	if(password.length > 60) {
-		return "Password can be at most 60 characters";
+	if(password.length > 72) {
+		return "Password can be at most 72 characters";
 	}
 	if(password.length == 0) {
 		return "Please enter a password";
+	}
+	if(/^.{1,72}$/.test(password)){
+		return "Username must contain no spaces";
 	}
 	return "";
 }

@@ -1,0 +1,19 @@
+done:
+createaccount
+register
+newusersession
+postsubmission
+uploadavatar
+storedprocedures
+validation
+
+Ought to put all validation crap into one js. 
+profile - needs some client-side validation
+login - needs some client-side validation
+
+to do:
+makepost
+forumview
+threadview
+
+Make sure that if the session is expired, remove that info from SESSION. That will make the client know their session has expired. Best have a function that does that for us.

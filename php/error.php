@@ -8,12 +8,18 @@
 class ERR{
 	const OK = 0;
 	const UNKNOWN = 1;
+	const CONNECT = 2;
 	const USERNAME_TAKEN = 100;
 	const USERNAME_NOT_EXIST = 101;
 	const USERNAME_BAD = 102;
 	const DISPNAME_TAKEN = 110;
 	const DISPNAME_NOT_EXIST = 111;
 	const DISPNAME_BAD = 112;
+	const PASSWORD_BAD = 113;
+	const POSTS_PER_PAGE_BAD = 114;
+	const LOCATION_BAD = 115;
+	const EMAIL_BAD = 116;
+	const SEX_BAD = 117;
 	const AUTH_FAIL = 200;
 	const ACC_IN_USE = 201;
 	const TOKEN_FAIL = 202;
@@ -30,12 +36,18 @@ class ERR{
 $ERRORS = array(
 ERR::OK => "OK",
 1 => "Unknown Error",
+2 => "Connection failure",
 100 => "Username has already been taken",
 101 => "Username does not exist",
 102 => "Username is malformed",
 110 => "Display Name has already been taken",
 111 => "Display Name does not exist",
 112 => "Display Name is malformed",
+113 => "Password is malformed",
+114 => "Posts per page malformed",
+115 => "Location is malformed",
+116 => "Email is malformed",
+117 => "Gender is malformed",
 200 => "Username & Password do not match",
 201 => "Account is already in use",
 202 => "Token authentication failure",

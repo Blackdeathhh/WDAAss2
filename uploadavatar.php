@@ -24,18 +24,24 @@ if(is_array($_FILES['newavatar'])){
 				if($dimensions[0] == AVATAR_WIDTH && $dimensions[1] == AVATAR_HEIGHT){
 					$db = connectToDatabase();
 					$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
-					if($results['error'] == ERR::OK){
-						$_SESSION['token'] = $results['Token'];
-						$success = move_uploaded_file($file['tmp_name'], "avatar/" . $_SESSION['id'] . ".jpg");
-						if($success){
-							echo "<p>File successfully uploaded!</p>";
-						}
-						else{
-							echo "<p>File not uploaded successfully. Please try again later, or contact the web master.</p>";
-						}
-					}
-					else{
-						echo "<p>Hey, what do you think you're doing? Go away, you're not this user you big fat liar.</p>";
+					switch($results[SP::ERROR]){
+						case ERR::OK:
+							$_SESSION['token'] = $results[SP::TOKEN];
+							$success = move_uploaded_file($file['tmp_name'], "avatar/" . $_SESSION['id'] . ".jpg");
+							if($success){
+								echo "<p>File successfully uploaded!</p>";
+							}
+							else{
+								echo "<p>File not uploaded successfully. Please try again later, or contact the web master.</p>";
+							}
+							break;
+						case ERR::TOKEN_EXPIRED:
+							echo "<p>Your session has expired; please <a href='login.php'>log in</a> again</p>";
+							break;
+						case ERR::TOKEN_FAIL:
+						case ERR::ACC_IN_USE:
+						case ERR::USER_NO_TOKEN:
+							echo "<p>Hey, what do you think you're doing? Go away, you're not this user you big fat liar.</p>";
 					}
 				}
 				else{
