@@ -3,7 +3,7 @@
 <head>
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/login.css" />
-	<script type="text/javascript" src="js/registerValidate.js" />
+	<script type="text/javascript" src="js/registerValidate.js"></script>
 	<meta charset="UTF-8">
 </head>
 <body>
@@ -11,14 +11,14 @@
 
 <div class="maindiv">
 <?php
+	session_start();
 	require_once("php/database.php");
 	require_once("php/storedprocedures.php");
 	require_once("php/error.php");
 
 	$loggedIn = false;
 
-	if(isset($_SESSION['id']) && isset($_SESSION['token']))
-	{
+	if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 		$db = connectToDatabase();
 		if($db){
 			$results = $verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);

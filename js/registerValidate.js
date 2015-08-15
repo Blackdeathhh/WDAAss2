@@ -68,7 +68,7 @@ function usernameErrors() {
 	if(username.length == 0) {
 		return "Please enter a username";
 	}
-	if(/^[!-~]{1,20}$/.test(username)){
+	if(!(/^[!-~]{1,20}$/.test(username))){
 		return "Username must contain no spaces";
 	}
 	return "";
@@ -82,8 +82,8 @@ function displaynameErrors() {
 	if(displayname.length == 0) {
 		return "Please enter a display name";
 	}
-	if(/^[!-~]{1,20}$/.test(displayname)){
-		return "Username must contain no spaces";
+	if(!(/^[!-~]{1,20}$/.test(displayname))){
+		return "Display Name must contain no spaces";
 	}
 	return "";
 }
@@ -96,8 +96,8 @@ function passwordErrors() {
 	if(password.length == 0) {
 		return "Please enter a password";
 	}
-	if(/^.{1,72}$/.test(password)){
-		return "Username must contain no spaces";
-	}
+	/*if(!(/^.{1,72}$/.test(password))){
+		return "Password must contain no spaces";
+	}*/
 	return "";
 }

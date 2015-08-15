@@ -42,6 +42,7 @@ if($db) {
 				header("Location: register.php?displayname=". ERR::DISPNAME_TAKEN);
 				break;
 			default:
+				header("Location: register.php?error=". $result[SP::ERROR]);
 				break;
 		}
 	}
@@ -54,5 +55,5 @@ if($db) {
 	}
 }
 else {
-	header("Location: register.php?error=". ERR::CONNECT;
+	header("Location: register.php?error=". ERR::CONNECT);
 }
