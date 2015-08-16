@@ -5,14 +5,15 @@ body{
 	top: 0%;
 	left: 0%;
 	height: 149px;
-	position: block;
+	display: block;
 	width: 100%;
 }
 /*#topbar+div{ Not needed if: #topbar position == block
 	margin-top: imageheight px;
 }*/
 body{
-	background-color: beige;
+	background-color: #000000;
+	color: #FFFFFF;
 }
 div{
 	border: 1px solid grey;
@@ -25,22 +26,52 @@ ol li{
 	list-style-type: none;
 }
 .title{
-	color: blue;
-	background-color: #40E0D0;
+	color: #BEBC00;
+	background-color: #6F9863;
 	margin-top: 0px;
 	margin-bottom: 1em;
 }
 .maindiv{
-	background-color: #CCCCCC;
+	background-color: #003000;
 	width: 90%;
 	margin: auto;
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
 
+.navbar{
+	float: right;
+}
+
+.navbar li{
+	float: left;
+	margin: 1em;
+}
+
 /*
-Colours...
-Headers: #40E0D0 - Turquoise
+Scheme...
+Could have a dirty image or something as the background, lighter as main area
+Dull green content text, dull yellow for titles
+Don't use complementary colours for text
+
+We could use either...
+Shades of grey for the background
+Green + Yellow for text
+
+OR
+
+Shades of dark green for the background
+Grey or white + Yellow for text
+
+
+Colours... BEBC00 is a sickly yellow, that fallout font colour
+Site Background: #706956 - Brown (maybe)
+Header Background: #40E0D0 - Turquoise (Don't know)
+Text: #7BD362 - Green
+Header text: #BEBC00
+
+Main Background: 
+
 Footers: #648ECE - Dark Blue
 Content Contrast (i.e. Avatar area): #7FA3D7 - Blue
 Content: #BCDEFF - Light Blue

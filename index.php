@@ -9,12 +9,7 @@
 <body>
 <?php require("php/topbar.php"); ?>
 <div class="maindiv">
-	<ol>
-		<li><a href="login.php">Log In</a></li>
-		<li><a href="register.php">Register</a></li>
-		<li><a href="profile.php">View Profile</a></li>
-		<li><a href="forumview.php">Forums</a></li>
-	</ol>
+	<p>News to come...</p>
 </div>
 </body>
 </html>
