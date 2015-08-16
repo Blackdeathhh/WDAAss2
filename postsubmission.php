@@ -14,15 +14,22 @@
 	require_once("php/storedprocedures.php");
 	require_once("php/error.php");
 
-	if(isset($_POST['threadtitle'])){
-		// We're making a new thread as well, then posting to it
-	}
-
 	if(isset($_POST['content'])){
 		/* Search the string to find any HTML tags that we have forbidden; that is, anything other than b, u, i, a, img, or br. If we do find a tag, we can clean it up and set a link back to edit the post. */
 		$db = connectToDatabase();
 		if($db){
-			if(isset($_POST['threadid'])){
+			$postToThread = (isset($_POST['threadid'])) ? $_POST['threadid'] : null;
+			if(isset($_POST['threadtitle']) && $postToThread == null){
+				// We're making a new thread as well, then posting to it
+				// We have to only make a thread if we have content to post.
+				$result = createThread($db, $_SESSION['id'], $_POST['forumid'], $_POST['threadtitle'], $_SESSION['token']);
+				switch($result[SP::ERROR]){
+					case ERR::OK:
+						$postToThread = $result[THREAD::ID];
+						break;
+				}
+			}
+			if($postToThread != null){
 				// We're making a new post
 				$result = createPost($db, $_SESSION['id'], $_POST['threadid'], $_POST['content'], $_SESSION['token']);
 				$_SESSION['token'] = $result[SP::TOKEN];

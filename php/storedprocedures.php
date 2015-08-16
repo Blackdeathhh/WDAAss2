@@ -444,7 +444,7 @@ function getForumAncestry($database, $targetForumID){
 
 function createPost($database, $userID, $targetThreadID, $content, $loginToken){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL CreatePost(:id, :thread, :content, :token, @newToken, @error)");
+	$stmt = $database->prepare("CALL CreatePost(:id, :thread, :content, @postID, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":thread", $targetThreadID, PDO::PARAM_INT);
 	$stmt->bindParam(":content", $content, PDO::PARAM_STR);
@@ -456,16 +456,16 @@ function createPost($database, $userID, $targetThreadID, $content, $loginToken){
 		echo $e->getMessage();
 		$errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @error, @newToken")->fetchAll();
+	$sel = $database->query("SELECT @error, @newToken, @postID")->fetchAll();
 	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
-	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10), POST::ID => intval($sel[0]['@postID']));
 	return $results;
 }
 
 function createThread($database, $userID, $targetForumID, $title, $loginToken){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL Createthread(:id, :forum, :title, :token, @newToken, @error)");
+	$stmt = $database->prepare("CALL Createthread(:id, :forum, :title, @threadID, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":forum", $targetForumID, PDO::PARAM_INT);
 	$stmt->bindParam(":title", $title, PDO::PARAM_STR);
@@ -477,9 +477,9 @@ function createThread($database, $userID, $targetForumID, $title, $loginToken){
 		echo $e->getMessage();
 		$errorCode = ERR::UNKNOWN;
 	}
-	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$sel = $database->query("SELECT @threadID, @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
-	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10), THREAD::ID => intval($sel[0]['@threadID']);
 	return $results;
 }

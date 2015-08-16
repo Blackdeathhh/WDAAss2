@@ -22,16 +22,16 @@
 			switch($info[SP::ERROR]){
 				case ERR::OK:
 					echo <<<EOT
-<h2 class='title'>Creating a new thread in: <a href=forumview.php?forumid={$_POST['forumid']}>{$info[FORUM::TITLE]}</a></h2>
+<h2 class='title'>Creating a new thread in: <a href=forumview.php?forumid={$_POST['forumid']}>{$info[FORUM::NAME]}</a></h2>
 <form id="postform" method="POST" action="postsubmission.php">
-	<input type="text" id="threadtitle" />
+	<input type="text" name="newthreadtitle" id="newthreadtitle" />
 	<input type='hidden' id='forumid' name='forumid' value='{$_POST['forumid']}'>
 EOT;
 					echo createContentArea();
 					echo "</form>";
 					break;
-				case ERR::THREAD_NOT_EXIST;
-					echo "The thread does not or no longer exists. Back to <a href='forumview.php'>forums</a>.";
+				case ERR::FORUM_NOT_EXIST;
+					echo "The forum does not or no longer exists. Back to <a href='forumview.php'>forums</a>.";
 					break;
 				case ERR::UNKNOWN:
 				default:
