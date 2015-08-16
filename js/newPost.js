@@ -39,7 +39,6 @@ function cleanNode(node){
 			case "U":
 			case "A":
 			case "IMG":
-			case "IFRAME":
 				// These nodes are fine. However, must check the children nodes, too.
 				var children = node.childNodes;
 				for(var i = 0; i < children.length; ++i){
@@ -47,6 +46,7 @@ function cleanNode(node){
 				}
 				break;
 			case "BR":
+			case "IFRAME":
 				// Fine, but no children are allowed
 				while(node.firstChild){
 					node.removeChild(node.firstChild);
