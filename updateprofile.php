@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once("php/database.php");
 require_once("php/validation.php");
 require_once("php/error.php");
 require_once("php/storedprocedures.php");
@@ -27,10 +28,11 @@ if(count($errors) == 0){
 	$db = connectToDatabase();
 	if($db){
 		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
+		header("Location: profile.php?error=". $results[SP::ERROR]);
 		//$_SESSION['token'] = $results[SP::TOKEN];
-		switch($results[SP::ERROR]){
+		/*switch($results[SP::ERROR]){
 			case ERR::OK:
-				header("Location: profile.php");
+				header("Location: profile.php?error=". $results[SP::ERROR]);
 				break;
 			case ERR::TOKEN_FAIL:
 			case ERR::TOKEN_EXPIRED:
@@ -39,7 +41,7 @@ if(count($errors) == 0){
 			default:
 				header("Location: profile.php?error=". $results[SP::ERROR]);
 				break;
-		}
+		}*/
 	}
 }
 else{
