@@ -47,7 +47,7 @@ class THREAD{
 	const VIEWS = "Views";
 	const OPEN = "Open";
 // These consts do not correspond to table columns
-	const LATEST_POST = "LatestPost";
+	const LATEST_POST_AT = "LatestPost";
 }
 
 class POST{
