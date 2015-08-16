@@ -23,12 +23,14 @@ if($db) {
 
 		switch($results[SP::ERROR]){
 			case ERR::OK:
-				// It worked, try to login.
+				// It worked, try to log in.
 				$results = login($db, $username, $hashedPass);
 				switch($results[SP::ERROR]){
 					case ERR::OK:
 						$_SESSION['token'] = $results[SP::TOKEN];
 						$_SESSION['id'] = $results[USER::ID];
+						// Give them a default avatar
+						copy("avatar/default.jpg", "avatar/". $results[USER::ID] .".jpg");
 						header("Location: profile.php");
 						break;
 					default:
