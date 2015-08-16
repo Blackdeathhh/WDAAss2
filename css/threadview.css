@@ -1,7 +1,8 @@
 .reply{
 	width: auto;
 	margin: 1em;
-	background-color: #7FA3D7;
+	background-color: #D5FFD5;
+	color: black;
 }
 .reply div{
 	border-style: none;
@@ -28,7 +29,7 @@
 	width: 150px;
 	min-height: inherit;
 	float: left;
-	background-color: #7FA3D7;
+	background-color: #D5FFD5;
 }
 .posterinfo p{
 	padding: 8px;
@@ -41,15 +42,16 @@
 }
 .replyfooter{
 	clear: both;
-	background-color: #648ECE;
+	background-color: #BFF0BF;
 	border: 1px solid #40E0D0;
 	min-height: 10px;
 	margin-bottom: 0px;
 }
 .content{
 	margin-left: 150px;
-	background-color: #BCDEFF;
+	background-color: #EEFFEE;
 	min-height: inherit;
+	color: #000000;
 }
 .pages{
 	display: inline-block;
