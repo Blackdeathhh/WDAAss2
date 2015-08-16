@@ -34,7 +34,7 @@ EOT;
 					}
 					echo <<<EOT
 </div>
-	<input type='button' name='post' id='post' value='Post' onclick='submitPost()' />
+	<input type='button' id='post' value='Post' onclick='submitPost()' />
 </form>
 EOT;
 					break;

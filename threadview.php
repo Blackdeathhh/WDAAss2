@@ -22,6 +22,7 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 0;
 $threadID;
 $threadInfo;
 $postsPerPage = 10;
+$focusPostID = (isset($_GET['postid'])) ? $_GET['postid'] : null;
 $postIDs;
 
 if(isset($_GET['threadid'])){
@@ -47,11 +48,21 @@ $errorCode = $postIDs[SP::ERROR];
 unset($postIDs[SP::ERROR]);
 $numPosts = count($postIDs);
 
-echo <<<EOT
-<div id="breadcrumb">
-<a href="index.php">Home</a> -> <a href="forumview.php">Forums</a>
-</div>
+echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a></div>";
+if(isset($threadInfo)){
+	$ancestryIDs = getForumAncestry($db, $threadInfo[THREAD::FORUM_ID]);
+	$ancestryError = $ancestryIDs[SP::ERROR];
+	unset($ancestryIDs[SP::ERROR]);
+	$breadcrumbs = array();
+	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
+		$info = getForumInfo($db, $ancestryIDs[$i]);
+		$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+	}
+	echo implode(" -> ", $breadcrumbs);
+	echo " -> ". $threadInfo[THREAD::TITLE];
+}
 
+echo <<<EOT
 <div class="maindiv">
 <h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
@@ -80,10 +91,10 @@ else{
 	}
 }
 
-//Intentional; we do stop 1 before $max, otherwise we'd return $postsPerPage + 1 posts.
 $max = ($page * $postsPerPage) + $postsPerPage;
 if($max > $numPosts) $max = $numPosts;
 $postsToGet = array();
+//Intentional; we do stop 1 before $max, otherwise we'd return $postsPerPage + 1 posts.
 for($i = $page * $postsPerPage; $i != $max; ++$i){
 	$postsToGet[] = $postIDs[$i][POST::ID];
 }
