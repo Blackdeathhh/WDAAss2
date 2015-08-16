@@ -48,7 +48,7 @@ $errorCode = $postIDs[SP::ERROR];
 unset($postIDs[SP::ERROR]);
 $numPosts = count($postIDs);
 
-echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a></div>";
+echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a>";
 if(isset($threadInfo)){
 	$ancestryIDs = getForumAncestry($db, $threadInfo[THREAD::FORUM_ID]);
 	$ancestryError = $ancestryIDs[SP::ERROR];
@@ -64,6 +64,7 @@ if(isset($threadInfo)){
 }
 
 echo <<<EOT
+</div>
 <div class="maindiv">
 <h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
