@@ -13,7 +13,11 @@
 	require_once("php/database.php");
 	require_once("php/storedprocedures.php");
 	require_once("php/error.php");
-	
+
+	if(isset($_POST['threadtitle'])){
+		// We're making a new thread as well, then posting to it
+	}
+
 	if(isset($_POST['content'])){
 		/* Search the string to find any HTML tags that we have forbidden; that is, anything other than b, u, i, a, img, or br. If we do find a tag, we can clean it up and set a link back to edit the post. */
 		$db = connectToDatabase();

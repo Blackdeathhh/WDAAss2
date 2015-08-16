@@ -55,12 +55,10 @@ echo "</div><div class='maindiv'>";
 if($curForumInfo){
 	echo <<<EOT
 <h2 class='title'>{$curForumInfo[FORUM::NAME]}</h2>
-<div>
-	<form method=GET action="newthread.php">
-		<input type="hidden" name="forumid" value="{$curForumInfo[FORUM::ID]}" />
-		<input type="submit" value="New Thread" />
-	</form>
-</div>
+<form method=GET action="newthread.php">
+	<input type="hidden" name="forumid" value="{$curForumInfo[FORUM::ID]}" />
+	<input type="submit" value="New Thread" />
+</form>
 EOT;
 }
 else{
