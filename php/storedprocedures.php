@@ -480,6 +480,6 @@ function createThread($database, $userID, $targetForumID, $title, $loginToken){
 	$sel = $database->query("SELECT @threadID, @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
-	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10), THREAD::ID => intval($sel[0]['@threadID']);
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10), THREAD::ID => intval($sel[0]['@threadID']));
 	return $results;
 }
