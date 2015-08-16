@@ -328,7 +328,10 @@ function getForumThreads($database, $targetForumID){
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = array();
 	if(isset($out) && count($out) != 0){
-		$results = $out;
+		for($i = 0; $i != count($out); ++$i){
+			$results[] = $out[$i];
+			$results[THREAD::OPEN] = ord($results[THREAD::OPEN]) == 1;
+		}
 	}
 	else{
 		$errorCode = ERR::FORUM_NOT_EXIST;
@@ -353,10 +356,7 @@ function getThreadPosts($database, $targetThreadID){
 	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$results = array();
 	if(isset($out) && count($out) != 0){
-		for($i = 0; $i != count($out); ++$i){
-			$results[] = $out[$i];
-			$results[THREAD::OPEN] = ord($results[THREAD::OPEN]) == 1;
-		}
+		$results = $out;
 	}
 	else{
 		$errorCode = ERR::THREAD_NOT_EXIST;

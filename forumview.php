@@ -97,7 +97,7 @@ EOT;
 if(isset($threads)){
 	echo "<div class='forumbox'><h2 class='title'>Threads</h2><ol>";
 	foreach($threads as $thread){
-		$user = getPublicUserDetails($db, $thread['StarterUserID']);
+		$user = getPublicUserDetails($db, $thread[THREAD::STARTER_USER_ID]);
 		echo <<<EOT
 <li>
 	<div class='subitem'>
@@ -112,7 +112,7 @@ EOT;
 		}
 		echo <<<EOT
 			<p><a href='threadview.php?threadid={$thread[THREAD::ID]}&page=0'>{$thread[THREAD::TITLE]}</a></p>
-			<p>Started by {$user[USER::DISP_NAME]}, at {$thread[THREAD::MADE_AT]}.</p>
+			<p>Started by <a href='profile.php?profileid={$user[USER::ID]}'>{$user[USER::DISP_NAME]}</a>, at {$thread[THREAD::MADE_AT]}.</p>
 		</div>
 		<div class='threadstats'>
 			<p>Views: ???</p>
