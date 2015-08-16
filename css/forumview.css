@@ -7,7 +7,7 @@
 }
 .subitem{
 	min-height: 5em;
-	background-color: #7FA3D7;
+	background-color: #BFF0BF;
 	margin: 1em;
 	white-space: nowrap;
 	overflow: hidden;
@@ -36,7 +36,7 @@
 	display: inline-block;
 	border: none;
 	white-space: normal;
-
+	color: #000000;
 	min-height: inherit;
 }
 .threadicon{
@@ -53,7 +53,7 @@
 }
 .threadstats{
 	text-align: right;
-	background-color: #BCDEFF;
+	background-color: #EEFFEE;
 	min-width: 10%;
 }
 .threadlastpost{
