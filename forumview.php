@@ -79,11 +79,11 @@ foreach($topics as $topic){
 			<p>{$forum[FORUM::SUBTITLE]}</p>
 		</div>
 		<div class='threadstats'>
-			<p>Threads: ???</p>
+			<p>Threads: {$forum[AGGR::NUM_THREADS]}</p>
 		</div>
 		<div class='threadlastpost'>
-			<p>Latest Thread: ???</p>
-			<p>At ??:?? ??/??/??</p>
+			<p>Latest Thread: <a href='threadview.php?threadid={$forum[THREAD::ID]}'>{$forum[THREAD::TITLE]}</a></p>
+			<p>Created at {$forum[THREAD::MADE_AT]}</p>
 		</div>
 	</div>
 </li>

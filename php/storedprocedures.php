@@ -69,6 +69,7 @@ class SP{
 
 class AGGR{
 	const NUM_POSTS = "Posts";
+	const NUM_THREADS = "Threads";
 }
 
 function getSalt($database, $username) {

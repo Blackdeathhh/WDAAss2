@@ -23,7 +23,6 @@ if(isset($_SESSION['token']) && isset($_SESSION['id'])) {
 			break;
 	}
 }
-
 if($loggedIn){
 	// Already logged in
 	header("Location: profile.php");
