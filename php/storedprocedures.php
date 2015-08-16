@@ -46,7 +46,7 @@ class THREAD{
 	const IS_STICKY = "isSticky";
 	const VIEWS = "Views";
 	const OPEN = "Open";
-// These consts do not correspond to the table.
+// These consts do not correspond to table columns
 	const LATEST_POST = "LatestPost";
 }
 
@@ -58,6 +58,8 @@ class POST{
 	const MADE_AT = "CreatedAt";
 	const EDITED_AT = "LastEdited";
 	const EDITING_USER_ID = "EditedByUserID";
+// These consts do not correspond to table columns
+	const LATEST_POST_ID = "LatestPostID";
 }
 
 class SP{

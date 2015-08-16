@@ -128,7 +128,7 @@ EOT;
 		</div>
 		<div class='threadlastpost'>
 			<p>View <a href='threadview.php?threadid={$thread[THREAD::ID]}&postid={$thread[THREAD::LATEST_POST]}'>latest post</a> by <a href='profile.php?profileid={$thread[POST::USER_ID]}'>{$latestPoster[USER::DISP_NAME]}</a></p>
-			<p>At {$thread[THREAD::LATEST_POST]}</p>
+			<p>At {$thread[POST::LATEST_POST_ID]}</p>
 		</div>
 	</div>
 </li>
