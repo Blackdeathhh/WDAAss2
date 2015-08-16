@@ -77,44 +77,64 @@ if($userID != 0){
 	if($db){
 		if($isOwnProfile){
 			$results = getPrivateUserDetails($db, $userID, $_SESSION['token']);
-			//$_SESSION['token'] = $results[SP::TOKEN];
 			$errorCode = $results[SP::ERROR];
-			$displayName = $results[USER::DISP_NAME];
-			$location = $results[USER::LOC];
-			$gender = $results[USER::SEX];
-			$email = $results[USER::EMAIL];
-			$postsPerPage = $results[USER::POSTS_PAGE];
+			switch($errorCode){
+				case ERR::OK;
+					$displayName = $results[USER::DISP_NAME];
+					$location = $results[USER::LOC];
+					$gender = $results[USER::SEX];
+					$email = $results[USER::EMAIL];
+					$postsPerPage = $results[USER::POSTS_PAGE];
+					break;
+				case ERR::TOKEN_FAIL:
+				case ERR::TOKEN_EXPIRED:
+				case ERR::USER_NO_TOKEN:
+					echo "<p>Your session has expired; please <a href='login.php'>log in</a> again.</p>";
+					break;
+				case ERR::PERMIS_FAIL:
+					echo "<p>You do not have permissions to edit this profile.</p>";
+					break;
+				case ERR::USER_NOT_EXIST:
+					
+					break;
+			}
 		}
 		else{
 			$results = getPublicUserDetails($db, $userID);
 			$errorCode = $results[SP::ERROR];
-			$displayName = $results[USER::DISP_NAME];
-			$location = $results[USER::LOC];
-			$gender = $results[USER::SEX];
+			switch($errorCode){
+				case ERR::OK;
+					$displayName = $results[USER::DISP_NAME];
+					$location = $results[USER::LOC];
+					$gender = $results[USER::SEX];
+					break;
+				case ERR::USER_NOT_EXIST:
+					echo "<p>That user does not exist.</p>";
+					break;
+			}
 		}
-		switch($errorCode){
-			case ERR::OK:
+		if($errorCode == ERR::OK){
 			/*We have to display the avatar, buttons to change it. Also some sort of notification if you have any new private messages, along with a link to go and view them.
 			Fields that display user details. If it's our profile, we show more and they can be modified
 			Private Messages belong on a separate page. Friends probably do, as well. They could go together on a separate page 'friends.php', which could show a list of all friends, links to their profiles, ability to send them PMs.
 			Private Messages viewing should */
 			// If you want to customize that upload thing, wrap it in a label, make input's display: none. Then, place a <span> after it, inside the label, and style that how you like.
-				echo <<<EOT
+			echo <<<EOT
 	<h2 class='title'>{$displayName}'s Profile</h2><div>
 		<div class="profileavatar">
 			<img class="avatar" src="avatar/{$userID}.jpg" />
 EOT;
-				if($isOwnProfile){
-					echo <<<EOT
+			if($isOwnProfile){
+				echo <<<EOT
 			<form method="POST" action="uploadavatar.php" enctype="multipart/form-data">
 				<input type="file" name="newavatar" required />
 				<input type="submit" name="submit" value="Upload Image" />
 			</form>
 EOT;
-				}
-				echo "</div><div><ol>";
-				if($isOwnProfile){
-					echo <<<EOT
+			}
+			echo "</div><div><ol>";
+			if($isOwnProfile){
+				echo <<<EOT
 			<form action="updateprofile.php" method="POST">
 				<li><label>Location: </label><input type="text" name="location" id="location" value="{$location}" /></li>
 				<li>
@@ -163,7 +183,7 @@ EOT;
 					}
 					echo "</li>";
 				}
-				echo "</ol></div></div>";
+			echo "</ol></div></div>";
 		}
 	}
 	else{
