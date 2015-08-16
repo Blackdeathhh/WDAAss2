@@ -82,8 +82,17 @@ foreach($topics as $topic){
 			<p>Threads: {$forum[AGGR::NUM_THREADS]}</p>
 		</div>
 		<div class='threadlastpost'>
+EOT;
+			if(isset($forum[THREAD::ID]) && isset($forum[THREAD::TITLE]) && isset($forum[THREAD::MADE_AT])){
+				echo <<<EOT
 			<p>Latest Thread: <a href='threadview.php?threadid={$forum[THREAD::ID]}'>{$forum[THREAD::TITLE]}</a></p>
 			<p>Created at {$forum[THREAD::MADE_AT]}</p>
+EOT;
+			}
+			else{
+				echo "<p>Latest Thread: None</p><p>Feels lonely...make a thread here!</p>";
+			}
+			echo <<<EOT
 		</div>
 	</div>
 </li>
