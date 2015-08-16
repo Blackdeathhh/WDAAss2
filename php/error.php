@@ -27,6 +27,7 @@ class ERR{
 	const USER_NO_TOKEN = 204;
 	const PERMIS_FAIL = 205;
 	const USER_NOT_EXIST = 206;
+	const USER_NOT_LOGGED = 207;
 	const FORUM_NOT_EXIST = 300;
 	const THREAD_NOT_EXIST = 301;
 	const POST_NOT_EXIST = 302;
@@ -56,6 +57,7 @@ ERR::OK => "OK",
 204 => "User does not have a token",
 205 => "Insufficient permission level",
 206 => "User does not exist",
+207 => "User not logged in",
 300 => "Forum does not exist",
 301 => "Thread does not exist",
 302 => "Post does not exist",

@@ -109,6 +109,24 @@ function login($database, $username, $hash) {
 	return $results;
 }
 
+function logout($database, $userID, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL Logout(:id, :token, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage() . "<br />";
+		$errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	if($errorCode == ERR::OK) unset($loginToken);
+	return $results;
+}
+
 function getUserID($database, $username) {
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetUserID(:user)");
@@ -329,8 +347,8 @@ function getForumThreads($database, $targetForumID){
 	$results = array();
 	if(isset($out) && count($out) != 0){
 		for($i = 0; $i != count($out); ++$i){
-			$results[] = $out[$i];
-			$results[THREAD::OPEN] = ord($results[THREAD::OPEN]) == 1;
+			$results[$i] = $out[$i];
+			$results[$i][THREAD::OPEN] = ord($results[$i][THREAD::OPEN]) == 1;
 		}
 	}
 	else{
