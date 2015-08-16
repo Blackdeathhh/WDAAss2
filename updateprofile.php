@@ -1,9 +1,13 @@
 <?php
+session_start();
+require_once("php/validation.php");
+require_once("php/error.php");
+require_once("php/storedprocedures.php");
 
 $newLocation = $_POST['location'];
 $newEmail = $_POST['email'];
 $newGender = $_POST['gender'];
-$newPostsPerPage = intval($_POST['postsPerPage'], 10);
+$newPostsPerPage = intval($_POST['postsperpage'], 10);
 $errors = array();
 
 if(!validateLocation($newLocation)){
@@ -26,17 +30,18 @@ if(count($errors) == 0){
 		//$_SESSION['token'] = $results[SP::TOKEN];
 		switch($results[SP::ERROR]){
 			case ERR::OK:
+				header("Location: profile.php");
 				break;
 			case ERR::TOKEN_FAIL:
 			case ERR::TOKEN_EXPIRED:
 			case ERR::PERMIS_FAIL:
 			case ERR::USER_NOT_EXIST:
 			default:
-				header("profile.php?error=". $results[SP::ERROR]);
+				header("Location: profile.php?error=". $results[SP::ERROR]);
 				break;
 		}
 	}
 }
 else{
-	header("profile.php?". implode("&", $errors));
+	header("Location: profile.php?". implode("&", $errors));
 }

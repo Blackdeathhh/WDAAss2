@@ -128,10 +128,10 @@ EOT;
 					echo <<<EOT
 					</select>
 				</li>
-				<li><label>Email: </label><input type="email" name="email" id="email" value="{$email}" /></li>
+				<li><label>Email: </label><input type="text" name="email" id="email" value="{$email}" /></li>
 				<li>
 					<label>Posts Per Page: </label>
-					<select>
+					<select name="postsperpage">
 EOT;
 					for($i = 10; $i <= 30; $i += 5){
 						echo "<option value='$i'";

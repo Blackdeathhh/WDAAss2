@@ -33,7 +33,7 @@ function validatePostsPerPage($postsPerPage){
 function validateLocation($location){
 	// Max 30 chars, no spaces
 	$regex = "/^[!-~]{1,30}$/";
-	return preg_match($regex, $username);
+	return preg_match($regex, $location);
 }
 
 function validateEmail($email){
