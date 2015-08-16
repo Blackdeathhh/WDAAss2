@@ -23,7 +23,7 @@ if(count($errors) == 0){
 	$db = connectToDatabase();
 	if($db){
 		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
-		$_SESSION['token'] = $results[SP::TOKEN];
+		//$_SESSION['token'] = $results[SP::TOKEN];
 		switch($results[SP::ERROR]){
 			case ERR::OK:
 				break;

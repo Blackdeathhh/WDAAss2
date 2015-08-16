@@ -24,7 +24,6 @@ switch($results[SP::ERROR]){
 
 		$results = login($db, $username, $hash);
 		$loginToken = $results[SP::TOKEN];
-		$errorCode = $results[SP::ERROR];
 
 		switch($results[SP::ERROR]){
 			case ERR::OK:

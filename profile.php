@@ -31,7 +31,7 @@ if(isset($_POST['modDetails'])){
 	$db = connectToDatabase();
 	if($db){
 		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
-		$_SESSION['token'] = $results[SP::TOKEN];
+		//$_SESSION['token'] = $results[SP::TOKEN];
 		// If any of these errors occur, then the same thing will happen during information retrieval on, so we can just check/state the error has occurred there
 		switch($results[SP::ERROR]){
 			case ERR::OK:
@@ -77,7 +77,7 @@ if($userID != 0){
 	if($db){
 		if($isOwnProfile){
 			$results = getPrivateUserDetails($db, $userID, $_SESSION['token']);
-			$_SESSION['token'] = $results[SP::TOKEN];
+			//$_SESSION['token'] = $results[SP::TOKEN];
 			$errorCode = $results[SP::ERROR];
 			$displayName = $results[USER::DISP_NAME];
 			$location = $results[USER::LOC];

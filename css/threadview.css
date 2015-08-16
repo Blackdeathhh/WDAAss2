@@ -62,8 +62,10 @@
 	min-width: 1em;
 	float:left;
 	text-align:center;
-	background-color:#7FA3D7;
+	background-color: #6F9863;
+	color: #BEBC00;
 }
 li.curpage{
-	background-color:#40E0D0;
+	background-color: #BFF0BF;
+	color: black;
 }

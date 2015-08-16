@@ -25,7 +25,7 @@ if($db){
 		$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
-				$_SESSION['token'] = $results[SP::TOKEN];
+				//$_SESSION['token'] = $results[SP::TOKEN];
 				$loggedIn = true;
 				break;
 			default:

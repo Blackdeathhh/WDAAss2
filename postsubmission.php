@@ -23,7 +23,7 @@
 				// We're making a new thread as well, then posting to it
 				// We have to only make a thread if we have content to post.
 				$result = createThread($db, $_SESSION['id'], $_POST['forumid'], $_POST['newthreadtitle'], $_SESSION['token']);
-				$_SESSION['token'] = $result[SP::TOKEN];
+				//$_SESSION['token'] = $result[SP::TOKEN];
 				switch($result[SP::ERROR]){
 					case ERR::OK:
 						$postToThread = $result[THREAD::ID];
@@ -33,7 +33,7 @@
 			if($postToThread != null){
 				// We're making a new post
 				$result = createPost($db, $_SESSION['id'], $postToThread, $_POST['content'], $_SESSION['token']);
-				$_SESSION['token'] = $result[SP::TOKEN];
+				//$_SESSION['token'] = $result[SP::TOKEN];
 				switch($result[SP::ERROR]){
 					// If the page number's too high, you'll just go to the final page.
 					case ERR::OK:

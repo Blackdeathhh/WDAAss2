@@ -156,11 +156,11 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	return $results;
 }
 
-function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
+function verifyAndUpdateLoginToken($database, $userID, &$token) {
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
-	$stmt->bindParam(":token", $oldToken, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $token, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -171,6 +171,7 @@ function verifyAndUpdateLoginToken($database, $userID, $oldToken) {
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
 	$results = array(SP::TOKEN => intval($sel[0]['@newToken'], 10), SP::ERROR => $errorCode);
+	$token = intval($sel[0]['@newToken'], 10);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -196,7 +197,7 @@ function getPublicUserDetails($database, $userID){
 	return $results;
 }
 
-function getPrivateUserDetails($database, $userID, $loginToken){
+function getPrivateUserDetails($database, $userID, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetPrivateUserDetails(:id, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
@@ -230,11 +231,12 @@ function getPrivateUserDetails($database, $userID, $loginToken){
 		$errorCode = ERR::USER_NOT_EXIST;
 	}
 	$results[SP::TOKEN] = intval($sel[0]['@newToken'], 10);
+	$loginToken = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
 	return $results;
 }
 
-function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEmail, $newGender, $newPostsPerPage)
+function modifyUserDetails($database, $userID, &$loginToken, $newLocation, $newEmail, $newGender, $newPostsPerPage)
 {
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL ModifyUserDetails(:id, :location, :email, :gender, :postsperpage, :token, @newToken, @error)");
@@ -254,6 +256,7 @@ function modifyUserDetails($database, $userID, $loginToken, $newLocation, $newEm
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
 	$results = array(SP::TOKEN => intval($sel[0]['@newToken'], 10), SP::ERROR => $errorCode);
+	$loginToken = intval($sel[0]['@newToken'], 10);
 	$stmt->closeCursor();
 	return $results;
 }
@@ -445,7 +448,7 @@ function getForumAncestry($database, $targetForumID){
 	$results[SP::ERROR] = $errorCode;
 }
 
-function createPost($database, $userID, $targetThreadID, $content, $loginToken){
+function createPost($database, $userID, $targetThreadID, $content, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL CreatePost(:id, :thread, :content, @postID, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
@@ -463,10 +466,11 @@ function createPost($database, $userID, $targetThreadID, $content, $loginToken){
 	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
 	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10), POST::ID => intval($sel[0]['@postID']));
+	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }
 
-function createThread($database, $userID, $targetForumID, $title, $loginToken){
+function createThread($database, $userID, $targetForumID, $title, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL Createthread(:id, :forum, :title, @threadID, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
@@ -484,5 +488,6 @@ function createThread($database, $userID, $targetForumID, $title, $loginToken){
 	$errorCode = intval($sel[0]['@error'], 10);
 	$stmt->closeCursor();
 	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10), THREAD::ID => intval($sel[0]['@threadID']));
+	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }

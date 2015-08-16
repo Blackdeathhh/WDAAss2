@@ -35,7 +35,7 @@ else{
 
 if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 	$results = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
-	$_SESSION['token'] = $results[SP::TOKEN];
+	//$_SESSION['token'] = $results[SP::TOKEN];
 
 	if($results[SP::ERROR] == ERR::OK){
 		$postsPerPage = $results[USER::POSTS_PAGE];
