@@ -93,11 +93,19 @@ EOT;
 	echo "</ol></div>";
 }
 
-//ThreadID, StarterUserID, ThreadTitle, CreatedAt, isSticky
+//ThreadID, StarterUserID, ThreadTitle, CreatedAt, isSticky, Open, Views, Count(aggregate posts)
+$userInfo = array();
 if(isset($threads)){
 	echo "<div class='forumbox'><h2 class='title'>Threads</h2><ol>";
 	foreach($threads as $thread){
-		$user = getPublicUserDetails($db, $thread[THREAD::STARTER_USER_ID]);
+		if(!isset($userInfo[$thread[THREAD::STARTER_USER_ID]])){
+			$userInfo[$thread[THREAD::STARTER_USER_ID]] = getPublicUserDetails($db, $thread[THREAD::STARTER_USER_ID]);
+		}
+		if(!isset($userInfo[$thread[POST::USER_ID]])){
+			$userInfo[$thread[POST::USER_ID]] = getPublicUserDetails($db, $thread[POST::USER_ID]);
+		}
+		$threadStarter = $userInfo[$thread[THREAD::STARTER_USER_ID]];
+		$latestPoster = $userInfo[$thread[POST::USER_ID]];
 		echo <<<EOT
 <li>
 	<div class='subitem'>
@@ -112,15 +120,15 @@ EOT;
 		}
 		echo <<<EOT
 			<p><a href='threadview.php?threadid={$thread[THREAD::ID]}&page=0'>{$thread[THREAD::TITLE]}</a></p>
-			<p>Started by <a href='profile.php?profileid={$user[USER::ID]}'>{$user[USER::DISP_NAME]}</a>, at {$thread[THREAD::MADE_AT]}.</p>
+			<p>Started by <a href='profile.php?profileid={$thread[THREAD::STARTER_USER_ID]}'>{$threadStarter[USER::DISP_NAME]}</a>, at {$thread[THREAD::MADE_AT]}.</p>
 		</div>
 		<div class='threadstats'>
-			<p>Views: {$thread[AGGR::NUM_POSTS]}</p>
-			<p>Replies: ???</p>
+			<p>Views: {$thread[THREAD::VIEWS]}</p>
+			<p>Replies: {$thread[AGGR::NUM_POSTS]}</p>
 		</div>
 		<div class='threadlastpost'>
-			<p>View latest post by ???</p>
-			<p>At ??:?? ??/??/??</p>
+			<p>View latest post by <a href='profile.php?profileid={$thread[POST::USER_ID]}'>{$latestPoster[USER::NAME]}</a></p>
+			<p>At {$thread[THREAD::LATEST_POST]}</p>
 		</div>
 	</div>
 </li>

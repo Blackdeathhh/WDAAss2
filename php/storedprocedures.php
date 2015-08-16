@@ -46,6 +46,7 @@ class THREAD{
 	const IS_STICKY = "isSticky";
 	const VIEWS = "Views";
 	const OPEN = "Open";
+	const LATEST_POST = "LatestPost";
 }
 
 class POST{
