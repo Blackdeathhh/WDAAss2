@@ -205,9 +205,10 @@ if(isset($_GET['postsperpage'])){
 if(isset($_GET['error'])){
 	switch($_GET['error']){
 		case ERR::OK:
+			echo "<p>Your profile has been updated successfully!</p>";
 			break;
 		case ERR::TOKEN_EXPIRED:
-			case "<p>Your session has expired, please log in again.</p>";
+			echo "<p>Your session has expired, please log in again.</p>";
 			break;
 		case ERR::PERMIS_FAIL:
 			echo "<p>You do not have the permissions required to do that.</p>";
