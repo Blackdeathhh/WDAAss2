@@ -114,8 +114,8 @@ if(isset($threads)){
 	</div>
 </li>
 EOT;
-	echo "</ol>";
 	}
+	echo "</ol>";
 }
 ?>
 </div>

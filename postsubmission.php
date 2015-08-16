@@ -32,7 +32,7 @@
 			}
 			if($postToThread != null){
 				// We're making a new post
-				$result = createPost($db, $_SESSION['id'], $_POST['threadid'], $_POST['content'], $_SESSION['token']);
+				$result = createPost($db, $_SESSION['id'], $postToThread, $_POST['content'], $_SESSION['token']);
 				$_SESSION['token'] = $result[SP::TOKEN];
 				switch($result[SP::ERROR]){
 					// If the page number's too high, you'll just go to the final page.
