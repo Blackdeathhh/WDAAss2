@@ -55,7 +55,7 @@ echo "</div><div class='maindiv'>";
 if($curForumInfo && isset($_GET['forumid'])){
 	echo <<<EOT
 <h2 class='title'>{$curForumInfo[FORUM::NAME]}</h2>
-<form method=GET action="makethread.php">
+<form method=POST action="makethread.php">
 	<input type="hidden" name="forumid" value="{$_GET['forumid']}" />
 	<input type="submit" value="New Thread" />
 </form>
