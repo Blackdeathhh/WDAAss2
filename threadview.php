@@ -51,6 +51,17 @@ $numPosts = count($postIDs);
 $crumbs = array();
 $crumbs[] = "<a href='index.php'>Home</a>";
 $crumbs[] = "<a href='forumview.php'>Forums</a>";
+
+if(isset($threadInfo)){
+	$ancestryIDs = getForumAncestry($db, $threadInfo[THREAD::FORUM_ID]);
+	$ancestryError = $ancestryIDs[SP::ERROR];
+	unset($ancestryIDs[SP::ERROR]);
+	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
+		$info = getForumInfo($db, $ancestryIDs[$i]);
+		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+	}
+}
+
 $crumbs[] = $threadInfo[THREAD::TITLE];
 $breadcrumb = implode(" -> ", $crumbs);
 

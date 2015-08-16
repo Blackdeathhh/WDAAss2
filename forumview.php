@@ -41,8 +41,6 @@ $crumbs = array();
 $crumbs[] = "<a href='index.php'>Home</a>";
 $crumbs[] = "<a href='forumview.php'>Forums</a>";
 
-$breadcrumb;
-
 if(isset($_GET['forumid'])){
 	$ancestryIDs = getForumAncestry($db, $_GET['forumid']);
 	$ancestryError = $ancestryIDs[SP::ERROR];
@@ -52,13 +50,15 @@ if(isset($_GET['forumid'])){
 		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
 	}
 }
-$crumbs[] = $curForumInfo[FORUM::NAME];
+if($curForumInfo != null) $crumbs[] = $curForumInfo[FORUM::NAME];
 $breadcrumb = implode(" -> ", $crumbs);
+
 echo <<<EOT
 <div id='breadcrumb'>
 {$breadcrumb}
 </div><div class='maindiv'>
 EOT;
+
 if($curForumInfo && isset($_GET['forumid'])){
 	echo "<h2 class='title'>". $curForumInfo[FORUM::NAME] ."</h2>";
 	if($curForumInfo[FORUM::ALLOW_THREAD]){
