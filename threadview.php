@@ -48,23 +48,17 @@ $errorCode = $postIDs[SP::ERROR];
 unset($postIDs[SP::ERROR]);
 $numPosts = count($postIDs);
 
-echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a>";
-if(isset($threadInfo)){
-	$ancestryIDs = getForumAncestry($db, $threadInfo[THREAD::FORUM_ID]);
-	$ancestryError = $ancestryIDs[SP::ERROR];
-	unset($ancestryIDs[SP::ERROR]);
-	$breadcrumbs = array();
-	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
-		$info = getForumInfo($db, $ancestryIDs[$i]);
-		$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
-	}
-	echo implode(" -> ", $breadcrumbs);
-	$info = getForumInfo($db, $threadInfo[THREAD::FORUM_ID]);
-	echo "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a> -> ". $threadInfo[THREAD::TITLE];
-}
+$crumbs = array();
+$crumbs[] = "<a href='index.php'>Home</a>";
+$crumbs[] = "<a href='forumview.php'>Forums</a>";
+$crumbs[] = $threadInfo[THREAD::TITLE];
+$breadcrumb = implode(" -> ", $crumbs);
 
 echo <<<EOT
+<div id="breadcrumb">
+{$breadcrumb}
 </div>
+
 <div class="maindiv">
 <h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
@@ -176,20 +170,6 @@ echo <<<EOT
 </form>
 EOT;
 ?>
-<!--//maindiv
-/*
-	postIDs = getThreadPosts
-	postsPerPage = getUserInfo
-	posts = getPostInfo(arrayslice(min, max, postIDs))
-	
-	foreach post
-		echo the div, li, etc. for that post
-	
-	-- If page is 0 and PostsPerPage 50, posts 0~49
-	min: page x postsPerPage
-	max: min + postsPerPage - 1
-
-	We should query the db every time the page is reloaded. That way, we get information of new posts. Asking for the entire list of IDs is fine.
-*/-->
+</div>
 </body>
 </html>

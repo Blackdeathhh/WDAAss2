@@ -37,21 +37,28 @@ foreach($forums as $forum){
 }
 $topics = array_unique($topics);
 
-echo "<div id='breadcrumb'><a href='index.php'>Home</a> -> <a href='forumview.php'>Forums</a>";
+$crumbs = array();
+$crumbs[] = "<a href='index.php'>Home</a>";
+$crumbs[] = "<a href='forumview.php'>Forums</a>";
+
+$breadcrumb;
+
 if(isset($_GET['forumid'])){
 	$ancestryIDs = getForumAncestry($db, $_GET['forumid']);
 	$ancestryError = $ancestryIDs[SP::ERROR];
 	unset($ancestryIDs[SP::ERROR]);
-	$breadcrumbs = array();
 	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
 		$info = getForumInfo($db, $ancestryIDs[$i]);
-		$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
 	}
-	echo implode(" -> ", $breadcrumbs);
-	echo " -> ". $curForumInfo[FORUM::NAME];
 }
-echo "</div><div class='maindiv'>";
-
+$crumbs[] = $curForumInfo[FORUM::NAME];
+$breadcrumb = implode(" -> ", $crumbs);
+echo <<<EOT
+<div id='breadcrumb'>
+{$breadcrumb}
+</div><div class='maindiv'>
+EOT;
 if($curForumInfo && isset($_GET['forumid'])){
 	echo "<h2 class='title'>". $curForumInfo[FORUM::NAME] ."</h2>";
 	if($curForumInfo[FORUM::ALLOW_THREAD]){
@@ -146,6 +153,7 @@ EOT;
 	echo "</ol>";
 }
 ?>
+	</div>
 </div>
 </body>
 </html>
