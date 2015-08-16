@@ -354,7 +354,7 @@ function getThreadPosts($database, $targetThreadID){
 	$results = array();
 	if(isset($out) && count($out) != 0){
 		for($i = 0; $i != count($out); ++$i){
-			$results = $out[$i];
+			$results[] = $out[$i];
 			$results[THREAD::OPEN] = ord($results[THREAD::OPEN]) == 1;
 		}
 	}
