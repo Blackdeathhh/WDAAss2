@@ -34,6 +34,7 @@ class FORUM{
 	const NAME = "ForumName";
 	const SUBTITLE = "ForumSubtitle";
 	const TOPIC = "Topic";
+	const ALLOW_THREAD = "AllowThreads";
 }
 
 class THREAD{

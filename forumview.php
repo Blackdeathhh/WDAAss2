@@ -53,13 +53,15 @@ if(isset($_GET['forumid'])){
 echo "</div><div class='maindiv'>";
 
 if($curForumInfo && isset($_GET['forumid'])){
-	echo <<<EOT
-<h2 class='title'>{$curForumInfo[FORUM::NAME]}</h2>
+	echo "<h2 class='title'>". $curForumInfo[FORUM::NAME] ."</h2>";
+	if($curForumInfo[FORUM::ALLOW_THREAD]){
+		echo <<<EOT
 <form method=POST action="makethread.php">
 	<input type="hidden" name="forumid" value="{$_GET['forumid']}" />
 	<input type="submit" value="New Thread" />
 </form>
 EOT;
+	}
 }
 else{
 	echo "<h2 class='title'>Forums</h2>";
@@ -68,7 +70,8 @@ else{
 foreach($topics as $topic){
 	echo "<div class='forumbox'><h2 class='title'>$topic</h2><ol>";
 	foreach($forums as $forum){ //ID, name, subtitle, topic
-		echo <<<EOT
+		if($forum[FORUM::TOPIC] == $topic){
+			echo <<<EOT
 <li>
 	<div class='subitem'>
 		<div class='threadmeta'>
@@ -85,6 +88,7 @@ foreach($topics as $topic){
 	</div>
 </li>
 EOT;
+		}
 	}
 	echo "</ol></div>";
 }

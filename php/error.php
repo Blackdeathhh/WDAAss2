@@ -31,6 +31,7 @@ class ERR{
 	const THREAD_NOT_EXIST = 301;
 	const POST_NOT_EXIST = 302;
 	const THREAD_LOCKED = 303;
+	const FORUM_NOTHREAD = 304;
 }
 
 $ERRORS = array(
@@ -58,5 +59,6 @@ ERR::OK => "OK",
 300 => "Forum does not exist",
 301 => "Thread does not exist",
 302 => "Post does not exist",
-303 => "Thread is locked"
+303 => "Thread is locked",
+304 => "Forum does not allow threads"
 );

@@ -37,7 +37,7 @@
 				switch($result[SP::ERROR]){
 					// If the page number's too high, you'll just go to the final page.
 					case ERR::OK:
-						echo "Post made successfully! <a href='threadview.php?threadid=". $_POST['threadid'] ."&page=99999'>Back to thread</a>.";
+						echo "Post made successfully! <a href='threadview.php?threadid=". $postToThread ."&page=99999'>Back to thread</a>.";
 						break;
 					case ERR::THREAD_NOT_EXIST:
 						echo "The specified thread does not, or no longer, exists.";
