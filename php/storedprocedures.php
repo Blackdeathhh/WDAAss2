@@ -63,6 +63,10 @@ class SP{
 	const TOKEN = "Token";
 }
 
+class AGGR{
+	const NUM_POSTS = "Posts";
+}
+
 function getSalt($database, $username) {
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetSalt(:user)");

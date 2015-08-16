@@ -115,11 +115,11 @@ EOT;
 			<p>Started by <a href='profile.php?profileid={$user[USER::ID]}'>{$user[USER::DISP_NAME]}</a>, at {$thread[THREAD::MADE_AT]}.</p>
 		</div>
 		<div class='threadstats'>
-			<p>Views: ???</p>
+			<p>Views: {$thread[AGGR::NUM_POSTS]}</p>
 			<p>Replies: ???</p>
 		</div>
 		<div class='threadlastpost'>
-			<p>View ??? by ???</p>
+			<p>View latest post by ???</p>
 			<p>At ??:?? ??/??/??</p>
 		</div>
 	</div>
