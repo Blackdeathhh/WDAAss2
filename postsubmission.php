@@ -19,10 +19,11 @@
 		$db = connectToDatabase();
 		if($db){
 			$postToThread = (isset($_POST['threadid'])) ? $_POST['threadid'] : null;
-			if(isset($_POST['threadtitle']) && $postToThread == null){
+			if(isset($_POST['newthreadtitle']) && $postToThread == null){
 				// We're making a new thread as well, then posting to it
 				// We have to only make a thread if we have content to post.
-				$result = createThread($db, $_SESSION['id'], $_POST['forumid'], $_POST['threadtitle'], $_SESSION['token']);
+				$result = createThread($db, $_SESSION['id'], $_POST['forumid'], $_POST['newthreadtitle'], $_SESSION['token']);
+				$_SESSION['token'] = $result[SP::TOKEN];
 				switch($result[SP::ERROR]){
 					case ERR::OK:
 						$postToThread = $result[THREAD::ID];
