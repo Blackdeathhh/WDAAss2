@@ -46,6 +46,7 @@ class THREAD{
 	const IS_STICKY = "isSticky";
 	const VIEWS = "Views";
 	const OPEN = "Open";
+// These consts do not correspond to the table.
 	const LATEST_POST = "LatestPost";
 }
 

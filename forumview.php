@@ -127,7 +127,7 @@ EOT;
 			<p>Replies: {$thread[AGGR::NUM_POSTS]}</p>
 		</div>
 		<div class='threadlastpost'>
-			<p>View latest post by <a href='profile.php?profileid={$thread[POST::USER_ID]}'>{$latestPoster[USER::NAME]}</a></p>
+			<p>View <a href='threadview.php?threadid={$thread[THREAD::ID]}&postid={$thread[THREAD::LATEST_POST]}'>latest post</a> by <a href='profile.php?profileid={$thread[POST::USER_ID]}'>{$latestPoster[USER::DISP_NAME]}</a></p>
 			<p>At {$thread[THREAD::LATEST_POST]}</p>
 		</div>
 	</div>
