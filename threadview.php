@@ -48,9 +48,12 @@ $errorCode = $postIDs[SP::ERROR];
 unset($postIDs[SP::ERROR]);
 $numPosts = count($postIDs);
 
+$parentForumInfo = getForumInfo($db, $threadInfo[THREAD::FORUM_ID]);
+
 $crumbs = array();
 $crumbs[] = "<a href='index.php'>Home</a>";
 $crumbs[] = "<a href='forumview.php'>Forums</a>";
+$crumbs[] = "<a href='forumview.php?forumid=". $parentForumInfo[FORUM::ID] .">". $parentForumInfo[FORUM::NAME] ."</a>"
 
 if(isset($threadInfo)){
 	$ancestryIDs = getForumAncestry($db, $threadInfo[THREAD::FORUM_ID]);
