@@ -59,7 +59,8 @@ if(isset($threadInfo)){
 		$breadcrumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
 	}
 	echo implode(" -> ", $breadcrumbs);
-	echo " -> ". $threadInfo[THREAD::TITLE];
+	$info = getForumInfo($db, $threadInfo[THREAD::FORUM_ID]);
+	echo "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a> -> ". $threadInfo[THREAD::TITLE];
 }
 
 echo <<<EOT
