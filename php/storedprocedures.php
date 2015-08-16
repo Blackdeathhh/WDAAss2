@@ -274,6 +274,7 @@ function getForumInfo($database, $targetForumID){
 	$results = array();
 	if(isset($out) && count($out) != 0){
 		$results = $out[0];
+		$results[FORUM::ALLOW_THREAD] = intval($results[FORUM::ALLOW_THREAD], 10) == 1;
 	}
 	else{
 		$errorCode = ERR::FORUM_NOT_EXIST;
