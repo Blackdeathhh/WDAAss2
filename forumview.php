@@ -47,7 +47,7 @@ if(isset($_GET['forumid'])){
 	unset($ancestryIDs[SP::ERROR]);
 	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
 		$info = getForumInfo($db, $ancestryIDs[$i]);
-		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] .">". $info[FORUM::NAME] ."</a>";
+		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] ."'>". $info[FORUM::NAME] ."</a>";
 	}
 }
 if($curForumInfo != null) $crumbs[] = $curForumInfo[FORUM::NAME];
