@@ -6,7 +6,25 @@ require_once("php/error.php");
 require_once("php/storedprocedures.php");
 require_once("php/validation.php");
 
-if($_SESSION['token']) {
+$db = connectToDatabase();
+$loggedIn = false;
+
+if(isset($_SESSION['token']) && isset($_SESSION['id'])) {
+	$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
+	switch($results[SP::ERROR]){
+		case ERR::OK:
+			//$_SESSION['token'] = $results[SP::TOKEN];
+			$loggedIn = true;
+			break;
+		default:
+			// We don't care WHAT went wrong; this just means that the user's not logged in, which is all we need to know right now.
+			unset($_SESSION['token']);
+			unset($_SESSION['id']);
+			break;
+	}
+}
+
+if($loggedIn){
 	// Already logged in
 	header("Location: profile.php");
 	exit;
@@ -14,7 +32,6 @@ if($_SESSION['token']) {
 
 $username = $_POST['username'];
 
-$db = connectToDatabase();
 $results = getSalt($db, $username);
 
 switch($results[SP::ERROR]){
