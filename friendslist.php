@@ -58,7 +58,7 @@
 		{$friendInfo[USER::DISP_NAME]}</a>
 		<form method="GET" action="makemessage.php">
 			<input type="hidden" name="touserid" value="{$friend[FRIEND::FRIEND_ID]}"/>
-			<input type="submit" value="Send Message" disabled />
+			<input type="submit" value="Send Message" />
 		</form>
 		<form method="POST" action="friendslist.php">
 			<input type="hidden" name="deletefriendid" value="{$friend[FRIEND::FRIEND_ID]}"/>
