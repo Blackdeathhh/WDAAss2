@@ -56,8 +56,8 @@
 		<a href="profile.php?profileid={$friend[FRIEND::FRIEND_ID]}">
 			<img class="avatar" src="avatar/{$friend[FRIEND::FRIEND_ID]}.jpg" />
 		{$friendInfo[USER::DISP_NAME]}</a>
-		<form method="POST" action="">
-			<input type="hidden" name="" value="{}"/>
+		<form method="GET" action="makemessage.php">
+			<input type="hidden" name="touserid" value="{$friend[FRIEND::FRIEND_ID]}"/>
 			<input type="submit" value="Send Message" disabled />
 		</form>
 		<form method="POST" action="friendslist.php">
