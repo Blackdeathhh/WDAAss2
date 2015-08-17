@@ -71,6 +71,7 @@ $location;
 $gender;
 $email;
 $postsPerPage;
+$permisLevel;
 
 if($userID != 0){
 	$db = connectToDatabase();
@@ -85,6 +86,7 @@ if($userID != 0){
 					$gender = $results[USER::SEX];
 					$email = $results[USER::EMAIL];
 					$postsPerPage = $results[USER::POSTS_PAGE];
+					$permisLevel = $results[PERMISSION::LEVEL];
 					break;
 				case ERR::TOKEN_FAIL:
 				case ERR::TOKEN_EXPIRED:
@@ -107,6 +109,7 @@ if($userID != 0){
 					$displayName = $results[USER::DISP_NAME];
 					$location = $results[USER::LOC];
 					$gender = $results[USER::SEX];
+					$permisLevel = $results[PERMISSION::LEVEL];
 					break;
 				case ERR::USER_NOT_EXIST:
 					echo "<p>That user does not exist.</p>";
@@ -133,6 +136,31 @@ EOT;
 EOT;
 			}
 			echo "</div><div><ol>";
+			echo "<li>Permissions: "
+			switch($permisLevel){
+				case 0:
+					echo "Demoted User";
+					break;
+				case 1:
+					echo "Standard User";
+					break;
+				case 2:
+					echo "Privileged User";
+					break;
+				case 3:
+					echo "Super User";
+					break;
+				case 4:
+					echo "Moderator";
+					break;
+				case 5:
+					echo "Super Moderator";
+					break;
+				case 10:
+					echo "Administrator";
+					break;
+			}
+			echo " (Level $permisLevel)</li>";
 			if($isOwnProfile){
 				echo <<<EOT
 			<form action="updateprofile.php" method="POST">

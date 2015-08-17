@@ -23,7 +23,7 @@ if(is_array($_FILES['newavatar'])){
 			if($dimensions){
 				if($dimensions[0] == AVATAR_WIDTH && $dimensions[1] == AVATAR_HEIGHT){
 					$db = connectToDatabase();
-					$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
+					$results = verifyUser($db, 1, $_SESSION['id'], $_SESSION['token']);
 					switch($results[SP::ERROR]){
 						case ERR::OK:
 							//$_SESSION['token'] = $results[SP::TOKEN];
@@ -37,6 +37,9 @@ if(is_array($_FILES['newavatar'])){
 							break;
 						case ERR::TOKEN_EXPIRED:
 							echo "<p>Your session has expired; please <a href='login.php'>log in</a> again</p>";
+							break;
+						case ERR::PERMIS_FAIL:
+							echo "<p>You do not have the required permissions to do that.</p>";
 							break;
 						case ERR::TOKEN_FAIL:
 						case ERR::ACC_IN_USE:

@@ -183,10 +183,11 @@ function registerUser($database, $username, $hash, $salt, $displayName) {
 	return $results;
 }
 
-function verifyAndUpdateLoginToken($database, $userID, &$token) {
+function verifyUser($database, $requiredPermission, $userID, &$token) {
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL VerifyAndUpdateLoginToken(:id, :token, @newToken, @error)");
+	$stmt = $database->prepare("CALL VerifyUser(:id, :permission, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":permission", $requiredPermission, PDO::PARAM_INT);
 	$stmt->bindParam(":token", $token, PDO::PARAM_INT);
 	try{
 		$stmt->execute();

@@ -22,7 +22,7 @@ if($db){
 	$loggedIn = false;
 	if(isset($_SESSION['id']) && isset($_SESSION['token']))
 	{
-		$results = verifyAndUpdateLoginToken($db, $_SESSION['id'], $_SESSION['token']);
+		$results = verifyUser($db, 0, $_SESSION['id'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
 				//$_SESSION['token'] = $results[SP::TOKEN];
