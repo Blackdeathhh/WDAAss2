@@ -80,6 +80,21 @@ echo <<<EOT
 <h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
 
+// Here, we have to replace the page to match with the page on which the postToFocus resides. If so. Don't worry though, because the page links will get rid of this, so it won't keep dragging us back to the same page
+/*
+
+*/
+
+if(isset($focusPostID)){
+	foreach($postIDs as $num => $ID){
+		if($focusPostID == $ID[POST::ID]){
+			// e.g. If it was the 15th post, and we display 10 per page: 15 / 10 = 1, which is 2nd page.
+			$page = intval($num / $postsPerPage);
+			break;
+		}
+	}
+}
+
 if($errorCode == ERR::OK && $numPosts  != 0){
 	$numPages = intval($numPosts / $postsPerPage + 1);
 	if($page > $numPages) $page = $numPages - 1;
