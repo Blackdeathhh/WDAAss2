@@ -21,7 +21,7 @@ if(is_array($_FILES['newavatar'])){
 		if($file['size'] <= AVATAR_MAX_SIZE){
 			$dimensions = getimagesize($file['tmp_name']);
 			if($dimensions){
-				if($dimensions[0] == AVATAR_WIDTH && $dimensions[1] == AVATAR_HEIGHT){
+				if($dimensions[0] <= AVATAR_WIDTH && $dimensions[1] <= AVATAR_HEIGHT){
 					$db = connectToDatabase();
 					$results = verifyUser($db, 1, $_SESSION['id'], $_SESSION['token']);
 					switch($results[SP::ERROR]){
@@ -48,7 +48,7 @@ if(is_array($_FILES['newavatar'])){
 					}
 				}
 				else{
-					echo "<p>The image must be 100 x 100 pixels.</p>";
+					echo "<p>The image must be a maximum of 100 x 100 pixels.</p>";
 				}
 			}
 			else{
