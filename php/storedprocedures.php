@@ -62,6 +62,15 @@ class POST{
 	const LATEST_POST_ID = "LatestPostID";
 }
 
+class MESSAGE{
+	const ID = "MessageID";
+	const SENDER = "FromUserID";
+	const RECEIPIENT = "ToUserID";
+	const CONTENT = "Content";
+	const MADE_AT = "CreatedAt";
+	const TITLE = "Title";
+}
+
 class FRIEND{
 	const ID = "UserID";
 	const FRIEND_ID = "HasFriend";
