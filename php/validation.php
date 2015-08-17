@@ -67,6 +67,6 @@ function validateForumTopic($topic){ // 50 char
 	return (strlen($topic) > 0 && strlen($topic) < 50);
 }
 
-function validateMessageTitle($$msgTitle){ // 30 char
+function validateMessageTitle($msgTitle){ // 30 char
 	return (strlen($$msgTitle) > 0 && strlen($$msgTitle) < 30);
 }
