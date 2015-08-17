@@ -53,6 +53,13 @@ ol li{
 	height: 100;
 	padding: auto;
 }
+a:visited{
+	color:#A52A2A;
+}
+/*a:link{
+	color: Not sure yet...
+}*/
+
 /*
 Scheme...
 Could have a dirty image or something as the background, lighter as main area
