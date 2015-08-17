@@ -666,7 +666,8 @@ function getFriends($database, $userID, &$loginToken){
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
-	$results = //array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
 	$loginToken = intval($sel[0]['@newToken'], 10);
+	$results[SP::ERROR] = $errorCode;
+	$results[SP::TOKEN] = $loginToken;
 	return $results;
 }
