@@ -1,0 +1,11 @@
+.friendbox{
+	display: inline-block;
+	text-align: center;
+	width: 15%;
+	margin: 3em;
+	padding: 1em;
+}
+.friendbox .avatar{
+	display: block;
+	margin: auto;
+}

@@ -29,17 +29,29 @@
 					break;
 			}
 		}
+		elseif($_POST['deletefriendid']){
+			$results = removeFriend($db, $_SESSION['id'], $_POST['deletefriendid'], $_SESSION['token']);
+			switch($results[SP::ERROR]){
+				case ERR::OK:
+					echo "<p>Friend removed! <a href='friendslist.php'>See friends</a></p>";
+					break;
+				default:
+					echo "<p>Could not remove friend. Error: ". $ERRORS[$results[SP::ERROR]] ."</p>";
+					break;
+			}
+		}
 		else{
 			$results = getFriends($db, $_SESSION['id'], $_SESSION['token']);
 			$errorCode = $results[SP::ERROR];
 			unset($results[SP::ERROR]);
 			// results is an array of arrays. Each child array is just HasFriend => ID.
 			foreach($results as $num => $friend){
-				$friendInfo = getPublicUserDetails($friend[FRIEND::FRIEND_ID]);
+				$friendInfo = getPublicUserDetails($db, $friend[FRIEND::FRIEND_ID]);
 				echo <<<EOT
 	<div class="friendbox">
-		<img class="avatar" src="avatar/{$friend[FRIEND::FRIEND_ID]}.jpg" />
-		<a href="profile?profileid={$friend[FRIEND::FRIEND_ID]}">{$friendInfo[USER::DISP_NAME]}</a>
+		<a href="profile.php?profileid={$friend[FRIEND::FRIEND_ID]}">
+			<img class="avatar" src="avatar/{$friend[FRIEND::FRIEND_ID]}.jpg" />
+		{$friendInfo[USER::DISP_NAME]}</a>
 		<form method="POST" action="">
 			<input type="hidden" name="" value="{}"/>
 			<input type="submit" value="Send Message" disabled />
