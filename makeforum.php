@@ -16,13 +16,15 @@
 // Handle error messages from formsubmission.php
 
 	echo <<<EOT
-	<form method=POST action="forumsubmission.php">
-		<input type="hidden" name="parentid" value="{$_POST['parentid']}"
-		<input type="text" name="name" id="name" />
-		<input type="text" name="subtitle" id="subtitle" />
-		<input type="text" name="topic" id="topic" />
-		<input type="submit" id="submit" value="Submit" />
-	</form>
+	<ol>
+		<form method=POST action="forumsubmission.php">
+			<input type="hidden" name="parentid" value="{$_POST['parentid']}" />
+			<li><label><input type="text" name="name" id="name" /></label></li>
+			<li><label><input type="text" name="subtitle" id="subtitle" /></label></li>
+			<li><label><input type="text" name="topic" id="topic" /></label></li>
+			<li><input type="submit" id="submit" value="Submit" /></li>
+		</form>
+	</ol>
 EOT;
 ?>
 </div>

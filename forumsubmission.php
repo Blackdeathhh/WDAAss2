@@ -39,6 +39,9 @@ if($forumNameValid && $forumSubtitleValid && $forumTopicValid){
 				break;
 		}
 	}
+	else{
+		echo "<p>Error connecting to database.</p>";
+	}
 }
 ?>
 </div>
