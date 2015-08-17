@@ -89,11 +89,12 @@ EOT;
 					<label id='errormessage'>
 EOT;
 		if(isset($_GET['error'])){
-			switch($_GET['error']){
+			echo $ERRORS[$_GET['error']];
+			/*switch($_GET['error']){
 				default:
 					echo "Something went wrong";
 					break;
-			}
+			}*/
 		}
 		else{
 		

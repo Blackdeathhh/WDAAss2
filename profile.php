@@ -100,6 +100,8 @@ if($userID != 0){
 					
 					break;
 			}
+			// Update because it can change (though rarely)
+			$_SESSION['permission'] = $permisLevel;
 		}
 		else{
 			$results = getPublicUserDetails($db, $userID);

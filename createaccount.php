@@ -29,6 +29,7 @@ if($db) {
 					case ERR::OK:
 						$_SESSION['token'] = $results[SP::TOKEN];
 						$_SESSION['id'] = $results[USER::ID];
+						$_SESSION['permission'] = $results[PERMISSION::LEVEL];
 						// Give them a default avatar
 						copy("avatar/default.jpg", "avatar/". $results[USER::ID] .".jpg");
 						header("Location: profile.php");

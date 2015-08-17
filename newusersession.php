@@ -48,6 +48,7 @@ switch($results[SP::ERROR]){
 					case ERR::OK:
 						$_SESSION['token'] = $loginToken;
 						$_SESSION['id'] = $results[USER::ID];
+						$_SESSION['permission'] = $results[PERMISSION::LEVEL];
 						header("Location: profile.php");
 						exit;
 						break;

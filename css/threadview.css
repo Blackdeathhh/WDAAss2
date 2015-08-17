@@ -21,6 +21,10 @@
 }
 .replyheader p{
 	padding: 5px;
+	display: inline-block;
+}
+.replyheader input{
+	float: right;
 }
 .replyfooter p{
 	padding: 0px;

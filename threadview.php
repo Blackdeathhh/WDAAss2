@@ -14,6 +14,7 @@ session_start();
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
+require_once("php/constants.php");
 
 $db = connectToDatabase();
 $page = (isset($_GET['page'])) ? $_GET['page'] : 0;
@@ -136,6 +137,24 @@ if($posts){
 	<div id='post{$ID}' class='reply'>
 		<div class='replyheader'>
 			<p>Posted at {$details[POST::MADE_AT]}</p>
+EOT;
+				if(($userID == $_SESSION['id'] && $_SESSION['permission'] >= P_EDIT_OWN_POST) || ($_SESSION['permission'] >= P_EDIT_OTHER_POST)){
+					echo <<<EOT
+			<form method="POST" action="makepost.php">
+				<input type="hidden" name="editid" value="{$ID}" />
+				<input type="submit" value="Edit Post" />
+			</form>
+EOT;
+				}
+				if(($userID == $_SESSION['id'] && $_SESSION['permission'] >= P_DELETE_OWN_POST) || ($_SESSION['permission'] >= P_DELETE_OTHER_POST)){
+					echo <<<EOT
+			<form method="POST" action="deletepost.php">
+				<input type="hidden" name="deleteid" value="{$ID}" />
+				<input type="submit" value="Delete Post" />
+			</form>
+EOT;
+				}
+				echo <<<EOT
 		</div>
 		<div class='replybody'>
 			<div class='posterinfo'>
