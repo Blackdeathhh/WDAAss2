@@ -64,7 +64,7 @@ EOT;
 
 if($curForumInfo && isset($_GET['forumid'])){
 	echo "<h2 class='title'>". $curForumInfo[FORUM::NAME] ."</h2>";
-	if($curForumInfo[FORUM::ALLOW_THREAD]){
+	if($_SESSION['permission'] >= $curForumInfo[FORUM::REQUIRED_LEVEL]){
 		echo <<<EOT
 <form method=POST action="makethread.php">
 	<input type="hidden" name="forumid" value="{$_GET['forumid']}" />
@@ -72,10 +72,17 @@ if($curForumInfo && isset($_GET['forumid'])){
 </form>
 EOT;
 	}
+	else{
+		echo "<button disabled>Required Level: ". $curForumInfo[FORUM::REQUIRED_LEVEL] ."</button>";
+	}
 }
 else{
 	echo "<h2 class='title'>Forums</h2>";
 }
+
+/*
+Make forum button here
+*/
 
 foreach($topics as $topic){
 	echo "<div class='forumbox'><h2 class='title'>$topic</h2><ol>";

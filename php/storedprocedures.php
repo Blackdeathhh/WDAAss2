@@ -34,7 +34,7 @@ class FORUM{
 	const NAME = "ForumName";
 	const SUBTITLE = "ForumSubtitle";
 	const TOPIC = "Topic";
-	const ALLOW_THREAD = "AllowThreads";
+	const REQUIRED_LEVEL = "PermissionLevelRequired";
 }
 
 class THREAD{
@@ -316,7 +316,7 @@ function getForumInfo($database, $targetForumID){
 	if(isset($out) && count($out) != 0){
 		$results = $out[0];
 		// Returns a literal bit 1 which ends up as a string. Therefore, get ASCII code
-		$results[FORUM::ALLOW_THREAD] = ord($results[FORUM::ALLOW_THREAD]) == 1;
+		//$results[FORUM::ALLOW_THREAD] = ord($results[FORUM::ALLOW_THREAD]) == 1;
 	}
 	else{
 		$errorCode = ERR::FORUM_NOT_EXIST;
