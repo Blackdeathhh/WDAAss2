@@ -19,9 +19,9 @@
 	<ol>
 		<form method=POST action="forumsubmission.php">
 			<input type="hidden" name="parentid" value="{$_POST['parentid']}" />
-			<li><label><input type="text" name="name" id="name" /></label></li>
-			<li><label><input type="text" name="subtitle" id="subtitle" /></label></li>
-			<li><label><input type="text" name="topic" id="topic" /></label></li>
+			<li><label>Forum Name:</label><input type="text" name="name" id="name" /></li>
+			<li><label>Forum Subtitle:</label><input type="text" name="subtitle" id="subtitle" /></li>
+			<li><label>Forum Topic:</label><input type="text" name="topic" id="topic" /></li>
 			<li><input type="submit" id="submit" value="Submit" /></li>
 		</form>
 	</ol>

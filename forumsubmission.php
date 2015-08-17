@@ -17,7 +17,8 @@ require_once("php/storedprocedures.php");
 require_once("php/error.php");
 require_once("php/validation.php");
 
-$forumParent = (isset($_POST['parentid'])) ? $_POST['parentid'] : null;
+$forumParent = null;
+if(isset($_POST['parentid']) && $_POST['parentid'] != "") $forumParent = intval($_POST['parentid'], 10);
 $forumName = $_POST['name'];
 $forumSubtitle = $_POST['subtitle'];
 $forumTopic = $_POST['topic'];
