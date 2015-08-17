@@ -697,11 +697,12 @@ function getFriends($database, $userID, &$loginToken){
 	return $results;
 }
 
-function createMessage($database, $userID, $recipientID, $content, &$loginToken){
+function createMessage($database, $userID, $recipientID, $title, $content, &$loginToken){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL CreateMessage(:id, :recipient, :content, :token, @newToken, @error)");
+	$stmt = $database->prepare("CALL CreateMessage(:id, :recipient, :title, :content, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":recipient", $recipientID, PDO::PARAM_INT);
+	$stmt->bindParam(":title", $title, PDO::PARAM_STR);
 	$stmt->bindParam(":content", $content, PDO::PARAM_STR);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
 	try{
