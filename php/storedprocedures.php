@@ -734,9 +734,18 @@ function getMessages($database, $userID, $senderUserID, $receiverUserID, &$login
 		echo $e->getMessage();
 		$errorCode = ERR::UNKNOWN;
 	}
-	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	$stmt->closeCursor();
-	$stmt = null;
+	$out;
+	try{
+		$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		$stmt = null;
+	}
+	catch(PDOException $e){
+		// 2053 == No rows. If no rows, we can ignore it; just return a null array.
+		// If it's something else, rethrow it.
+		if($e->getCode() == 2053) unset($out);
+		else $errorCode = ERR::UNKNOWN;
+	}
 
 	$results = array();
 	if(isset($out) && count($out) != 0){
