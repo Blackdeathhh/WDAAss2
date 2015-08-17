@@ -719,3 +719,35 @@ function createMessage($database, $userID, $recipientID, $title, $content, &$log
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }
+
+function getMessages($database, $userID, $senderUserID, $receiverUserID, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL GetMessages(:id, :sender, :receiver, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $senderUserID, PDO::PARAM_INT);
+	$stmt->bindParam(":sender", $senderUserID, PDO::PARAM_INT);
+	$stmt->bindParam(":receiver", $receiverUserID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$stmt->closeCursor();
+	$stmt = null;
+
+	$results = array();
+	if(isset($out) && count($out) != 0){
+		$results = $out;
+	}
+	else{
+		$errorCode = ERR::USER_NOT_EXIST;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$loginToken = intval($sel[0]['@newToken'], 10);
+	$results[SP::ERROR] = $errorCode;
+	return $results;
+]
