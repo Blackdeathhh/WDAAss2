@@ -62,6 +62,11 @@ class POST{
 	const LATEST_POST_ID = "LatestPostID";
 }
 
+class FRIEND{
+	const ID = "UserID";
+	const FRIEND_ID = "HasFriend";
+}
+
 class SP{
 	const ERROR = "Error";
 	const TOKEN = "Token";
@@ -668,6 +673,5 @@ function getFriends($database, $userID, &$loginToken){
 	$errorCode = intval($sel[0]['@error'], 10);
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
-	$results[SP::TOKEN] = $loginToken;
 	return $results;
 }

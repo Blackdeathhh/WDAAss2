@@ -31,6 +31,26 @@
 		}
 		else{
 			$results = getFriends($db, $_SESSION['id'], $_SESSION['token']);
+			$errorCode = $results[SP::ERROR];
+			unset($results[SP::ERROR]);
+			// results is an array of arrays. Each child array is just HasFriend => ID.
+			foreach($results as $num => $friend){
+				$friendInfo = getPublicUserDetails($friend[FRIEND::FRIEND_ID]);
+				echo <<<EOT
+	<div class="friendbox">
+		<img class="avatar" src="avatar/{$friend[FRIEND::FRIEND_ID]}.jpg" />
+		<a href="profile?profileid={$friend[FRIEND::FRIEND_ID]}">{$friendInfo[USER::DISP_NAME]}</a>
+		<form method="POST" action="">
+			<input type="hidden" name="" value="{}"/>
+			<input type="submit" value="Send Message" disabled />
+		</form>
+		<form method="POST" action="friendslist.php">
+			<input type="hidden" name="deletefriendid" value="{$friend[FRIEND::FRIEND_ID]}"/>
+			<input type="submit" value="Remove Friend" />
+		</form>
+	</div>
+EOT;
+			}
 		}
 	}
 	else{
