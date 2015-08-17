@@ -8,3 +8,4 @@ define("P_EDIT_OWN_POST", 1);
 define("P_EDIT_OTHER_POST", 4);
 define("P_DELETE_OWN_POST", 1);
 define("P_DELETE_OTHER_POST", 4);
+define("P_MAKE_FORUM", 10);

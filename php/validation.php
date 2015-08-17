@@ -53,3 +53,16 @@ function validateEmail($email){
 	}
 	return false;
 }
+
+function validateForumName($name){ // 50 char
+	return (strlen($name) > 0 && strlen($name) < 50);
+}
+
+function validateForumSubtitle($subtitle){ // 100 varchar
+	if($subtitle == "") return true;
+	return (strlen($subtitle) > 0 && strlen($subtitle) < 100);
+}
+
+function validateForumTopic($topic){ // 50 char
+	return (strlen($topic) > 0 && strlen($topic) < 50);
+}

@@ -9,6 +9,7 @@ session_start();
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
+require_once("php/constants.php");
 
 $db = connectToDatabase();
 $threads;
@@ -73,16 +74,30 @@ if($curForumInfo && isset($_GET['forumid'])){
 EOT;
 	}
 	else{
-		echo "<button disabled>Required Level: ". $curForumInfo[FORUM::REQUIRED_LEVEL] ."</button>";
+		echo "<button disabled>Can't Make Thread - Insufficient Permissions</button>";
 	}
 }
 else{
 	echo "<h2 class='title'>Forums</h2>";
 }
 
-/*
-Make forum button here
-*/
+// Don't bother telling them about insufficient permissions for this button
+if($_SESSION['permission'] >= P_MAKE_FORUM){
+	echo <<<EOT
+	<form method=POST action="makeforum.php">
+		<input type="hidden" name="parentid" value=
+EOT;
+	if($curForumInfo != null){
+		echo "'". $curForumInfo[FORUM::ID] ."' />";
+	}
+	else{
+		echo "'' />";
+	}
+	echo <<<EOT
+		<input type="submit" value="New Forum" />
+	</form>
+EOT;
+}
 
 foreach($topics as $topic){
 	echo "<div class='forumbox'><h2 class='title'>$topic</h2><ol>";
