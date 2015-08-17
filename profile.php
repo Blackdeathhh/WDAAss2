@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="css/base.css" />
 	<meta charset="UTF-8">
+	<title>Profile</title>
 </head>
 <body>
 <?php require("php/topbar.php"); ?>
@@ -134,6 +135,14 @@ EOT;
 			<form method="POST" action="uploadavatar.php" enctype="multipart/form-data">
 				<input type="file" name="newavatar" required />
 				<input type="submit" name="submit" value="Upload Image" />
+			</form>
+EOT;
+			}
+			else{
+				echo <<<EOT
+			<form method="POST" action="friendslist.php">
+				<input type="hidden" name="addfriendid" value="{$userID}" />
+				<input type="submit" name="submit" value="Add to Friends List" />
 			</form>
 EOT;
 			}

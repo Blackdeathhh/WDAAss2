@@ -619,3 +619,54 @@ function createForum($database, $forumName, $forumSubtitle, $forumTopic, $forumP
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }
+
+function addFriend($database, $userID, $friendID, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL AddFriend(:id, :friendid, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":friendid", $friendID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$stmt->closeCursor();
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
+	$loginToken = intval($sel[0]['@newToken'], 10);
+	return $results;
+}
+
+function getFriends($database, $userID, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL GetFriends(:id, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$stmt->closeCursor();
+	$stmt = null;
+
+	$results = array();
+	if(isset($out) && count($out) != 0){
+		$results = $out;
+	}
+	else{
+		$errorCode = ERR::USER_NOT_EXIST;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$results = //array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
+	$loginToken = intval($sel[0]['@newToken'], 10);
+	return $results;
+}

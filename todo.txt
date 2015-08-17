@@ -16,4 +16,30 @@ makepost
 forumview
 threadview
 
+
 Make sure that if the session is expired, remove that info from SESSION. That will make the client know their session has expired. Best have a function that does that for us.
+
+make logout page take GET; abnormal or normal, abnormal for errors
+
+Timezone stuff
+Titles for all pages, make sure that you keep the topbar AFTER the title!
+
+
+Permission level can also be updated by going to your own profile.
+
+OH YEAH Restrict thread creation in threads by permission level, not just "yes/no" and yu can override it if you're privileged enough
+
+With that, the new permission levels we could have...
+0 - Demoted user
+	Just about nothing. Only viewing profiles, forums, and threads.
+1 - Standard user
+	Standard stuff you can do now. Make posts and threads and upload your avatar and modify your details.
+2 - Privileged user
+	All of the above plus...I dunno.
+3 - Super user?
+4 - Moderator
+	All of the above plus the ability to move/lock/delete threads. Edit/Delete posts. Issue bans up to a limit of 1 week.
+5 - Super Moderator
+	All of the above plus the ability to issue bans for an unlimited period of time.
+10 - Administrator
+	All of the above plus the ability to Modify/Move/Delete forums. Ability to modify permission levels of anyone else.

@@ -30,10 +30,12 @@ $forumTopicValid = validateForumTopic($forumTopic);
 if($forumNameValid && $forumSubtitleValid && $forumTopicValid){
 	$db = connectToDatabase();
 	if($db){
-		$results = makeForum($db, $forumName, $forumSubtitle, $forumTopic, $forumParent, $_SESSION['id'], $_SESSION['token']);
+		$results = createForum($db, $forumName, $forumSubtitle, $forumTopic, $forumParent, $_SESSION['id'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
-				echo "<p>Forum successfully created!</p>";
+				echo "<p>Forum successfully created! <a href='forumview.php";
+				if($forumParent != null) echo "?forumid=". $forumParent;
+				echo "'>Back to forums.</a></p>";
 				break;
 			default:
 				echo "<p>Error creating forum: ". $ERRORS[$results[SP::ERROR]] ."</p>";
