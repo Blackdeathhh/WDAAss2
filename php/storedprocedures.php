@@ -404,6 +404,24 @@ function getThreadPosts($database, $targetThreadID){
 	return $results;
 }
 
+function viewThread($database, $targetThreadID){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL ViewThread(:id)");
+	$stmt->bindParam(":id", $targetThreadID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	// This stored procedure returns nothing.
+	$results = array();
+	$results[SP::ERROR] = $errorCode;
+	$stmt->closeCursor();
+	return $results;
+}
+
 function getThreadInfo($database, $targetThreadID){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetThreadInfo(:id)");

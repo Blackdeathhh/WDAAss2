@@ -138,7 +138,7 @@ EOT;
 			echo "src='img/closed.jpg' alt='Thread Closed' />";
 		}
 		echo <<<EOT
-			<p><a href='threadview.php?threadid={$thread[THREAD::ID]}&page=0'>{$thread[THREAD::TITLE]}</a></p>
+			<p><a href='threadview.php?threadid={$thread[THREAD::ID]}'>{$thread[THREAD::TITLE]}</a></p>
 			<p>Started by <a href='profile.php?profileid={$thread[THREAD::STARTER_USER_ID]}'>{$threadStarter[USER::DISP_NAME]}</a>, at {$thread[THREAD::MADE_AT]}.</p>
 		</div>
 		<div class='threadstats'>

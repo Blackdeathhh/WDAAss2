@@ -17,7 +17,7 @@ require_once("php/error.php");
 require_once("php/constants.php");
 
 $db = connectToDatabase();
-$page = (isset($_GET['page'])) ? $_GET['page'] : 0;
+$page = 0;
 $threadID;
 $threadInfo;
 $postsPerPage = 10;
@@ -32,6 +32,14 @@ if(isset($_GET['threadid'])){
 else{
 	echo "No thread.";
 	exit;
+}
+
+// If we navigate around the pages, it doesn't count as a view. If we come to a thread without the page set, it does count.
+if(isset($_GET['page'])){
+	$page = $_GET['page'];
+}
+else{
+	viewThread($db, $threadID);
 }
 
 echo "</head><body>";
