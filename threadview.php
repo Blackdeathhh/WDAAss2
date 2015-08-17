@@ -200,11 +200,11 @@ EOT;
 				if($editor){
 					echo "<p>Last edited ";
 					if($editor != $details[POST::USER_ID]){
-						if(!isset($userDetails[$userID])){
-							$details = getPublicUserDetails($db, $userID);
-							$userDetails[$userID] = $details;
+						if(!isset($userDetails[$editor])){
+							$editorDetails = getPublicUserDetails($db, $editor);
+							$userDetails[$editor] = $editorDetails;
 						}
-						echo "by <a href='viewprofile?profileid=$editor'>". $userDetails[$editor][USER::DISP_NAME] . "</a> ";
+						echo "by <a href='profile.php?profileid=$editor'>". $userDetails[$editor][USER::DISP_NAME] . "</a> ";
 					}
 					echo "at " . $details[POST::EDITED_AT] . "</p>";
 				}

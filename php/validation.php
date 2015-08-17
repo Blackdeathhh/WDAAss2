@@ -31,7 +31,8 @@ function validatePostsPerPage($postsPerPage){
 }
 
 function validateLocation($location){
-	// Max 30 chars, no spaces
+	// Max 30 chars, no spaces, or empty string
+	if($location == "") return true;
 	$regex = "/^[!-~]{1,30}$/";
 	return preg_match($regex, $location);
 }
@@ -44,6 +45,7 @@ function validateEmail($email){
 	then a .
 	then a sequence of 2-5 non-@ and non-. characters
 	*/
+	if($email == "") return true;
 	if(strlen($email) > 0 && strlen($email) <= 80)
 	{
 		$regex = "/^[^@]+@[^@\.]+\.[^@\.]{2,5}$/";
