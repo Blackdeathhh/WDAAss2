@@ -723,7 +723,7 @@ function createMessage($database, $userID, $recipientID, $title, $content, &$log
 function getMessages($database, $userID, $senderUserID, $receiverUserID, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetMessages(:id, :sender, :receiver, :token, @newToken, @error)");
-	$stmt->bindParam(":id", $senderUserID, PDO::PARAM_INT);
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":sender", $senderUserID, PDO::PARAM_INT);
 	$stmt->bindParam(":receiver", $receiverUserID, PDO::PARAM_INT);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
