@@ -750,4 +750,4 @@ function getMessages($database, $userID, $senderUserID, $receiverUserID, &$login
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
 	return $results;
-]
+}
