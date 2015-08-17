@@ -37,7 +37,7 @@
 				switch($result[SP::ERROR]){
 					// If the page number's too high, you'll just go to the final page.
 					case ERR::OK:
-						echo "Post made successfully! <a href='threadview.php?threadid=". $postToThread ."&page=99999'>Back to thread</a>.";
+						echo "Post made successfully! <a href='threadview.php?threadid=". $postToThread ."&page=999999'>Back to thread</a>.";
 						break;
 					case ERR::THREAD_NOT_EXIST:
 						echo "The specified thread does not, or no longer, exists.";
@@ -54,7 +54,7 @@
 						break;
 					case ERR::UNKNOWN:
 					default:
-						echo "An unknown error occurred. Please try again later.";
+						echo "An unknown error occurred. Please try again later. Error Code: ". $result[SP::ERROR];
 						break;
 				}
 			}
@@ -63,7 +63,7 @@
 				switch($result[SP::ERROR]){
 					case ERR::OK:
 						$info = multigetPostDetails($db, array($_POST['editid']))[$_POST['editid']];
-						echo "Post made successfully! <a href='threadview.php?threadid=". $info[POST::THREAD_ID] ."'>Back to thread</a>.";
+						echo "Post made successfully! <a href='threadview.php?threadid=". $info[POST::THREAD_ID] ."&postid=". $_POST['editid'] ."'>Back to thread</a>.";
 						break;
 					case ERR::THREAD_LOCKED:
 						echo "The specified thread is locked.";
@@ -77,7 +77,7 @@
 						break;
 					case ERR::UNKNOWN:
 					default:
-						echo "An unknown error occurred. Please try again later.";
+						echo "An unknown error occurred. Please try again later. Error Code: ". $result[SP::ERROR];
 						break;
 				}
 				// We're editing an existing post

@@ -63,7 +63,7 @@ EOT;
 		}
 		else{
 			$db = connectToDatabase();
-			$details = multigetPostDetails($db, array($_POST['editid']))$_POST['editid'];
+			$details = multigetPostDetails($db, array($_POST['editid']))[$_POST['editid']];
 			switch($outPost[SP::ERROR]){
 				case ERR::OK:
 					echo "<div id='postcontent' contenteditable>" . $details[POST::CONTENT] . "</div>";
@@ -72,7 +72,6 @@ EOT;
 					echo $ERRORS[$details[SP::ERROR]];
 					break;
 			}
-			break;
 		}
 		echo <<<EOT
 	<input type='button' id='post' value='Post' onclick='submitPost()' /></form>

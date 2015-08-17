@@ -451,6 +451,7 @@ function multigetPostDetails($database, $targetPostIDs){
 			if(isset($out) && count($out) != 0){
 				$results[$postID] = array(
 					POST::USER_ID => $out[0][POST::USER_ID],
+					POST::THREAD_ID => $out[0][POST::THREAD_ID],
 					POST::CONTENT => $out[0][POST::CONTENT],
 					POST::MADE_AT => $out[0][POST::MADE_AT],
 					POST::EDITED_AT => $out[0][POST::EDITED_AT],
