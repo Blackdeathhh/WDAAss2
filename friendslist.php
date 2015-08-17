@@ -44,7 +44,11 @@
 			$results = getFriends($db, $_SESSION['id'], $_SESSION['token']);
 			$errorCode = $results[SP::ERROR];
 			unset($results[SP::ERROR]);
-			// results is an array of arrays. Each child array is just HasFriend => ID.
+
+			if(count($results) == 0){
+				echo "<p>You have no friends ;_;</p>";
+			}
+
 			foreach($results as $num => $friend){
 				$friendInfo = getPublicUserDetails($db, $friend[FRIEND::FRIEND_ID]);
 				echo <<<EOT
