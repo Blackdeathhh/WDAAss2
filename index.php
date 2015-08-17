@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/forumview.css" />
 	<link rel="stylesheet" href="css/threadview.css" />
 	<meta charset="UTF-8">
+	<title>Index</title>
 </head>
 <body>
 <?php require("php/topbar.php"); ?>

@@ -72,6 +72,16 @@ class AGGR{
 	const NUM_THREADS = "Threads";
 }
 
+$P_LEVELS = array(
+0 => "Demoted User",
+1 => "Standard User",
+2 => "Privileged User",
+3 => "Super User",
+4 => "Moderator",
+5 => "Super Moderator",
+10 => "Administrator"
+);
+
 function getSalt($database, $username) {
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetSalt(:user)");

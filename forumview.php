@@ -4,11 +4,8 @@
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/forumview.css" />
 	<meta charset="UTF-8">
-</head>
-<body>
 <?php
 session_start();
-require("php/topbar.php");
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
@@ -22,10 +19,16 @@ if(isset($_GET['forumid'])){
 	$curForumInfo = getForumInfo($db, $_GET['forumid']);
 	$threads = getForumThreads($db, $_GET['forumid']);
 	$forums = getChildForums($db, $_GET['forumid']);
+	echo "<title>" . $curForumInfo[FORUM::NAME] ."</title>";
 }
 else{
 	$forums = getChildForums($db, null); //Gets top-level forums
+	echo "<title>Forums</title>";
 }
+echo "</head><body>";
+
+require("php/topbar.php");
+
 // Get rid of error key so it won't interfere later
 $forumError = $forums[SP::ERROR];
 unset($forums[SP::ERROR]);

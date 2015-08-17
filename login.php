@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/login.css" />
 	<script type="text/javascript" src="js/registerValidate.js"></script>
 	<meta charset="UTF-8">
+	<title>Log In</title>
 </head>
 <body>
 <?php require("php/topbar.php"); ?>

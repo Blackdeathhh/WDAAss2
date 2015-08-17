@@ -135,32 +135,12 @@ EOT;
 			</form>
 EOT;
 			}
-			echo "</div><div><ol>";
-			echo "<li>Permissions: "
-			switch($permisLevel){
-				case 0:
-					echo "Demoted User";
-					break;
-				case 1:
-					echo "Standard User";
-					break;
-				case 2:
-					echo "Privileged User";
-					break;
-				case 3:
-					echo "Super User";
-					break;
-				case 4:
-					echo "Moderator";
-					break;
-				case 5:
-					echo "Super Moderator";
-					break;
-				case 10:
-					echo "Administrator";
-					break;
-			}
-			echo " (Level $permisLevel)</li>";
+			echo <<<EOT
+		</div>
+		<div>
+			<ol>
+				<li>Permissions: {$P_LEVELS[$permisLevel]} (Level {$permisLevel})</li>
+EOT;
 			if($isOwnProfile){
 				echo <<<EOT
 			<form action="updateprofile.php" method="POST">

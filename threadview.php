@@ -5,14 +5,12 @@
 	<link rel="stylesheet" href="css/forumview.css" />
 	<link rel="stylesheet" href="css/threadview.css" />
 	<meta charset="UTF-8">
-</head>
-<body>
 <?php
 /* We have to somehow deduce the first viewing of this thread, and ++views. We could do this by checking page GET.
 Or, we could make a new GET variable, just for telling if we're browsing through this or not. We'd check to see if it's set; if not, ++View. And in the page buttons, just make it submit the GET parameter.
 */
 session_start();
-require("php/topbar.php");
+
 require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
@@ -28,11 +26,15 @@ $postIDs;
 if(isset($_GET['threadid'])){
 	$threadID = $_GET['threadid'];
 	$threadInfo = getThreadInfo($db, $threadID);
+	echo "<title>". $threadInfo[THREAD::TITLE] ."</title>";
 }
 else{
 	echo "No thread.";
 	exit;
 }
+
+echo "</head><body>";
+require("php/topbar.php");
 
 if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 	$results = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
@@ -144,6 +146,7 @@ EOT;
 				</p>
 				<img class='avatar' src='avatar/{$details[POST::USER_ID]}.jpg' alt="{$userDetails[USER::DISP_NAME]}'s avatar" />
 				<p>Location: {$userDetails[USER::LOC]}</p>
+				<p>{$P_LEVELS[$userDetails[PERMISSION::LEVEL]]}</p>
 			</div>
 			<div class='content'>
 				<p>{$details[POST::CONTENT]}</p>

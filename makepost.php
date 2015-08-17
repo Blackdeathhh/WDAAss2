@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/newpost.css" />
 	<script type="text/javascript" src="js/newPost.js"></script>
 	<meta charset="UTF-8">
+	<title>Posting</title>
 </head>
 <?php require("php/topbar.php"); ?>
 <body>
