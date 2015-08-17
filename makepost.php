@@ -64,25 +64,16 @@ EOT;
 		else{
 			$db = connectToDatabase();
 			$details = multigetPostDetails($db, array($_POST['editid']));
-			switch($details[SP::ERR]){
+			$ourPost = $details[$_POST['editid']];
+			switch($outPost[SP::ERR]){
 				case ERR::OK:
-					$ourPost = $details[$_POST['editid']];
-					switch($outPost[SP::ERR]){
-						case ERR::OK:
-							echo "<div id='postcontent' contenteditable>" . $ourPost[POST::CONTENT] . "</div>";
-							break;
-						default:
-							echo $ERRORS[$details[SP::ERR]];
-							break;
-					}
-					break;
-				case ERR::POST_NOT_EXIST:
-					echo "That post does not or no longer exists.";
+					echo "<div id='postcontent' contenteditable>" . $ourPost[POST::CONTENT] . "</div>";
 					break;
 				default:
 					echo $ERRORS[$details[SP::ERR]];
 					break;
 			}
+			break;
 		}
 		echo <<<EOT
 	<input type='button' id='post' value='Post' onclick='submitPost()' /></form>
