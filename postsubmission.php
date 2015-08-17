@@ -59,6 +59,27 @@
 				}
 			}
 			elseif(isset($_POST['editid'])){
+				$result = editPost($db, $_SESSION['id'], $_POST['editid'], $_POST['content'], $_SESSION['token']);
+				switch($result[SP::ERROR]){
+					case ERR::OK:
+						$info = multigetPostDetails($db, array($_POST['editid']))[$_POST['editid']];
+						echo "Post made successfully! <a href='threadview.php?threadid=". $info[POST::THREAD_ID] ."'>Back to thread</a>.";
+						break;
+					case ERR::THREAD_LOCKED:
+						echo "The specified thread is locked.";
+						break;
+					case ERR::PERMIS_FAIL:
+						echo "You do not have sufficient permissions to do this.";
+						break;
+					case ERR::TOKEN_FAIL:
+					case ERR::TOKEN_EXPIRED:
+						echo "Your session has expired; please <a href='login.php'>log in</a> again.";
+						break;
+					case ERR::UNKNOWN:
+					default:
+						echo "An unknown error occurred. Please try again later.";
+						break;
+				}
 				// We're editing an existing post
 			}
 			else{

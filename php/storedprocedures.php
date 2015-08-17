@@ -533,12 +533,34 @@ function createThread($database, $userID, $targetForumID, $title, &$loginToken){
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }
-//userID smallint, targetPostID int, loginToken int, OUT newToken int, OUT error int
+
 function deletePost($database, $userID, $targetPostID, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL DeletePost(:id, :post, :token, @newtoken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":post", $targetPostID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$stmt->closeCursor();
+	$results = array(SP::ERROR => $errorCode, SP::TOKEN => intval($sel[0]['@newToken'], 10));
+	$loginToken = intval($sel[0]['@newToken'], 10);
+	return $results;
+}
+// userID smallint, targetPostID int, newContent text, loginToken int, OUT newToken int, OUT error int
+function deletePost($database, $userID, $targetPostID, $newcontent, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL EditPost(:id, :post, :content, :token, @newtoken, @error)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":post", $targetPostID, PDO::PARAM_INT);
+	$stmt->bindParam(":content", $newcontent, PDO::PARAM_STR);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
 	try{
 		$stmt->execute();

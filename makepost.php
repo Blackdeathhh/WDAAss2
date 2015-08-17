@@ -63,14 +63,13 @@ EOT;
 		}
 		else{
 			$db = connectToDatabase();
-			$details = multigetPostDetails($db, array($_POST['editid']));
-			$ourPost = $details[$_POST['editid']];
-			switch($outPost[SP::ERR]){
+			$details = multigetPostDetails($db, array($_POST['editid']))$_POST['editid'];
+			switch($outPost[SP::ERROR]){
 				case ERR::OK:
-					echo "<div id='postcontent' contenteditable>" . $ourPost[POST::CONTENT] . "</div>";
+					echo "<div id='postcontent' contenteditable>" . $details[POST::CONTENT] . "</div>";
 					break;
 				default:
-					echo $ERRORS[$details[SP::ERR]];
+					echo $ERRORS[$details[SP::ERROR]];
 					break;
 			}
 			break;
