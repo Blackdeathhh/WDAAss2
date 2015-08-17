@@ -769,10 +769,11 @@ function getMessages($database, $userID, $senderUserID, $receiverUserID, &$login
 	$results[SP::ERROR] = $errorCode;
 	return $results;
 }
-function getMessageContent($database, $messageID, &$loginToken){
+function getMessageContent($database, $messageID, $userID, &$loginToken){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL GetMessageContent(:id, :token, @newToken, @error)");
+	$stmt = $database->prepare("CALL GetMessageContent(:id, :userID, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $messageID, PDO::PARAM_INT);
+	$stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
