@@ -25,6 +25,11 @@
 }
 .replyheader input{
 	float: right;
+	margin: 0px 0.5em 0px;
+}
+.replyheader form{
+	margin: 0px;
+	display: inline;
 }
 .replyfooter p{
 	padding: 0px;

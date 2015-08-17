@@ -20,7 +20,7 @@
 	if(isset($_GET['confirm']) && $_GET['confirm'] == 'Delete'){
 		$db = connectToDatabase();
 		if($db){
-			$results = deletePost($db, $_GET['postid'], $_SESSION['id'], $_SESSION['token']);
+			$results = deletePost($db, $_SESSION['id'], $_GET['postid'], $_SESSION['token']);
 			switch($results[SP::ERROR]){
 				case ERR::OK:
 					echo "<p>Post deleted successfully.</p>";
