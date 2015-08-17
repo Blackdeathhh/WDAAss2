@@ -20,10 +20,11 @@
 	if(isset($_GET['confirm']) && $_GET['confirm'] == 'Delete'){
 		$db = connectToDatabase();
 		if($db){
+			$info = multigetPostDetails($db, array($_GET['postid']));
 			$results = deletePost($db, $_SESSION['id'], $_GET['postid'], $_SESSION['token']);
 			switch($results[SP::ERROR]){
 				case ERR::OK:
-					echo "<p>Post deleted successfully.</p>";
+					echo "<p>Post deleted successfully. Back to <a href='threadview.php?threadid=". $info[POST::THREAD_ID] ."'thread</p>";
 					break;
 				case ERR::PERMIS_FAIL:
 					echo "<p>You are not permitted to do this.</p>";

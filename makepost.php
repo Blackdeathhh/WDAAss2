@@ -12,6 +12,7 @@
 	<div class="maindiv">
 
 <?php
+	session_start();
 	require_once("php/database.php");
 	require_once("php/storedprocedures.php");
 	require_once("php/error.php");
@@ -55,6 +56,8 @@ EOT;
 <h2 class='title'>Editing post</h2>
 <form id="postform" method="POST" action="postsubmission.php">
 	<input type='hidden' id='editid' name='editid' value='{$_POST['editid']}'/>
+	<input type="hidden" id="content" name="content" />
+	<div id='postcontent' contenteditable>
 EOT;
 		if(isset($_POST['editstr'])){
 			echo $_POST['editstr'];
@@ -64,14 +67,17 @@ EOT;
 			$details = multigetPostDetails($db, array($_POST['editid']));
 			switch($details[SP::ERR]){
 				case ERR::OK:
-					echo "<div id='postcontent' contenteditable>". $details[0][POST::CONTENT] . "</div>";
+					echo $details[0][POST::CONTENT];
 					break;
 				case ERR::POST_NOT_EXIST:
 					echo "That post does not or no longer exists.";
 					break;
 			}
 		}
-		echo "</form>";
+		echo <<<EOT
+		<input type='button' id='post' value='Post' onclick='submitPost()' /></form>"
+	</div>
+EOT;
 	}
 	else{
 		echo "No thread specified. <a href='forumview.php'>Back to forums.</a>";
