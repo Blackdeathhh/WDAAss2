@@ -554,8 +554,8 @@ function deletePost($database, $userID, $targetPostID, &$loginToken){
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }
-// userID smallint, targetPostID int, newContent text, loginToken int, OUT newToken int, OUT error int
-function deletePost($database, $userID, $targetPostID, $newcontent, &$loginToken){
+
+function editPost($database, $userID, $targetPostID, $newcontent, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL EditPost(:id, :post, :content, :token, @newtoken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
