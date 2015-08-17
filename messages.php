@@ -49,7 +49,7 @@ EOT;
 					echo <<<EOT
 			<li>
 				<div class='message'>
-					<p><a href='{$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}</p>
+					<p><a href='viewmessage.php?messageid={$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}</p>
 				</div>
 			</li>
 EOT;
@@ -81,6 +81,9 @@ EOT;
 	else{
 		echo "<p>Could not connect to database, please try again later.</p>";
 	}
+}
+else{
+	echo "<p>No user specified. <a href='friendslist.php'>Back to friends list</a>.</p>";
 }
 ?>
 </div>

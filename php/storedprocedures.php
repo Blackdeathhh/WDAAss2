@@ -769,3 +769,33 @@ function getMessages($database, $userID, $senderUserID, $receiverUserID, &$login
 	$results[SP::ERROR] = $errorCode;
 	return $results;
 }
+function getMessageContent($database, $messageID, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL GetMessageContent(:id, :token, @newToken, @error)");
+	$stmt->bindParam(":id", $messageID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$out;
+	try{
+		$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		$stmt = null;
+	}
+	catch(PDOException $e){
+		// 2053 == No rows. If no rows, we can ignore it; just return a null array.
+		// If it's something else, rethrow it.
+		if($e->getCode() == 2053) unset($out);
+		else $errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$errorCode = intval($sel[0]['@error'], 10);
+	$loginToken = intval($sel[0]['@newToken'], 10);
+	$results[SP::ERROR] = $errorCode;
+	return $results;
+}
