@@ -61,7 +61,7 @@
 			<input type="submit" value="Send Message" />
 		</form>
 		<form method="GET" action="messages.php">
-			<input type="hidden" name="touserid" value="{$friend[FRIEND::FRIEND_ID]}"/>
+			<input type="hidden" name="userid" value="{$friend[FRIEND::FRIEND_ID]}"/>
 			<input type="submit" value="View Messages" />
 		</form>
 		<form method="POST" action="friendslist.php">

@@ -42,7 +42,7 @@ if(isset($_GET['userid'])){
 			case ERR::OK:
 				echo <<<EOT
 	<div class='messagesbox'>
-		<p>Messages sent to <a href='profile.php?profileid={$_GET['userid']}'>{$userInfo[USER::DISP_NAME]}</a></p>
+		<h2 class='title'>Messages sent to <a href='profile.php?profileid={$_GET['userid']}'>{$userInfo[USER::DISP_NAME]}</a></h2>
 		<ol>
 EOT;
 				foreach($sentMessages as $msg => $details){
@@ -62,7 +62,7 @@ EOT;
 			case ERR::OK:
 				echo <<<EOT
 	<div class='messagesbox'>
-		<p>Messages received from <a href='profile.php?profileid={$_GET['userid']}'>{$userInfo[USER::DISP_NAME]}</a></p>
+		<h2 class='title'>Messages received from <a href='profile.php?profileid={$_GET['userid']}'>{$userInfo[USER::DISP_NAME]}</a></h2>
 		<ol>
 EOT;
 				foreach($receivedMessages as $msg => $details){

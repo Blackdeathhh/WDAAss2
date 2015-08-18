@@ -798,7 +798,7 @@ function getMessageContent($database, $messageID, $userID, &$loginToken){
 	
 	$results = array();
 	if(isset($out) && count($out) != 0){
-		$results = $out;
+		$results = $out[0];
 	}
 	else{
 		$errorCode = ERR::USER_NOT_EXIST;

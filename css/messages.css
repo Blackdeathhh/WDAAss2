@@ -1,7 +1,11 @@
 .messagesbox{
+	background-color: #6F9863;
 	width: 40%;
-	
+	display:inline-block;
+	vertical-align: top;
 }
 .message{
 	width: 90%;
+	color: black;
+	background-color: #BFF0BF;
 }
