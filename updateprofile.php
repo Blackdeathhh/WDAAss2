@@ -9,6 +9,7 @@ $newLocation = $_POST['location'];
 $newEmail = $_POST['email'];
 $newGender = $_POST['gender'];
 $newPostsPerPage = intval($_POST['postsperpage'], 10);
+$newTimezone = $_POST['timezone'];
 $errors = array();
 
 if(!validateLocation($newLocation)){
@@ -23,11 +24,14 @@ if(!validateGender($newGender)){
 if(!validatePostsPerPage($newPostsPerPage)){
 	$errors[] = "postsperpage=" . ERR::POSTS_PER_PAGE_BAD;
 }
+if(!validateTimezone($newTimeZone)){
+	$errors[] = "timezone=" . ERR::TIME_ZONE_BAD;
+}
 
 if(count($errors) == 0){
 	$db = connectToDatabase();
 	if($db){
-		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
+		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage, $newTimeZone);
 		header("Location: profile.php?error=". $results[SP::ERROR]);
 		//$_SESSION['token'] = $results[SP::TOKEN];
 		/*switch($results[SP::ERROR]){

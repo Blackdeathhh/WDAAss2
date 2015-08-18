@@ -20,7 +20,7 @@
 	if(isset($_GET['confirm']) && $_GET['confirm'] == 'Delete'){
 		$db = connectToDatabase();
 		if($db){
-			$info = multigetPostDetails($db, array($_GET['postid']))[$_GET['postid']];
+			$info = multigetPostDetails($db, $_SESSION['id'], array($_GET['postid']))[$_GET['postid']];
 			$results = deletePost($db, $_SESSION['id'], $_GET['postid'], $_SESSION['token']);
 			switch($results[SP::ERROR]){
 				case ERR::OK:

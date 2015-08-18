@@ -20,7 +20,7 @@
 	if(isset($_POST['threadid'])){
 		$db = connectToDatabase();
 		if($db){
-			$info = getThreadInfo($db, $_POST['threadid']);
+			$info = getThreadInfo($db, $_SESSION['id'], $_POST['threadid']);
 			switch($info[SP::ERROR]){
 				case ERR::OK:
 					echo <<<EOT
@@ -63,7 +63,7 @@ EOT;
 		}
 		else{
 			$db = connectToDatabase();
-			$details = multigetPostDetails($db, array($_POST['editid']))[$_POST['editid']];
+			$details = multigetPostDetails($db, $_SESSION['id'], array($_POST['editid']))[$_POST['editid']];
 			switch($outPost[SP::ERROR]){
 				case ERR::OK:
 					echo "<div id='postcontent' contenteditable>" . $details[POST::CONTENT] . "</div>";

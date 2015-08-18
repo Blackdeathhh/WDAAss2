@@ -21,6 +21,7 @@ class ERR{
 	const EMAIL_BAD = 116;
 	const SEX_BAD = 117;
 	const MSG_TITLE_BAD = 118;
+	const TIME_ZONE_BAD = 119;
 	const AUTH_FAIL = 200;
 	const ACC_IN_USE = 201;
 	const TOKEN_FAIL = 202;
@@ -54,6 +55,7 @@ ERR::OK => "OK",
 116 => "Email is malformed",
 117 => "Gender is malformed",
 MSG_TITLE_BAD => "Message Title is malformed",
+TIME_ZONE_BAD => "Time Zone is malformed",
 200 => "Username and/or Password do not match",
 201 => "Account is already in use",
 202 => "Token authentication failure",

@@ -18,7 +18,7 @@
 	if(isset($_POST['forumid'])){
 		$db = connectToDatabase();
 		if($db){
-			$info = getForumInfo($db, $_POST['forumid']);
+			$info = getForumInfo($db, $_SESSION['id'], $_POST['forumid']);
 			switch($info[SP::ERROR]){
 				case ERR::OK:
 					echo <<<EOT

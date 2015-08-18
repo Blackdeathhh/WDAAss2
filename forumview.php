@@ -17,13 +17,13 @@ $forums;
 $curForumInfo = null;
 
 if(isset($_GET['forumid'])){
-	$curForumInfo = getForumInfo($db, $_GET['forumid']);
-	$threads = getForumThreads($db, $_GET['forumid']);
-	$forums = getChildForums($db, $_GET['forumid']);
+	$curForumInfo = getForumInfo($db, $_SESSION['id'], $_GET['forumid']);
+	$threads = getForumThreads($db, $_SESSION['id'], $_GET['forumid']);
+	$forums = getChildForums($db, $_SESSION['id'], $_GET['forumid']);
 	echo "<title>" . $curForumInfo[FORUM::NAME] ."</title>";
 }
 else{
-	$forums = getChildForums($db, null); //Gets top-level forums
+	$forums = getChildForums($db, $_SESSION['id'], null); //Gets top-level forums
 	echo "<title>Forums</title>";
 }
 echo "</head><body>";
@@ -50,7 +50,7 @@ if(isset($_GET['forumid'])){
 	$ancestryError = $ancestryIDs[SP::ERROR];
 	unset($ancestryIDs[SP::ERROR]);
 	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
-		$info = getForumInfo($db, $ancestryIDs[$i]);
+		$info = getForumInfo($db, $_SESSION['id'], $ancestryIDs[$i]);
 		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] ."'>". $info[FORUM::NAME] ."</a>";
 	}
 }

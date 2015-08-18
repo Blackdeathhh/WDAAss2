@@ -16,39 +16,6 @@ require_once("php/storedprocedures.php");
 require_once("php/error.php");
 require_once("php/constants.php");
 
-/*$errorMessage = "";
-
-if(isset($_POST['modDetails'])){
-	$newLocation = $_POST['location'];
-	$newEmail = $_POST['email'];
-	$newGender = $_POST['gender'];
-	$newPostsPerPage = intval($_POST['postsPerPage'], 10);
-
-	$locationValid = validateLocation($newLocation);
-	$emailValid = validateEmail($newEmail);
-	$genderValid = validateGender($newGender);
-	$postsPerPageValid = validatePostsPerPage($newPostsPerPage);
-
-	$db = connectToDatabase();
-	if($db){
-		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage);
-		//$_SESSION['token'] = $results[SP::TOKEN];
-		// If any of these errors occur, then the same thing will happen during information retrieval on, so we can just check/state the error has occurred there
-		switch($results[SP::ERROR]){
-			case ERR::OK:
-				$errorMessage = "User details updated successfully!";
-				break;
-			case ERR::TOKEN_FAIL:
-			case ERR::TOKEN_EXPIRED:
-			case ERR::PERMIS_FAIL:
-			case ERR::USER_NOT_EXIST:
-			default:
-				$errorMessage = "User details not updated.";
-				break;
-		}
-	}
-}*/
-
 $userID;
 $isOwnProfile;
 
@@ -72,6 +39,7 @@ $location;
 $gender;
 $email;
 $postsPerPage;
+$timeZone;
 $permisLevel;
 
 if($userID != 0){
@@ -88,6 +56,7 @@ if($userID != 0){
 					$email = $results[USER::EMAIL];
 					$postsPerPage = $results[USER::POSTS_PAGE];
 					$permisLevel = $results[PERMISSION::LEVEL];
+					$permisLevel = $results[USER::TIME_ZONE];
 					break;
 				case ERR::TOKEN_FAIL:
 				case ERR::TOKEN_EXPIRED:
@@ -182,6 +151,9 @@ EOT;
 					echo <<<EOT
 					</select>
 				</li>
+				<li>
+					<label>Time Zone: </label><input type="text id="timezone" name="timezone" value="{$timeZone}" />
+				</li>
 				<li><input type="submit" id="submit" value="Modify" /></li>
 			</form>
 EOT;
@@ -240,6 +212,13 @@ if(isset($_GET['postsperpage'])){
 	switch($_GET['postsperpage']){
 		case ERR::POSTS_PER_PAGE_BAD;
 			echo "<p>Your Posts per page must be between 10 and 30.</p>";
+			break;
+	}
+}
+if(isset($_GET['timezone'])){
+	switch($_GET['timezone']){
+		case ERR::TIME_ZONE_BAD:
+			echo "<p>Your Time Zone must match the following format: +##:##. For example: +10:00 or -08:30</p>";
 			break;
 	}
 }

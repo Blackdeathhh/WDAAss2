@@ -26,6 +26,7 @@ class USER{
 	const EMAIL = "Email";
 	const SEX = "Gender";
 	const POSTS_PAGE = "PostsPerPage";
+	const TIME_ZONE = "TimeZone";
 }
 
 class FORUM{
@@ -289,15 +290,16 @@ function getPrivateUserDetails($database, $userID, &$loginToken){
 	return $results;
 }
 
-function modifyUserDetails($database, $userID, &$loginToken, $newLocation, $newEmail, $newGender, $newPostsPerPage)
+function modifyUserDetails($database, $userID, &$loginToken, $newLocation, $newEmail, $newGender, $newPostsPerPage, $newTimeZone)
 {
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL ModifyUserDetails(:id, :location, :email, :gender, :postsperpage, :token, @newToken, @error)");
+	$stmt = $database->prepare("CALL ModifyUserDetails(:id, :location, :email, :gender, :postsperpage, :timezone, :token, @newToken, @error)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
 	$stmt->bindParam(":location", $newLocation, PDO::PARAM_STR);
 	$stmt->bindParam(":email", $newEmail, PDO::PARAM_STR);
 	$stmt->bindParam(":gender", $newGender, PDO::PARAM_STR);
 	$stmt->bindParam(":postsperpage", $newPostsPerPage, PDO::PARAM_STR);
+	$stmt->bindParam(":timezone", $newPostsPerPage, PDO::PARAM_STR);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
@@ -314,10 +316,11 @@ function modifyUserDetails($database, $userID, &$loginToken, $newLocation, $newE
 	return $results;
 }
 
-function getForumInfo($database, $targetForumID){
+function getForumInfo($database, $userID, $targetForumID){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL GetForumInfo(:id)");
-	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	$stmt = $database->prepare("CALL GetForumInfo(:uid, :fid)");
+	$stmt->bindParam(":uid", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":fid", $targetForumID, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -341,10 +344,11 @@ function getForumInfo($database, $targetForumID){
 	return $results;
 }
 
-function getChildForums($database, $targetForumID){
+function getChildForums($database, $userID, $targetForumID){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL GetChildForums(:id)");
-	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	$stmt = $database->prepare("CALL GetChildForums(:uid, :fid)");
+	$stmt->bindParam(":uid", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":fid", $targetForumID, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -366,10 +370,11 @@ function getChildForums($database, $targetForumID){
 	return $results;
 }
 
-function getForumThreads($database, $targetForumID){
+function getForumThreads($database, $userID, $targetForumID){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL GetForumThreads(:id)");
-	$stmt->bindParam(":id", $targetForumID, PDO::PARAM_INT);
+	$stmt = $database->prepare("CALL GetForumThreads(:uid, :fid)");
+	$stmt->bindParam(":uid", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":fid", $targetForumID, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -437,10 +442,11 @@ function viewThread($database, $targetThreadID){
 	return $results;
 }
 
-function getThreadInfo($database, $targetThreadID){
+function getThreadInfo($database, $userID, $targetThreadID){
 	$errorCode = ERR::OK;
-	$stmt = $database->prepare("CALL GetThreadInfo(:id)");
-	$stmt->bindParam(":id", $targetThreadID, PDO::PARAM_INT);
+	$stmt = $database->prepare("CALL GetThreadInfo(:uid, :tid)");
+	$stmt->bindParam(":uid", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":tid", $targetThreadID, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -463,7 +469,7 @@ function getThreadInfo($database, $targetThreadID){
 	return $results;
 }
 
-function multigetPostDetails($database, $targetPostIDs){
+function multigetPostDetails($database, $userID, $targetPostIDs){
 	/* For efficiency, this function calls the stored procedure to fetch Thread details for an entire given list of postIDs. However, the limit is 50 posts per page. Might be lowered.
 	Also, statement is intentionally re-prepared every iteration of the loop. Preparing it once and calling both closeCursor() and fetchAll() results in "General error: 2014 Cannot execute queries while other unbuffered queries are active". Enabling PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute does not fix this.
 	*/
@@ -471,8 +477,9 @@ function multigetPostDetails($database, $targetPostIDs){
 		$errorCode = ERR::OK;
 		$results = array();
 		foreach($targetPostIDs as $postID){
-			$stmt = $database->prepare("CALL GetPostDetails(:id)");
-			$stmt->bindParam(":id", $postID, PDO::PARAM_INT);
+			$stmt = $database->prepare("CALL GetPostDetails(:uid, :pid)");
+			$stmt->bindParam(":uid", $userID, PDO::PARAM_INT);
+			$stmt->bindParam(":pid", $postID, PDO::PARAM_INT);
 			try{
 				$stmt->execute();
 			}

@@ -54,6 +54,11 @@ function validateEmail($email){
 	return false;
 }
 
+function validateTimeZone($timeZone){
+	$regex = "/^[\+\-]\d{2}:d{2}$/";
+	return preg_match($regex, $timeZone);
+}
+
 function validateForumName($name){ // 50 char
 	return (strlen($name) > 0 && strlen($name) < 50);
 }

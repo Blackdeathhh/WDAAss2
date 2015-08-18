@@ -28,7 +28,6 @@ if(isset($_GET['userid'])){
 		$userInfo = getPublicUserDetails($db, $_GET['userid']);
 		$us = $_SESSION['id'];
 		$them = $_GET['userid'];
-		//getMessages($database, $userID, $senderUserID, $receiverUserID, &$loginToken)
 		// We want to get messages that have been SENT  by US and RECEIVED by THEM...
 		$sentMessages = getMessages($db, $us, $us, $them, $_SESSION['token']);
 		// ...and messages that have been SENT by THEM and RECEIVED by US

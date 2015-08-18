@@ -26,7 +26,7 @@ $postIDs;
 
 if(isset($_GET['threadid'])){
 	$threadID = $_GET['threadid'];
-	$threadInfo = getThreadInfo($db, $threadID);
+	$threadInfo = getThreadInfo($db, $_SESSION['id'], $threadID);
 	echo "<title>". $threadInfo[THREAD::TITLE] ."</title>";
 }
 else{
@@ -59,7 +59,7 @@ $errorCode = $postIDs[SP::ERROR];
 unset($postIDs[SP::ERROR]);
 $numPosts = count($postIDs);
 
-$parentForumInfo = getForumInfo($db, $threadInfo[THREAD::FORUM_ID]);
+$parentForumInfo = getForumInfo($db, $_SESSION['id'], $threadInfo[THREAD::FORUM_ID]);
 
 $crumbs = array();
 $crumbs[] = "<a href='index.php'>Home</a>";
@@ -71,7 +71,7 @@ if(isset($threadInfo)){
 	$ancestryError = $ancestryIDs[SP::ERROR];
 	unset($ancestryIDs[SP::ERROR]);
 	for($i = count($ancestryIDs) - 1; $i >= 0; --$i){
-		$info = getForumInfo($db, $ancestryIDs[$i]);
+		$info = getForumInfo($db, $_SESSION['id'], $ancestryIDs[$i]);
 		$crumbs[] = "<a href='forumview.php?forumid=". $info[FORUM::ID] ."'>". $info[FORUM::NAME] ."</a>";
 	}
 }
@@ -136,7 +136,7 @@ for($i = $page * $postsPerPage; $i != $max; ++$i){
 }
 
 try{
-	$posts = multigetPostDetails($db, $postsToGet);
+	$posts = multigetPostDetails($db, $_SESSION['id'], $postsToGet);
 }
 catch(RuntimeException $e){
 	echo $e->getMessage();

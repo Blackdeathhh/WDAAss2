@@ -62,7 +62,7 @@
 				$result = editPost($db, $_SESSION['id'], $_POST['editid'], $_POST['content'], $_SESSION['token']);
 				switch($result[SP::ERROR]){
 					case ERR::OK:
-						$info = multigetPostDetails($db, array($_POST['editid']))[$_POST['editid']];
+						$info = multigetPostDetails($db, $_SESSION['id'], array($_POST['editid']))[$_POST['editid']];
 						echo "Post made successfully! <a href='threadview.php?threadid=". $info[POST::THREAD_ID] ."&postid=". $_POST['editid'] ."'>Back to thread</a>.";
 						break;
 					case ERR::THREAD_LOCKED:
