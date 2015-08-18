@@ -9,7 +9,7 @@ $newLocation = $_POST['location'];
 $newEmail = $_POST['email'];
 $newGender = $_POST['gender'];
 $newPostsPerPage = intval($_POST['postsperpage'], 10);
-$newTimezone = $_POST['timezone'];
+$newTimeZone = $_POST['timezone'];
 $errors = array();
 
 if(!validateLocation($newLocation)){

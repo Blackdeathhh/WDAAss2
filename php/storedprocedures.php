@@ -299,7 +299,7 @@ function modifyUserDetails($database, $userID, &$loginToken, $newLocation, $newE
 	$stmt->bindParam(":email", $newEmail, PDO::PARAM_STR);
 	$stmt->bindParam(":gender", $newGender, PDO::PARAM_STR);
 	$stmt->bindParam(":postsperpage", $newPostsPerPage, PDO::PARAM_STR);
-	$stmt->bindParam(":timezone", $newPostsPerPage, PDO::PARAM_STR);
+	$stmt->bindParam(":timezone", $newTimeZone, PDO::PARAM_STR);
 	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
