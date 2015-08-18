@@ -55,7 +55,7 @@ function validateEmail($email){
 }
 
 function validateTimeZone($timeZone){
-	$regex = "/^[\+\-]\d{2}:d{2}$/";
+	$regex = "/^[\+\-]\d{2}:\d{2}$/";
 	return preg_match($regex, $timeZone);
 }
 

@@ -24,7 +24,7 @@ if(!validateGender($newGender)){
 if(!validatePostsPerPage($newPostsPerPage)){
 	$errors[] = "postsperpage=" . ERR::POSTS_PER_PAGE_BAD;
 }
-if(!validateTimezone($newTimeZone)){
+if(!validateTimeZone($newTimeZone)){
 	$errors[] = "timezone=" . ERR::TIME_ZONE_BAD;
 }
 
