@@ -18,7 +18,7 @@ require_once("php/error.php");
 if(isset($_GET['messageid'])){
 	$db = connectToDatabase();
 	if($db){
-		$content = getMessageContent($db, $_GET['messageid'], $_SESSION['id']);
+		$content = getMessageContent($db, $_GET['messageid'], $_SESSION['id'], $_SESSION['token']);
 		switch($content[SP::ERROR]){
 			case ERR::OK:
 				echo "<p>". $content[MESSAGE::CONTENT] ."</p>";

@@ -769,6 +769,7 @@ function getMessages($database, $userID, $senderUserID, $receiverUserID, &$login
 	$results[SP::ERROR] = $errorCode;
 	return $results;
 }
+
 function getMessageContent($database, $messageID, $userID, &$loginToken){
 	$errorCode = ERR::OK;
 	$stmt = $database->prepare("CALL GetMessageContent(:id, :userID, :token, @newToken, @error)");
@@ -793,6 +794,14 @@ function getMessageContent($database, $messageID, $userID, &$loginToken){
 		// If it's something else, rethrow it.
 		if($e->getCode() == 2053) unset($out);
 		else $errorCode = ERR::UNKNOWN;
+	}
+	
+	$results = array();
+	if(isset($out) && count($out) != 0){
+		$results = $out;
+	}
+	else{
+		$errorCode = ERR::USER_NOT_EXIST;
 	}
 	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
 	$errorCode = intval($sel[0]['@error'], 10);
