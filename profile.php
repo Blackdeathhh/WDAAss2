@@ -56,7 +56,7 @@ if($userID != 0){
 					$email = $results[USER::EMAIL];
 					$postsPerPage = $results[USER::POSTS_PAGE];
 					$permisLevel = $results[PERMISSION::LEVEL];
-					$permisLevel = $results[USER::TIME_ZONE];
+					$timeZone = $results[USER::TIME_ZONE];
 					break;
 				case ERR::TOKEN_FAIL:
 				case ERR::TOKEN_EXPIRED:
