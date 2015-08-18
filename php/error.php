@@ -29,6 +29,8 @@ class ERR{
 	const PERMIS_FAIL = 205;
 	const USER_NOT_EXIST = 206;
 	const USER_NOT_LOGGED = 207;
+	const FRIEND_NOT_EXIST = 208;
+	const FRIEND_ALREADY_FRIEND = 209;
 	const FORUM_NOT_EXIST = 300;
 	const THREAD_NOT_EXIST = 301;
 	const POST_NOT_EXIST = 302;
@@ -60,6 +62,8 @@ MSG_TITLE_BAD => "Message Title is malformed",
 205 => "Insufficient permission level",
 206 => "User does not exist",
 207 => "User not logged in",
+FRIEND_NOT_EXIST => "Friend does not exist",
+FRIEND_ALREADY_FRIEND => "User already your friend",
 300 => "Forum does not exist",
 301 => "Thread does not exist",
 302 => "Post does not exist",

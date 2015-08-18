@@ -79,6 +79,7 @@ class FRIEND{
 class SP{
 	const ERROR = "Error";
 	const TOKEN = "Token";
+	const RESULT = "Result";
 }
 
 class AGGR{
@@ -704,6 +705,38 @@ function getFriends($database, $userID, &$loginToken){
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
 	return $results;
+}
+
+function areFriends($database, $userID, $friendID){
+	$stmt = $database->prepare("CALL AreFriends(:id, :friendid)");
+	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $friendID, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$out;
+	try{
+		$out = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		$stmt = null;
+	}
+	catch(PDOException $e){
+		// 2053 == No rows. If no rows, we can ignore it; just return a null array.
+		// If it's something else, rethrow it.
+		if($e->getCode() == 2053) unset($out);
+		else $errorCode = ERR::UNKNOWN;
+	}
+	if(isset($out) && count($out) != 0){
+		$results = isset($out[0][SP::RESULT]);
+	}
+	else{
+		$result = false;
+	}
+	return $result;
 }
 
 function createMessage($database, $userID, $recipientID, $title, $content, &$loginToken){

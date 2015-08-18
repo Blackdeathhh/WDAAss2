@@ -2,6 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/messages.css" />
 	<meta charset="UTF-8">
 	<title>Messages</title>
 </head>

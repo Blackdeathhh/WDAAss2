@@ -139,12 +139,14 @@ EOT;
 EOT;
 			}
 			else{
+				if(!areFriends($_SESSION['id'], $userID)){
 				echo <<<EOT
 			<form method="POST" action="friendslist.php">
 				<input type="hidden" name="addfriendid" value="{$userID}" />
 				<input type="submit" name="submit" value="Add to Friends List" />
 			</form>
 EOT;
+				}
 			}
 			echo <<<EOT
 		</div>

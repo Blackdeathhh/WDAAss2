@@ -1,5 +1,5 @@
 .messagesbox{
-	background-color: #6F9863;
+	background-color: #CCCCCC;
 	width: 40%;
 	display:inline-block;
 	vertical-align: top;
@@ -8,4 +8,5 @@
 	width: 90%;
 	color: black;
 	background-color: #BFF0BF;
+	margin: 1em auto 1em;
 }
