@@ -710,7 +710,7 @@ function getFriends($database, $userID, &$loginToken){
 function areFriends($database, $userID, $friendID){
 	$stmt = $database->prepare("CALL AreFriends(:id, :friendid)");
 	$stmt->bindParam(":id", $userID, PDO::PARAM_INT);
-	$stmt->bindParam(":token", $friendID, PDO::PARAM_INT);
+	$stmt->bindParam(":friendid", $friendID, PDO::PARAM_INT);
 	try{
 		$stmt->execute();
 	}
@@ -731,7 +731,7 @@ function areFriends($database, $userID, $friendID){
 		else $errorCode = ERR::UNKNOWN;
 	}
 	if(isset($out) && count($out) != 0){
-		$results = isset($out[0][SP::RESULT]);
+		$result = isset($out[0][SP::RESULT]);
 	}
 	else{
 		$result = false;

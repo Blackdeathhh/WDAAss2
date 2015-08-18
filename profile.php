@@ -139,7 +139,7 @@ EOT;
 EOT;
 			}
 			else{
-				if(!areFriends($_SESSION['id'], $userID)){
+				if(!areFriends($db, $_SESSION['id'], $userID)){
 				echo <<<EOT
 			<form method="POST" action="friendslist.php">
 				<input type="hidden" name="addfriendid" value="{$userID}" />
