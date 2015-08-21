@@ -8,24 +8,24 @@ require_once("php/error.php");
 $db = connectToDatabase();
 if($db){
 	if(isset($_GET['lock'])){
-		$results = setThreadLock($db, $_SESSION['id'], $_GET['lock'], 0, $_SESSION['token']);
+		$results = lockThread($db, $_SESSION['id'], $_GET['lock'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
 				echo "<p>Thread successfully locked!</p>";
 				break;
 			default:
-				echo "<p>Could not lock thread. Reason: ". $ERRORS[$reuslts[SP::ERROR]] ."</p>";
+				echo "<p>Could not lock thread. Reason: ". $ERRORS[$results[SP::ERROR]] ."</p>";
 				break;
 		}
 	}
 	elseif(isset($_GET['unlock'])){
-		$results = setThreadLock($db, $_SESSION['id'], $_GET['lock'], 1, $_SESSION['token']);
+		$results = unlockThread($db, $_SESSION['id'], $_GET['lock'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
 				echo "<p>Thread successfully unlocked!</p>";
 				break;
 			default:
-				echo "<p>Could not unlock thread. Reason: ". $ERRORS[$reuslts[SP::ERROR]] ."</p>";
+				echo "<p>Could not unlock thread. Reason: ". $ERRORS[$results[SP::ERROR]] ."</p>";
 				break;
 		}
 	}
