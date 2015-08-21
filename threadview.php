@@ -85,8 +85,11 @@ echo <<<EOT
 {$breadcrumb}
 </div>
 <div class="maindiv">
-	<h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
+	<h2 class='title'>
 EOT;
+if(!$threadInfo[THREAD::OPEN]){ echo "(Locked) ";
+echo $threadInfo[THREAD::TITLE] ."</h2>";
+
 
 if(isset($loggedUserDetails) && $loggedUserDetails[PERMISSION::LEVEL] >= P_LOCK_THREAD){
 	echo "<form method='get' action='lockthread.php'>";
@@ -231,12 +234,14 @@ EOT;
 	echo "</ol>";
 }
 
-echo <<<EOT
-<form method="post" action="makepost.php">
-	<input type="hidden" name="threadid" value="{$_GET['threadid']}" />
-	<input type="submit" value="New Post" />
-</form>
+if($threadInfo[THREAD::OPEN]){
+	echo <<<EOT
+	<form method="post" action="makepost.php">
+		<input type="hidden" name="threadid" value="{$_GET['threadid']}" />
+		<input type="submit" value="New Post" />
+	</form>
 EOT;
+}
 ?>
 </div>
 </body>
