@@ -19,7 +19,7 @@ if($db){
 		}
 	}
 	elseif(isset($_GET['unlock'])){
-		$results = unlockThread($db, $_SESSION['id'], $_GET['lock'], $_SESSION['token']);
+		$results = unlockThread($db, $_SESSION['id'], $_GET['unlock'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
 				echo "<p>Thread successfully unlocked!</p>";
