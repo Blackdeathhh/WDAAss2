@@ -23,6 +23,7 @@ $threadInfo;
 $postsPerPage = 10;
 $focusPostID = (isset($_GET['postid'])) ? $_GET['postid'] : null;
 $postIDs;
+$userDetails = null;
 
 if(isset($_GET['threadid'])){
 	$threadID = $_GET['threadid'];
@@ -46,11 +47,11 @@ echo "</head><body>";
 require("php/topbar.php");
 
 if(isset($_SESSION['id']) && isset($_SESSION['token'])){
-	$results = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
-	//$_SESSION['token'] = $results[SP::TOKEN];
+	$userDetails = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
+	//$_SESSION['token'] = $userDetails[SP::TOKEN];
 
-	if($results[SP::ERROR] == ERR::OK){
-		$postsPerPage = $results[USER::POSTS_PAGE];
+	if($userDetails[SP::ERROR] == ERR::OK){
+		$postsPerPage = $userDetails[USER::POSTS_PAGE];
 	}
 }
 
@@ -83,15 +84,25 @@ echo <<<EOT
 <div id="breadcrumb">
 {$breadcrumb}
 </div>
-
 <div class="maindiv">
-<h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
+	<h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
 
-// Here, we have to replace the page to match with the page on which the postToFocus resides. If so. Don't worry though, because the page links will get rid of this, so it won't keep dragging us back to the same page
-/*
+if(isset($userDetails) && $userDetails[PERMISSION::LEVEL] >= P_LOCK_THREAD){
+	echo "<form method='get' action='lockthread.php'>";
+	if($threadInfo[THREAD::OPEN]){
+		echo "<input type='hidden' name='lock' value='{$threadID}' />";
+		echo "<input type='submit' value='Lock Thread' />";
+	}
+	else{
+		echo "<input type='hidden' name='unlock' value='{$threadID}' />";
+		echo "<input type='submit' value='Unlock Thread' />";
+	}
+	echo "</form>";
+}
 
-*/
+
+// Here, we have to replace the page to match with the page on which the postToFocus resides. If so. Don't worry though, because the page links will get rid of this, so it won't keep dragging us back to the same page
 
 if(isset($focusPostID)){
 	foreach($postIDs as $num => $ID){

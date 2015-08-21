@@ -835,7 +835,6 @@ function getMessageContent($database, $messageID, $userID, &$loginToken){
 		if($e->getCode() == 2053) unset($out);
 		else $errorCode = ERR::UNKNOWN;
 	}
-	
 	$results = array();
 	if(isset($out) && count($out) != 0){
 		$results = $out[0];
@@ -847,5 +846,25 @@ function getMessageContent($database, $messageID, $userID, &$loginToken){
 	$errorCode = intval($sel[0]['@error'], 10);
 	$loginToken = intval($sel[0]['@newToken'], 10);
 	$results[SP::ERROR] = $errorCode;
+	return $results;
+}
+//userID smallint, targetThreadID int, setTo bit, loginToken int, OUT newToken int, OUT error int
+function setThreadLock($database, $userID, $threadID, $setLockTo, &$loginToken){
+	$errorCode = ERR::OK;
+	$stmt = $database->prepare("CALL SetThreadLock(:uid, :tid, :lockTo, :token, @newToken, @error)");
+	$stmt->bindParam(":uid", $userID, PDO::PARAM_INT);
+	$stmt->bindParam(":tid", $threadID, PDO::PARAM_INT);
+	$stmt->bindParam(":lockTo", $setLockTo, PDO::PARAM_INT);
+	$stmt->bindParam(":token", $loginToken, PDO::PARAM_INT);
+	try{
+		$stmt->execute();
+	}
+	catch(PDOException $e){
+		echo $e->getMessage();
+		$errorCode = ERR::UNKNOWN;
+	}
+	$sel = $database->query("SELECT @error, @newToken")->fetchAll(PDO::FETCH_ASSOC);
+	$results = array(SP::ERROR => intval($sel[0]['@error'], 10));
+	$loginToken = intval($sel[0]['@newToken'], 10);
 	return $results;
 }
