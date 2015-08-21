@@ -23,7 +23,7 @@ $threadInfo;
 $postsPerPage = 10;
 $focusPostID = (isset($_GET['postid'])) ? $_GET['postid'] : null;
 $postIDs;
-$userDetails = null;
+$loggedUserDetails = null;
 
 if(isset($_GET['threadid'])){
 	$threadID = $_GET['threadid'];
@@ -47,11 +47,11 @@ echo "</head><body>";
 require("php/topbar.php");
 
 if(isset($_SESSION['id']) && isset($_SESSION['token'])){
-	$userDetails = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
-	//$_SESSION['token'] = $userDetails[SP::TOKEN];
+	$loggedUserDetails = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
+	//$_SESSION['token'] = $loggedUserDetails[SP::TOKEN];
 
-	if($userDetails[SP::ERROR] == ERR::OK){
-		$postsPerPage = $userDetails[USER::POSTS_PAGE];
+	if($loggedUserDetails[SP::ERROR] == ERR::OK){
+		$postsPerPage = $loggedUserDetails[USER::POSTS_PAGE];
 	}
 }
 
@@ -88,7 +88,7 @@ echo <<<EOT
 	<h2 class='title'>{$threadInfo[THREAD::TITLE]}</h2>
 EOT;
 
-if(isset($userDetails) && $userDetails[PERMISSION::LEVEL] >= P_LOCK_THREAD){
+if(isset($loggedUserDetails) && $loggedUserDetails[PERMISSION::LEVEL] >= P_LOCK_THREAD){
 	echo "<form method='get' action='lockthread.php'>";
 	if($threadInfo[THREAD::OPEN]){
 		echo "<input type='hidden' name='lock' value='{$threadID}' />";
