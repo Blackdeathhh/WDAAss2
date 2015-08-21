@@ -163,8 +163,7 @@ if($posts){
 				$userID = $details[POST::USER_ID];
 				if(!isset($userDetails[$userID])){
 					// If it doesn't work this time it probably won't work the next time. We can change this to not output it if the error is unknown later, maybe
-					$userDetails = getPublicUserDetails($db, $userID);
-					$userDetails[$userID] = $details;
+					$userDetails[$userID] = getPublicUserDetails($db, $userID);
 				}
 				echo <<<EOT
 <li class='item'>
@@ -195,11 +194,11 @@ EOT;
 EOT;
 				echo <<<EOT
 				<p>
-					<a href='profile.php?profileid={$details[POST::USER_ID]}'>{$userDetails[USER::DISP_NAME]}</a>
+					<a href='profile.php?profileid={$details[POST::USER_ID]}'>{$userDetails[$userID][USER::DISP_NAME]}</a>
 				</p>
-				<img class='avatar' src='avatar/{$details[POST::USER_ID]}.jpg' alt="{$userDetails[USER::DISP_NAME]}'s avatar" />
-				<p>Location: {$userDetails[USER::LOC]}</p>
-				<p>{$P_LEVELS[$userDetails[PERMISSION::LEVEL]]}</p>
+				<img class='avatar' src='avatar/{$details[POST::USER_ID]}.jpg' alt="{$userDetails[$userID][USER::DISP_NAME]}'s avatar" />
+				<p>Location: {$userDetails[$userID][USER::LOC]}</p>
+				<p>{$P_LEVELS[$userDetails[$userID][PERMISSION::LEVEL]]}</p>
 			</div>
 			<div class='content'>
 				<p>{$details[POST::CONTENT]}</p>
@@ -212,8 +211,7 @@ EOT;
 					echo "<p>Last edited ";
 					if($editor != $details[POST::USER_ID]){
 						if(!isset($userDetails[$editor])){
-							$editorDetails = getPublicUserDetails($db, $editor);
-							$userDetails[$editor] = $editorDetails;
+							$userDetails[$editor] = getPublicUserDetails($db, $editor);
 						}
 						echo "by <a href='profile.php?profileid=$editor'>". $userDetails[$editor][USER::DISP_NAME] . "</a> ";
 					}
