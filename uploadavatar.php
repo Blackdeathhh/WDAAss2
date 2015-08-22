@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="css/base.css" />
 	<meta charset="UTF-8">
+	<title>Avatar Upload</title>
 </head>
 <body>
 <?php require("php/topbar.php"); ?>
@@ -41,10 +42,14 @@ if(is_array($_FILES['newavatar'])){
 						case ERR::PERMIS_FAIL:
 							echo "<p>You do not have the required permissions to do that.</p>";
 							break;
+						case ERR::TOKEN_EXPIRED:
 						case ERR::TOKEN_FAIL:
-						case ERR::ACC_IN_USE:
 						case ERR::USER_NO_TOKEN:
+							header("Location: logout.php?error=". $results[SP::ERROR]);
+							break;
+						case ERR::ACC_IN_USE:
 							echo "<p>Hey, what do you think you're doing? Go away, you're not this user you big fat liar.</p>";
+							break;
 					}
 				}
 				else{

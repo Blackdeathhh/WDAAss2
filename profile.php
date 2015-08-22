@@ -61,13 +61,16 @@ if($userID != 0){
 				case ERR::TOKEN_FAIL:
 				case ERR::TOKEN_EXPIRED:
 				case ERR::USER_NO_TOKEN:
-					echo "<p>Your session has expired; please <a href='login.php'>log in</a> again.</p>";
+					header("Location: logout.php?error=". $errorCode);
 					break;
 				case ERR::PERMIS_FAIL:
 					echo "<p>You do not have permissions to edit this profile.</p>";
 					break;
 				case ERR::USER_NOT_EXIST:
 					
+					break;
+				default:
+					header("Location: logout.php?error=". $errorCode);
 					break;
 			}
 			// Update because it can change (though rarely)
@@ -89,10 +92,6 @@ if($userID != 0){
 			}
 		}
 		if($errorCode == ERR::OK){
-			/*We have to display the avatar, buttons to change it. Also some sort of notification if you have any new private messages, along with a link to go and view them.
-			Fields that display user details. If it's our profile, we show more and they can be modified
-			Private Messages belong on a separate page. Friends probably do, as well. They could go together on a separate page 'friends.php', which could show a list of all friends, links to their profiles, ability to send them PMs.
-			Private Messages viewing should */
 			// If you want to customize that upload thing, wrap it in a label, make input's display: none. Then, place a <span> after it, inside the label, and style that how you like.
 			echo <<<EOT
 	<h2 class='title'>{$displayName}'s Profile</h2><div>

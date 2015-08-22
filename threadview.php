@@ -8,6 +8,7 @@
 <?php
 /* We have to somehow deduce the first viewing of this thread, and ++views. We could do this by checking page GET.
 Or, we could make a new GET variable, just for telling if we're browsing through this or not. We'd check to see if it's set; if not, ++View. And in the page buttons, just make it submit the GET parameter.
+haha screw all that just viewThread Stored Procedure
 */
 session_start();
 
@@ -50,6 +51,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 	$loggedUserDetails = getPrivateUserDetails($db, $_SESSION['id'], $_SESSION['token']);
 	//$_SESSION['token'] = $loggedUserDetails[SP::TOKEN];
 
+	// Right now, we don't mind if the user's been logged out. This page doesn't require you to be logged in or anything.
 	if($loggedUserDetails[SP::ERROR] == ERR::OK){
 		$postsPerPage = $loggedUserDetails[USER::POSTS_PAGE];
 	}

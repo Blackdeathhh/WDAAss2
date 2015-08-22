@@ -16,6 +16,7 @@
 	require_once("php/database.php");
 	require_once("php/storedprocedures.php");
 	require_once("php/error.php");
+	require_once("php/posting.php");
 
 	if(isset($_POST['threadid'])){
 		$db = connectToDatabase();
@@ -27,7 +28,14 @@
 <h2 class='title'>Posting to: <a href=threadview.php?threadid={$_POST['threadid']}>{$info[THREAD::TITLE]}</a></h2>
 <form id="postform" method="POST" action="postsubmission.php">
 	<input type='hidden' id='threadid' name='threadid' value='{$_POST['threadid']}'>
-	<input type="hidden" id="content" name="content" />
+EOT;
+					if(isset($_POST['editstr'])){
+						echo createContentArea($_POST['editstr']);
+					}
+					else{
+						echo createContentArea();
+					}
+/*	<input type="hidden" id="content" name="content" />
 	<div id='postcontent' contenteditable>
 EOT;
 					// editstr can be set if a post failed, and postsubmission sends us back here; no post has been made, but we can edit what we did have
@@ -37,8 +45,8 @@ EOT;
 					echo <<<EOT
 </div>
 	<input type='button' id='post' value='Post' onclick='submitPost()' />
-</form>
-EOT;
+EOT;*/
+					echo "</form>";
 					break;
 				case ERR::THREAD_NOT_EXIST;
 					echo "The thread does not or no longer exists. Back to <a href='forumview.php'>forums</a>.";

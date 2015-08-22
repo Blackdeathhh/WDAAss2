@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/newpost.css" />
 	<meta charset="UTF-8">
+	<title>Posting...</title>
 </head>
 <?php require("php/topbar.php"); ?>
 <body>
@@ -15,7 +16,7 @@
 	require_once("php/error.php");
 
 	if(isset($_POST['content'])){
-		/* Search the string to find any HTML tags that we have forbidden; that is, anything other than b, u, i, a, img, or br. If we do find a tag, we can clean it up and set a link back to edit the post. */
+		/* Search the string to find any HTML tags that we have forbidden; that is, anything other than b, u, i, a, img, br, or iframe. If we do find a tag, we can clean it up and set a link back to edit the post. */
 		$db = connectToDatabase();
 		if($db){
 			$postToThread = (isset($_POST['threadid'])) ? $_POST['threadid'] : null;
@@ -27,6 +28,11 @@
 				switch($result[SP::ERROR]){
 					case ERR::OK:
 						$postToThread = $result[THREAD::ID];
+						break;
+					case ERR::TOKEN_EXPIRED:
+					case ERR::TOKEN_FAIL:
+					case ERR::USER_NO_TOKEN:
+						header("Location: logout.php?error=". $result[SP::ERROR]);
 						break;
 				}
 			}
@@ -50,6 +56,7 @@
 						break;
 					case ERR::TOKEN_FAIL:
 					case ERR::TOKEN_EXPIRED:
+					case ERR::USER_NO_TOKEN:
 						echo "Your session has expired; please <a href='login.php'>log in</a> again.";
 						break;
 					case ERR::UNKNOWN:
@@ -73,6 +80,7 @@
 						break;
 					case ERR::TOKEN_FAIL:
 					case ERR::TOKEN_EXPIRED:
+					case ERR::USER_NO_TOKEN:
 						echo "Your session has expired; please <a href='login.php'>log in</a> again.";
 						break;
 					case ERR::UNKNOWN:

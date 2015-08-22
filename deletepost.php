@@ -29,6 +29,11 @@
 				case ERR::PERMIS_FAIL:
 					echo "<p>You are not permitted to do this.</p>";
 					break;
+				case ERR::TOKEN_EXPIRED:
+				case ERR::TOKEN_FAIL:
+				case ERR::USER_NO_TOKEN:
+					header("Location: logout.php?error=". $results[SP::ERROR]);
+					break;
 				default:
 					echo "<p>Error: ". $ERRORS[$results[SP::ERROR]] ."</p>";
 					break;

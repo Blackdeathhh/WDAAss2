@@ -17,6 +17,11 @@ if(validateMessageTitle($msgTitle)){
 				case ERR::OK:
 					echo "<p>Message sent!</p>";
 					break;
+				case ERR::TOKEN_EXPIRED:
+				case ERR::TOKEN_FAIL:
+				case ERR::USER_NO_TOKEN:
+					header("Location: logout.php?error=". $results[SP::ERROR]);
+					break;
 				default:
 					echo "<p>Message not sent, error code: ". $results[SP::ERROR] ."</p>";
 					break;

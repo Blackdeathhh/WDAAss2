@@ -18,8 +18,7 @@ if(isset($_SESSION['token']) && isset($_SESSION['id'])) {
 			break;
 		default:
 			// We don't care WHAT went wrong; this just means that the user's not logged in, which is all we need to know right now.
-			unset($_SESSION['token']);
-			unset($_SESSION['id']);
+			header("Location: logout.php?error=". $results[SP::ERROR]);
 			break;
 	}
 }

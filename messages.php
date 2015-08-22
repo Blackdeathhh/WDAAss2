@@ -56,6 +56,11 @@ EOT;
 				}
 				echo "</ol></div>";
 				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $sentError);
+				break;
 			default:
 				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
 				break;
@@ -78,6 +83,11 @@ EOT;
 EOT;
 				}
 				echo "</ol></div>";
+				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $receivedError);
 				break;
 			default:
 				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
@@ -125,6 +135,11 @@ EOT;
 				}
 				echo "</ol></div>";
 				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $sentError);
+				break;
 			default:
 				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
 				break;
@@ -149,6 +164,11 @@ EOT;
 EOT;
 				}
 				echo "</ol></div>";
+				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $receivedError);
 				break;
 			default:
 				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";

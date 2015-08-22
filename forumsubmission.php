@@ -37,6 +37,11 @@ if($forumNameValid && $forumSubtitleValid && $forumTopicValid){
 				if($forumParent != null) echo "?forumid=". $forumParent;
 				echo "'>Back to forums.</a></p>";
 				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $results[SP::ERROR]);
+				break;
 			default:
 				echo "<p>Error creating forum: ". $ERRORS[$results[SP::ERROR]] ."</p>";
 				break;

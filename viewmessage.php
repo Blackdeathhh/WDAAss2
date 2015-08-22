@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="css/base.css" />
 	<link rel="stylesheet" href="css/messages.css" />
 	<meta charset="UTF-8">
-	<title>Messages</title>
+	<title>Viewing Message</title>
 </head>
 <body>
 <?php require("php/topbar.php"); ?>
@@ -23,6 +23,11 @@ if(isset($_GET['messageid'])){
 		switch($content[SP::ERROR]){
 			case ERR::OK:
 				echo "<p>". $content[MESSAGE::CONTENT] ."</p>";
+				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $content[SP::ERROR]);
 				break;
 		}
 	}

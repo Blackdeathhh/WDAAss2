@@ -32,20 +32,18 @@ if(count($errors) == 0){
 	$db = connectToDatabase();
 	if($db){
 		$results = modifyUserDetails($db, $_SESSION['id'], $_SESSION['token'], $newLocation, $newEmail, $newGender, $newPostsPerPage, $newTimeZone);
-		header("Location: profile.php?error=". $results[SP::ERROR]);
-		//$_SESSION['token'] = $results[SP::TOKEN];
-		/*switch($results[SP::ERROR]){
-			case ERR::OK:
-				header("Location: profile.php?error=". $results[SP::ERROR]);
-				break;
-			case ERR::TOKEN_FAIL:
+//		header("Location: profile.php?error=". $results[SP::ERROR]);
+		switch($results[SP::ERROR]){
 			case ERR::TOKEN_EXPIRED:
-			case ERR::PERMIS_FAIL:
-			case ERR::USER_NOT_EXIST:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $results[SP::ERROR]);
+				break;
+			case ERR::OK:
 			default:
 				header("Location: profile.php?error=". $results[SP::ERROR]);
 				break;
-		}*/
+		}
 	}
 }
 else{

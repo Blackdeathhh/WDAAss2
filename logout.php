@@ -28,8 +28,7 @@
 						echo "<p>Something went wrong with your session, please try to log in again later.</p>";
 						break;
 					case ERR::TOKEN_EXPIRED:
-						unset($_SESSION['id']);
-						unset($_SESSION['token']);
+						$_SESSION = array();
 						echo "<p>Your session has expired. Please <a href='login.php'>log in</a> again.</p>";
 						break;
 					case ERR::UNKNOWN:
@@ -41,13 +40,11 @@
 			else{
 				switch($results[SP::ERROR]){
 					case ERR::OK:
-						unset($_SESSION['id']);
-						unset($_SESSION['token']);
+						$_SESSION = array();
 						echo "<p>You have been logged out.</p>";
 						break;
 					case ERR::USER_NOT_LOGGED:
-						unset($_SESSION['id']);
-						unset($_SESSION['token']);
+						$_SESSION = array();
 						echo "<p>Well you weren't logged on in the first place so...I guess you're good.</p>";
 						break;
 					case ERR::TOKEN_FAIL:

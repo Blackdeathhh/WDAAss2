@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="css/login.css" />
 	<script type="text/javascript" src="js/registerValidate.js"></script>
 	<meta charset="UTF-8">
+	<title>Registration</title>
 </head>
 <body>
 <?php require("php/topbar.php"); ?>
@@ -20,18 +21,19 @@ $db = connectToDatabase();
 
 if($db){
 	$loggedIn = false;
-	if(isset($_SESSION['id']) && isset($_SESSION['token']))
-	{
+	if(isset($_SESSION['id']) && isset($_SESSION['token'])){
 		$results = verifyUser($db, 0, $_SESSION['id'], $_SESSION['token']);
 		switch($results[SP::ERROR]){
 			case ERR::OK:
 				//$_SESSION['token'] = $results[SP::TOKEN];
 				$loggedIn = true;
 				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
 			default:
-				// We don't care WHAT went wrong; this just means that the user's not logged in, which is all we need to know right now.
-				unset($_SESSION['token']);
-				unset($_SESSION['id']);
+				// We don't care WHAT went wrong; this just means that the user's not logged in, which is all we need to know right now. And this is fine to do; it means that we couldn't verify their session. It won't stop people who aren't logged in from registering an account.
+				header("Location: logout.php?error=". $results[SP::ERROR]);
 				break;
 		}
 	}

@@ -29,9 +29,10 @@
 					$loggedIn = true;
 					break;
 				default:
-					// We don't care WHAT went wrong; this just means that the user's not logged in, which is all we need to know right now.
-					unset($_SESSION['token']);
-					unset($_SESSION['id']);
+					// We don't care WHAT went wrong; this just means that the user's not logged in, which is all we need to know right now. 
+					// If logout.php stops unsetting $_SESSION, we could end up in an infinite loop here, so just to be safe we'll unset the session array.
+					$_SESSION = array();
+					header("Location: logout.php?error=". $results[SP::ERROR]);
 					break;
 			}
 		}

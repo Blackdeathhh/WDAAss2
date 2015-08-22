@@ -12,6 +12,11 @@ if($db){
 			case ERR::OK:
 				echo "<p>Thread successfully locked!</p>";
 				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $results[SP::ERROR]);
+				break;
 			default:
 				echo "<p>Could not lock thread. Reason: ". $ERRORS[$results[SP::ERROR]] ."</p>";
 				break;
@@ -23,6 +28,12 @@ if($db){
 			case ERR::OK:
 				echo "<p>Thread successfully unlocked!</p>";
 				break;
+			case ERR::TOKEN_EXPIRED:
+			case ERR::TOKEN_FAIL:
+			case ERR::USER_NO_TOKEN:
+				header("Location: logout.php?error=". $results[SP::ERROR]);
+				break;
+
 			default:
 				echo "<p>Could not unlock thread. Reason: ". $ERRORS[$results[SP::ERROR]] ."</p>";
 				break;
