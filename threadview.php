@@ -87,7 +87,8 @@ echo <<<EOT
 <div class="maindiv">
 	<h2 class='title'>
 EOT;
-if(!$threadInfo[THREAD::OPEN]){ echo "(Locked) ";
+
+if(!$threadInfo[THREAD::OPEN]) echo "(Locked) ";
 echo $threadInfo[THREAD::TITLE] ."</h2>";
 
 if(isset($loggedUserDetails) && $loggedUserDetails[PERMISSION::LEVEL] >= P_LOCK_THREAD){
@@ -192,8 +193,6 @@ EOT;
 		</div>
 		<div class='replybody'>
 			<div class='posterinfo'>
-EOT;
-				echo <<<EOT
 				<p>
 					<a href='profile.php?profileid={$details[POST::USER_ID]}'>{$userDetails[$userID][USER::DISP_NAME]}</a>
 				</p>
@@ -207,6 +206,7 @@ EOT;
 		</div>
 		<div class='replyfooter'>
 EOT;
+				
 				$editor = $details[POST::EDITING_USER_ID];
 				if($editor){
 					echo "<p>Last edited ";

@@ -16,14 +16,20 @@
 	require_once("php/posting.php");
 
 	if(isset($_GET['touserid'])){
-		echo <<<EOT
-<h2 class='title'>Creating a new message to: <a href=profile.php?profileid={$_GET['touserid']}>{$GETUSERDISPLAYNAME}</a></h2>
-<form id="postform" method="POST" action="messagesubmission.php">
-	<input type="text" name="messagetitle" id="messagetitle" />
-	<input type='hidden' id='touserid' name='touserid' value='{$_GET['touserid']}'>
+		$db = connectToDatabase();
+		if($db){
+			$userInfo = getPublicUserDetails($db, $_GET['touserid']);
+			$displayName = "???";
+			if($userInfo[SP::ERROR] == ERR::OK) $displayName = $userInfo[USER::DISP_NAME];
+			echo <<<EOT
+	<h2 class='title'>Creating a new message to: <a href=profile.php?profileid={$_GET['touserid']}>{$displayName}</a></h2>
+	<form id="postform" method="POST" action="messagesubmission.php">
+		<input type="text" name="messagetitle" id="messagetitle" />
+		<input type='hidden' id='touserid' name='touserid' value='{$_GET['touserid']}'>
 EOT;
-		echo createContentArea();
-		echo "</form>";
+			echo createContentArea();
+			echo "</form>";
+		}
 	}
 	else{
 		echo "<p>No recipient specified.</p>";
