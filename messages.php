@@ -112,13 +112,13 @@ EOT;
 		<ol>
 EOT;
 				foreach($sentMessages as $msg => $details){
-					if(isset($userInfo[$details[MESSAGE::RECIPIENT]])){
+					if(!isset($userInfo[$details[MESSAGE::RECIPIENT]])){
 						$userInfo[$details[MESSAGE::RECIPIENT]] = getPublicUserDetails($db, $details[MESSAGE::RECIPIENT]);
 					}
 					echo <<<EOT
 			<li>
 				<div class='message'>
-					<p><a href='{$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}, sent to <a href='profile.php?profileid={$userInfo[$details[MESSAGE::RECIPIENT]]}'>{$userInfo[$details[MESSAGE::RECIPIENT]][USER::DISP_NAME]}</a></p>
+					<p><a href='viewmessage.php?messageid={$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}, sent to <a href='profile.php?profileid={$details[MESSAGE::RECIPIENT]}'>{$userInfo[$details[MESSAGE::RECIPIENT]][USER::DISP_NAME]}</a></p>
 				</div>
 			</li>
 EOT;
@@ -137,13 +137,13 @@ EOT;
 		<ol>
 EOT;
 				foreach($receivedMessages as $msg => $details){
-					if(isset($userInfo[$details[MESSAGE::SENDER]])){
+					if(!isset($userInfo[$details[MESSAGE::SENDER]])){
 						$userInfo[$details[MESSAGE::SENDER]] = getPublicUserDetails($db, $details[MESSAGE::SENDER]);
 					}
 					echo <<<EOT
 			<li>
 				<div class='message'>
-					<p><a href='{$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}, sent to <a href='profile.php?profileid={$userInfo[$details[MESSAGE::SENDER]]}'>{$userInfo[$details[MESSAGE::SENDER]][USER::DISP_NAME]}</a></p>
+					<p><a href='viewmessage.php?messageid={$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}, sent to <a href='profile.php?profileid={$details[MESSAGE::SENDER]}'>{$userInfo[$details[MESSAGE::SENDER]][USER::DISP_NAME]}</a></p>
 				</div>
 			</li>
 EOT;
