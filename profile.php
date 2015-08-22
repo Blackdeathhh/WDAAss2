@@ -116,6 +116,12 @@ EOT;
 			</form>
 EOT;
 				}
+				echo <<<EOT
+			<form method="GET" action="makemessage.php">
+				<input type="hidden" name="touserid" value="{$userID}" />
+				<input type="submit" name="submit" value="Send Private Message" />
+			</form>
+EOT;
 			}
 			echo <<<EOT
 		</div>
