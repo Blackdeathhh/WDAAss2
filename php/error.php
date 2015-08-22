@@ -32,6 +32,7 @@ class ERR{
 	const USER_NOT_LOGGED = 207;
 	const FRIEND_NOT_EXIST = 208;
 	const FRIEND_ALREADY_FRIEND = 209;
+	const USER_NOT_SPECIFIED = 210;
 	const FORUM_NOT_EXIST = 300;
 	const THREAD_NOT_EXIST = 301;
 	const POST_NOT_EXIST = 302;
@@ -66,6 +67,7 @@ TIME_ZONE_BAD => "Time Zone is malformed",
 207 => "User not logged in",
 FRIEND_NOT_EXIST => "Friend does not exist",
 FRIEND_ALREADY_FRIEND => "User already your friend",
+USER_NOT_SPECIFIED => "No User ID Specified",
 300 => "Forum does not exist",
 301 => "Thread does not exist",
 302 => "Post does not exist",

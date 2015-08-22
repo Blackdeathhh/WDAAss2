@@ -66,7 +66,7 @@ class POST{
 class MESSAGE{
 	const ID = "MessageID";
 	const SENDER = "FromUserID";
-	const RECEIPIENT = "ToUserID";
+	const RECIPIENT = "ToUserID";
 	const CONTENT = "Content";
 	const MADE_AT = "CreatedAt";
 	const TITLE = "Title";

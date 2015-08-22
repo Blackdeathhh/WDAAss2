@@ -22,13 +22,13 @@ require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
 
-if(isset($_GET['userid'])){
-	$db = connectToDatabase();
-	if($db){
+$db = connectToDatabase();
+if($db){
+	if(isset($_GET['userid'])){
 		$userInfo = getPublicUserDetails($db, $_GET['userid']);
 		$us = $_SESSION['id'];
 		$them = $_GET['userid'];
-		// We want to get messages that have been SENT  by US and RECEIVED by THEM...
+		// We want to get messages that have been SENT by US and RECEIVED by THEM...
 		$sentMessages = getMessages($db, $us, $us, $them, $_SESSION['token']);
 		// ...and messages that have been SENT by THEM and RECEIVED by US
 		$receivedMessages = getMessages($db, $us, $them, $us, $_SESSION['token']);
@@ -56,6 +56,9 @@ EOT;
 				}
 				echo "</ol></div>";
 				break;
+			default:
+				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
+				break;
 		}
 		
 		switch($receivedError){
@@ -76,14 +79,86 @@ EOT;
 				}
 				echo "</ol></div>";
 				break;
+			default:
+				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
+				break;
 		}
 	}
 	else{
-		echo "<p>Could not connect to database, please try again later.</p>";
+		$userInfo = array();
+		// We want to get messages that have been SENT by US and RECEIVED by ANYONE...
+		$sentMessages = getMessages($db, $us, $us, null, $_SESSION['token']);
+		// ...and messages that have been SENT by ANYONE and RECEIVED by US
+		$receivedMessages = getMessages($db, $us, null, $us, $_SESSION['token']);
+		$sentError = $sentMessages[SP::ERROR];
+		$receivedError = $receivedMessages[SP::ERROR];
+		unset($sentMessages[SP::ERROR]);
+		unset($receivedMessages[SP::ERROR]);
+/*
+	const ID = "MessageID";
+	const SENDER = "FromUserID";
+	const RECIPIENT = "ToUserID";
+	const CONTENT = "Content";
+	const MADE_AT = "CreatedAt";
+	const TITLE = "Title";
+*/
+
+		//MessageID, FromUserID, ToUserID, Title, CreatedAt
+		switch($sentError){
+			case ERR::OK:
+				echo <<<EOT
+	<div class='messagesbox'>
+		<h2 class='title'>All messages sent</h2>
+		<ol>
+EOT;
+				foreach($sentMessages as $msg => $details){
+					if(isset($userInfo[$details[MESSAGE::RECIPIENT]])){
+						$userInfo[$details[MESSAGE::RECIPIENT]] = getPublicUserDetails($db, $details[MESSAGE::RECIPIENT]);
+					}
+					echo <<<EOT
+			<li>
+				<div class='message'>
+					<p><a href='{$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}, sent to <a href='profile.php?profileid={$userInfo[$details[MESSAGE::RECIPIENT]]}'>{$userInfo[$details[MESSAGE::RECIPIENT]][USER::DISP_NAME]}</a></p>
+				</div>
+			</li>
+EOT;
+				}
+				echo "</ol></div>";
+				break;
+			default:
+				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
+				break;
+		}
+		switch($receivedError){
+			case ERR::OK:
+				echo <<<EOT
+	<div class='messagesbox'>
+		<h2 class='title'>All messages received</h2>
+		<ol>
+EOT;
+				foreach($receivedMessages as $msg => $details){
+					if(isset($userInfo[$details[MESSAGE::SENDER]])){
+						$userInfo[$details[MESSAGE::SENDER]] = getPublicUserDetails($db, $details[MESSAGE::SENDER]);
+					}
+					echo <<<EOT
+			<li>
+				<div class='message'>
+					<p><a href='{$details[MESSAGE::ID]}'>{$details[MESSAGE::TITLE]}</a> at {$details[MESSAGE::MADE_AT]}, sent to <a href='profile.php?profileid={$userInfo[$details[MESSAGE::SENDER]]}'>{$userInfo[$details[MESSAGE::SENDER]][USER::DISP_NAME]}</a></p>
+				</div>
+			</li>
+EOT;
+				}
+				echo "</ol></div>";
+				break;
+			default:
+				echo "<p>Error: ". $ERRORS[$sentError] ."</p>";
+				break;
+		}
+		//echo "<p>No user specified. <a href='friendslist.php'>Back to friends list</a>.</p>";
 	}
 }
 else{
-	echo "<p>No user specified. <a href='friendslist.php'>Back to friends list</a>.</p>";
+	echo "<p>Could not connect to database, please try again later.</p>";
 }
 ?>
 </div>

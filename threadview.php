@@ -90,7 +90,6 @@ EOT;
 if(!$threadInfo[THREAD::OPEN]){ echo "(Locked) ";
 echo $threadInfo[THREAD::TITLE] ."</h2>";
 
-
 if(isset($loggedUserDetails) && $loggedUserDetails[PERMISSION::LEVEL] >= P_LOCK_THREAD){
 	echo "<form method='get' action='lockthread.php'>";
 	if($threadInfo[THREAD::OPEN]){
@@ -103,7 +102,6 @@ if(isset($loggedUserDetails) && $loggedUserDetails[PERMISSION::LEVEL] >= P_LOCK_
 	}
 	echo "</form>";
 }
-
 
 // Here, we have to replace the page to match with the page on which the postToFocus resides. If so. Don't worry though, because the page links will get rid of this, so it won't keep dragging us back to the same page
 

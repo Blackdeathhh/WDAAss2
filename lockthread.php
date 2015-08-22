@@ -4,7 +4,6 @@ require_once("php/database.php");
 require_once("php/storedprocedures.php");
 require_once("php/error.php");
 
-
 $db = connectToDatabase();
 if($db){
 	if(isset($_GET['lock'])){
