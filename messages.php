@@ -87,9 +87,9 @@ EOT;
 	else{
 		$userInfo = array();
 		// We want to get messages that have been SENT by US and RECEIVED by ANYONE...
-		$sentMessages = getMessages($db, $us, $us, null, $_SESSION['token']);
+		$sentMessages = getMessages($db, $_SESSION['id'];, $_SESSION['id'];, null, $_SESSION['token']);
 		// ...and messages that have been SENT by ANYONE and RECEIVED by US
-		$receivedMessages = getMessages($db, $us, null, $us, $_SESSION['token']);
+		$receivedMessages = getMessages($db, $_SESSION['id'];, null, $_SESSION['id'];, $_SESSION['token']);
 		$sentError = $sentMessages[SP::ERROR];
 		$receivedError = $receivedMessages[SP::ERROR];
 		unset($sentMessages[SP::ERROR]);
